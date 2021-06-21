@@ -1,0 +1,54 @@
+{
+  "name": "termost",
+  "version": "0.0.1",
+  "description": "Get the most of your terminal",
+  "author": {
+    "name": "Ayoub Adib",
+    "email": "adbayb@gmail.com",
+    "url": "https://twitter.com/adbayb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:adbayb/termost.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r esbuild-register src/index.ts",
+    "check:format": "prettier . --ignore-path .gitignore --ignore-path .prettierignore",
+    "check:lint": "eslint . --ignore-path .gitignore",
+    "check:types": "tsc --noEmit",
+    "format": "yarn check:format --write",
+    "lint": "yarn check:lint --fix"
+  },
+  "prettier": "@adbayb/prettier-config",
+  "eslintConfig": {
+    "extends": "@adbayb"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "yarn lint"
+    ],
+    "**/*.{json,md,mdx,html,css}": [
+      "yarn format"
+    ]
+  },
+  "devDependencies": {
+    "@adbayb/eslint-config": "0.6.0",
+    "@adbayb/prettier-config": "0.6.0",
+    "@adbayb/ts-config": "0.6.0",
+    "@types/args": "3.0.0",
+    "@types/inquirer": "7.3.2",
+    "@types/listr": "0.14.3",
+    "esbuild-register": "2.6.0"
+  },
+  "dependencies": {
+    "args": "5.0.1",
+    "inquirer": "8.1.1",
+    "listr": "0.14.3"
+  }
+}
