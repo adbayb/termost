@@ -1,4 +1,3 @@
-import inquirer from "inquirer";
 import args from "args";
 // @todo: custom implementation for listr!
 import Listr from "listr";
@@ -34,7 +33,8 @@ const tasks = new Listr([
 	},
 ]);
 
-args.option(["p", "port"], "The port on which the app will be running", 3000)
+args.example("args command -d", "Run the args command with the option -d")
+	.option(["p", "port"], "The port on which the app will be running", 3000)
 	.option("reload", "Enable/disable livereloading")
 	.command(
 		"serve",
@@ -49,18 +49,6 @@ const flags = args.parse(process.argv);
 
 console.log(flags);
 
-inquirer
-	.prompt([
-		{
-			name: "faveReptile",
-			message: "What is your favorite reptile?",
-		},
-	])
-	.then((answers) => {
-		console.info("Answer:", answers.faveReptile);
-	})
-	.then(() => {
-		return tasks.run().catch((err) => {
-			console.error(err);
-		});
-	});
+// tasks.run().catch((err) => {
+// 	console.error(err);
+// });

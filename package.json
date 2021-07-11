@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node -r esbuild-register src/index.ts",
+    "start": "node -r esbuild-register src/core.ts",
     "check:format": "prettier . --ignore-path .gitignore --ignore-path .prettierignore",
     "check:lint": "eslint . --ignore-path .gitignore",
     "check:types": "tsc --noEmit",
