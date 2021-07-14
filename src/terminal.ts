@@ -1,13 +1,9 @@
 import args from "args";
-import { AskParameters, AskPlugin } from "./plugins/ask";
+import { AskCommand } from "./commands/ask";
 import { Dictionary } from "./core/dataStructure";
 import { TaskManager } from "./core/taskManager";
-import { CommandPlugin } from "./plugins/command";
-import { Plugin } from "./plugins/types";
-
-type FluentLifecycle = {
-	skip?: (contextValues: ReturnType<Dictionary["values"]>) => boolean;
-};
+import { LaunchCommand } from "./commands/launch";
+import { Command, GetCommandParameters } from "./commands/types";
 
 export class Terminal {
 	#taskManager: TaskManager;
@@ -18,53 +14,51 @@ export class Terminal {
 		this.#taskManager = new TaskManager();
 	}
 
-	ask({ skip, ...restParams }: AskParameters & FluentLifecycle): Terminal {
-		const plugin = new AskPlugin(restParams);
+	ask({ skip, ...restParams }: FluentAskParameters) {
+		const command = new AskCommand(restParams);
 
 		args.option(restParams.key, "TODO");
 
-		this.#taskManager.register(this.#createTask(plugin, skip));
+		this.#taskManager.register(this.#createTask(command, skip));
 
 		return this;
 	}
 
-	command(
-		params: {
-			key: string;
-			label: string;
-			handler: (
-				contextValues: ReturnType<Dictionary["values"]>
-			) => Promise<{ key: string; value: unknown }>;
-		} & FluentLifecycle
-	): Terminal {
-		const plugin = new CommandPlugin(
-			params.key,
-			params.label,
-			this.#context,
-			params.skip || (() => false),
-			params.handler
-		);
+	command({ skip, handler, ...restParams }: FluentCommandParameters) {
+		const command = new LaunchCommand({
+			...restParams,
+			handler: () => {
+				return handler(this.#context.values());
+			},
+		});
 
-		this.#taskManager.register(this.#createTask(plugin, params.skip));
+		this.#taskManager.register(this.#createTask(command, skip));
 
 		return this;
 	}
 
-	#createTask(plugin: Plugin, skip: FluentLifecycle["skip"]) {
+	#createTask(command: Command, skip: FluentCommonParameters["skip"]) {
 		return async () => {
 			if (skip?.(this.#context.values())) {
 				return;
 			}
 
-			const value = plugin.execute();
+			const { key, value } = await command.execute();
 
-			this.#context.set(plugin.key(), value);
+			this.#context.set(key, value);
 		};
 	}
 
 	start() {
 		args.parse(process.argv);
-		this.#run();
+
+		const run = async () => {
+			await this.#taskManager.start();
+
+			console.info("\nContext = ", this.#context.values());
+		};
+
+		run();
 
 		const stop = () => this.#taskManager.stop();
 
@@ -72,8 +66,20 @@ export class Terminal {
 			stop();
 		};
 	}
-
-	async #run() {
-		this.#taskManager.start();
-	}
 }
+
+type FluentCommonParameters = {
+	skip?: (contextValues: ReturnType<Dictionary["values"]>) => boolean;
+};
+
+type FluentAskParameters = GetCommandParameters<typeof AskCommand> &
+	FluentCommonParameters;
+
+type FluentCommandParameters = Omit<
+	GetCommandParameters<typeof LaunchCommand>,
+	"handler"
+> & {
+	handler: (
+		contextValues: ReturnType<Dictionary["values"]>
+	) => ReturnType<Command["execute"]>;
+} & FluentCommonParameters;

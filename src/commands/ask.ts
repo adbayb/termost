@@ -1,14 +1,17 @@
 import inquirer from "inquirer";
-import { Plugin, PluginCommonProperties } from "./types";
+import { Command, CommandParameters } from "./types";
 
-export class AskPlugin implements Plugin {
-	constructor(public properties: AskParameters) {}
+export class AskCommand implements Command {
+	constructor(
+		private properties: CommandParameters<
+			| AskInputParameters
+			| AskConfirmParameters
+			| AskSingleSelectParameters
+			| AskMultiSelectParameters
+		>
+	) {}
 
-	key() {
-		return this.properties.key;
-	}
-
-	execute() {
+	async execute() {
 		const { key, label, defaultValue } = this.properties;
 		const mappedProperties: Record<string, unknown> = {
 			name: key,
@@ -37,7 +40,9 @@ export class AskPlugin implements Plugin {
 				break;
 		}
 
-		return inquirer.prompt([mappedProperties]);
+		const data = await inquirer.prompt([mappedProperties]);
+
+		return { key, value: data[key] };
 	}
 }
 
@@ -62,11 +67,3 @@ type AskConfirmParameters = {
 	type?: "confirm";
 	defaultValue?: boolean;
 };
-
-export type AskParameters = PluginCommonProperties &
-	(
-		| AskInputParameters
-		| AskConfirmParameters
-		| AskSingleSelectParameters
-		| AskMultiSelectParameters
-	);

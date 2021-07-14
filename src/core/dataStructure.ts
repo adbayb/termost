@@ -1,11 +1,11 @@
 export class Queue<Item> implements DataStructure {
 	#data: Array<Item> = [];
 
-	queue(item: Item) {
+	enqueue(item: Item) {
 		this.#data.push(item);
 	}
 
-	enqueue() {
+	dequeue() {
 		return this.#data.shift();
 	}
 

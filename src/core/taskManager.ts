@@ -4,18 +4,20 @@ export class TaskManager {
 	#queue: Queue<TaskManagerItem> = new Queue();
 
 	register(item: TaskManagerItem) {
-		return this.#queue.queue(item);
+		return this.#queue.enqueue(item);
 	}
 
 	unregister() {
-		return this.#queue.enqueue();
+		return this.#queue.dequeue();
 	}
 
 	async start() {
-		let promise: TaskManagerItem | undefined;
+		while (!this.#queue.isEmpty()) {
+			const task = this.unregister();
 
-		while ((promise = this.unregister())) {
-			await promise();
+			if (task) {
+				await task();
+			}
 		}
 	}
 

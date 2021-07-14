@@ -2,7 +2,7 @@ import { Terminal } from "./terminal";
 
 const terminal = new Terminal();
 
-const cleanup = terminal
+terminal
 	.ask({
 		key: "question1",
 		label: "What is your single choice?",
@@ -54,7 +54,7 @@ const cleanup = terminal
 	})
 	.start();
 
-cleanup();
+// cleanup();
 
 /*
 import args from "args";
