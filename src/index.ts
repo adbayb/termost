@@ -1,3 +1,62 @@
+import { Terminal } from "./terminal";
+
+const terminal = new Terminal();
+
+const cleanup = terminal
+	.ask({
+		key: "question1",
+		label: "What is your single choice?",
+		type: "select:single",
+		choices: ["singleOption1", "singleOption2"],
+		defaultValue: "singleOption1",
+		skip() {
+			return false;
+		},
+	})
+	.ask({
+		key: "question2",
+		label: "What is your multiple choices?",
+		type: "select:multiple",
+		choices: ["multipleOption1", "multipleOption2"],
+		defaultValue: ["multipleOption2"],
+		skip(context) {
+			return context.question1 !== "singleOption2";
+		},
+	})
+	.ask({
+		key: "question3", // @todo: support alias via array ["question3", "q3"]
+		type: "confirm",
+		// @todo: add description for help
+		// @todo: auto skip if the parsed arg flag are filled
+		label: "What is your confirm input?",
+		defaultValue: true,
+		skip() {
+			return false;
+		},
+	})
+	.ask({
+		key: "question4",
+		label: "What is your text input?",
+		defaultValue: "bypass next command",
+		skip(context) {
+			return context.question3 as boolean;
+		},
+	})
+	.command({
+		key: "gitstatus",
+		label: "Checking git status",
+		async handler(/*context*/) {
+			return { key: "question5", value: new Set(["plop"]) };
+		},
+		skip(context) {
+			return context.question4 === "bypass next command";
+		},
+	})
+	.start();
+
+cleanup();
+
+/*
 import args from "args";
 // @todo: custom implementation for listr!
 import Listr from "listr";
@@ -52,3 +111,5 @@ console.log(flags);
 // tasks.run().catch((err) => {
 // 	console.error(err);
 // });
+
+*/
