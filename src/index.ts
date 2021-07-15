@@ -6,9 +6,9 @@ import { Terminal } from "./terminal";
 
 new Terminal()
 	.option({
+		type: "select:single",
 		key: "question1",
 		label: "What is your single choice?",
-		type: "select:single",
 		choices: ["singleOption1", "singleOption2"],
 		defaultValue: "singleOption1",
 		skip() {
@@ -16,9 +16,9 @@ new Terminal()
 		},
 	})
 	.option({
+		type: "select:multiple",
 		key: "question2",
 		label: "What is your multiple choices?",
-		type: "select:multiple",
 		choices: ["multipleOption1", "multipleOption2"],
 		defaultValue: ["multipleOption2"],
 		skip(context) {
@@ -26,8 +26,8 @@ new Terminal()
 		},
 	})
 	.option({
-		key: "question3", // @todo: support alias via array ["question3", "q3"]
 		type: "confirm",
+		key: "question3", // @todo: support alias via array ["question3", "q3"]
 		// @todo: add description for help
 		// @todo: auto skip if the parsed arg flag are filled
 		label: "What is your confirm input?",
@@ -37,12 +37,19 @@ new Terminal()
 		},
 	})
 	.option({
+		type: "input",
 		key: "question4",
 		label: "What is your text input?",
 		defaultValue: "bypass next command",
 		skip(context) {
 			return context.question3 as boolean;
 		},
+	})
+	.option({
+		type: "args",
+		key: "myArgs",
+		description: "Useful CLI argument",
+		defaultValue: 25,
 	})
 	.task({
 		key: "gitstatus",

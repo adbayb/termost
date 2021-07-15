@@ -5,6 +5,13 @@ import { CommandManager } from "./core/commandManager";
 import { TaskCommand, TaskCommandParameters } from "./commands/task";
 import { Command } from "./commands/types";
 
+// console.log(
+// 	// @ts-ignore
+// 	(new toto.Args() as typeof args)
+// 		.option("toto", "titi", 56)
+// 		.parse(process.argv)
+// );
+
 export class Terminal {
 	#manager: CommandManager;
 	#context: Dictionary;
@@ -12,12 +19,13 @@ export class Terminal {
 	constructor() {
 		this.#context = new Dictionary();
 		this.#manager = new CommandManager();
+
+		// @note: side effect to allow help command being run before other commands
+		args.parse(process.argv);
 	}
 
 	option({ skip, ...restParams }: FluentOptionParameters) {
 		const command = new OptionCommand(restParams);
-
-		args.option(restParams.key, "TODO");
 
 		this.#manager.register(this.#createTask(command, skip));
 
@@ -50,8 +58,6 @@ export class Terminal {
 	}
 
 	run() {
-		args.parse(process.argv);
-
 		const run = async () => {
 			await this.#manager.start();
 

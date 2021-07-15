@@ -11,5 +11,6 @@ export class TaskCommand implements Command {
 }
 
 export type TaskCommandParameters = CommandParameters<{
+	label: string;
 	handler: () => ReturnType<Command["execute"]>;
 }>;

@@ -6,7 +6,6 @@ export type CommandParameters<
 	ExtraParameters extends Record<string, unknown>
 > = {
 	key: string;
-	label: string;
 } & ExtraParameters;
 
 export type GetCommandParameters<T> = T extends new (
