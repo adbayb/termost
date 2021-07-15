@@ -1,9 +1,11 @@
 import { Terminal } from "./terminal";
 
-const terminal = new Terminal();
+// @todo: only listr and inquirer for one level
+// @todo: add the concept of scope / command to created multiple commands (.ask() api
+// is used to define option => introduce a flag to control interactive mode with inquirer vs args command only)
 
-terminal
-	.ask({
+new Terminal()
+	.option({
 		key: "question1",
 		label: "What is your single choice?",
 		type: "select:single",
@@ -13,7 +15,7 @@ terminal
 			return false;
 		},
 	})
-	.ask({
+	.option({
 		key: "question2",
 		label: "What is your multiple choices?",
 		type: "select:multiple",
@@ -23,7 +25,7 @@ terminal
 			return context.question1 !== "singleOption2";
 		},
 	})
-	.ask({
+	.option({
 		key: "question3", // @todo: support alias via array ["question3", "q3"]
 		type: "confirm",
 		// @todo: add description for help
@@ -34,7 +36,7 @@ terminal
 			return false;
 		},
 	})
-	.ask({
+	.option({
 		key: "question4",
 		label: "What is your text input?",
 		defaultValue: "bypass next command",
@@ -42,7 +44,7 @@ terminal
 			return context.question3 as boolean;
 		},
 	})
-	.command({
+	.task({
 		key: "gitstatus",
 		label: "Checking git status",
 		async handler(/*context*/) {
@@ -52,7 +54,7 @@ terminal
 			return context.question4 === "bypass next command";
 		},
 	})
-	.start();
+	.run();
 
 // cleanup();
 

@@ -1,38 +1,38 @@
 import args from "args";
-import { AskCommand } from "./commands/ask";
+import { OptionCommand, OptionCommandParameters } from "./commands/option";
 import { Dictionary } from "./core/dataStructure";
-import { TaskManager } from "./core/taskManager";
-import { LaunchCommand } from "./commands/launch";
-import { Command, GetCommandParameters } from "./commands/types";
+import { CommandManager } from "./core/commandManager";
+import { TaskCommand, TaskCommandParameters } from "./commands/task";
+import { Command } from "./commands/types";
 
 export class Terminal {
-	#taskManager: TaskManager;
+	#manager: CommandManager;
 	#context: Dictionary;
 
 	constructor() {
 		this.#context = new Dictionary();
-		this.#taskManager = new TaskManager();
+		this.#manager = new CommandManager();
 	}
 
-	ask({ skip, ...restParams }: FluentAskParameters) {
-		const command = new AskCommand(restParams);
+	option({ skip, ...restParams }: FluentOptionParameters) {
+		const command = new OptionCommand(restParams);
 
 		args.option(restParams.key, "TODO");
 
-		this.#taskManager.register(this.#createTask(command, skip));
+		this.#manager.register(this.#createTask(command, skip));
 
 		return this;
 	}
 
-	command({ skip, handler, ...restParams }: FluentCommandParameters) {
-		const command = new LaunchCommand({
+	task({ skip, handler, ...restParams }: FluentTaskParameters) {
+		const command = new TaskCommand({
 			...restParams,
 			handler: () => {
 				return handler(this.#context.values());
 			},
 		});
 
-		this.#taskManager.register(this.#createTask(command, skip));
+		this.#manager.register(this.#createTask(command, skip));
 
 		return this;
 	}
@@ -49,18 +49,18 @@ export class Terminal {
 		};
 	}
 
-	start() {
+	run() {
 		args.parse(process.argv);
 
 		const run = async () => {
-			await this.#taskManager.start();
+			await this.#manager.start();
 
 			console.info("\nContext = ", this.#context.values());
 		};
 
 		run();
 
-		const stop = () => this.#taskManager.stop();
+		const stop = () => this.#manager.stop();
 
 		return function cleanup() {
 			stop();
@@ -72,13 +72,9 @@ type FluentCommonParameters = {
 	skip?: (contextValues: ReturnType<Dictionary["values"]>) => boolean;
 };
 
-type FluentAskParameters = GetCommandParameters<typeof AskCommand> &
-	FluentCommonParameters;
+type FluentOptionParameters = OptionCommandParameters & FluentCommonParameters;
 
-type FluentCommandParameters = Omit<
-	GetCommandParameters<typeof LaunchCommand>,
-	"handler"
-> & {
+type FluentTaskParameters = Omit<TaskCommandParameters, "handler"> & {
 	handler: (
 		contextValues: ReturnType<Dictionary["values"]>
 	) => ReturnType<Command["execute"]>;

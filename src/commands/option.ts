@@ -1,15 +1,8 @@
 import inquirer from "inquirer";
 import { Command, CommandParameters } from "./types";
 
-export class AskCommand implements Command {
-	constructor(
-		private properties: CommandParameters<
-			| AskInputParameters
-			| AskConfirmParameters
-			| AskSingleSelectParameters
-			| AskMultiSelectParameters
-		>
-	) {}
+export class OptionCommand implements Command {
+	constructor(private properties: OptionCommandParameters) {}
 
 	async execute() {
 		const { key, label, defaultValue } = this.properties;
@@ -46,24 +39,23 @@ export class AskCommand implements Command {
 	}
 }
 
-type AskSingleSelectParameters = {
-	type: "select:single";
-	choices: Array<string>;
-	defaultValue?: string;
-};
-
-type AskMultiSelectParameters = {
-	type: "select:multiple";
-	choices: Array<string>;
-	defaultValue?: Array<string>;
-};
-
-type AskInputParameters = {
-	type?: "input";
-	defaultValue?: string;
-};
-
-type AskConfirmParameters = {
-	type?: "confirm";
-	defaultValue?: boolean;
-};
+export type OptionCommandParameters = CommandParameters<
+	| {
+			type?: "input";
+			defaultValue?: string;
+	  }
+	| {
+			type?: "confirm";
+			defaultValue?: boolean;
+	  }
+	| {
+			type: "select:single";
+			choices: Array<string>;
+			defaultValue?: string;
+	  }
+	| {
+			type: "select:multiple";
+			choices: Array<string>;
+			defaultValue?: Array<string>;
+	  }
+>;
