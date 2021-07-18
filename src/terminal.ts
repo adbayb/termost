@@ -1,9 +1,11 @@
 import args from "args";
-import { OptionCommand, OptionCommandParameters } from "./commands/option";
+import minimist from "minimist";
+import { OptionHandler, OptionHandlerParameters } from "./handlers/option";
 import { Dictionary } from "./core/dataStructure";
 import { CommandManager } from "./core/commandManager";
-import { TaskCommand, TaskCommandParameters } from "./commands/task";
-import { Command } from "./commands/types";
+import { TaskHandler, TaskHandlerParameters } from "./handlers/task";
+import { Handler } from "./handlers/types";
+import { InputHandler, InputHandlerParameters } from "./handlers/input";
 
 // console.log(
 // 	// @ts-ignore
@@ -12,46 +14,79 @@ import { Command } from "./commands/types";
 // 		.parse(process.argv)
 // );
 
-export class Terminal {
+class Terminal {
+	constructor() {
+		// @note: side effect to allow help command being run before other commands
+		console.log(minimist(process.argv.slice(2)));
+		args.parse(process.argv);
+	}
+
+	// @note: the program is the top level command
+	/**
+	 * The top level command
+	 */
+	program = new Command();
+
+	/**
+	 * Allows to attach a new sub-command to the program
+	 * @param name - The CLI command name
+	 * @returns The Command API
+	 */
+	command(name: string) {
+		args.command(name, "todo desc");
+
+		return new Command();
+	}
+}
+
+class Command {
 	#manager: CommandManager;
 	#context: Dictionary;
 
 	constructor() {
 		this.#context = new Dictionary();
 		this.#manager = new CommandManager();
-
-		// @note: side effect to allow help command being run before other commands
-		args.parse(process.argv);
 	}
 
 	option({ skip, ...restParams }: FluentOptionParameters) {
-		const command = new OptionCommand(restParams);
+		this.#manager.register(
+			this.#createTask(new OptionHandler(restParams), skip)
+		);
 
-		this.#manager.register(this.#createTask(command, skip));
+		return this;
+	}
+
+	input({ skip, ...restParams }: FluentInputParameters) {
+		this.#manager.register(
+			this.#createTask(new InputHandler(restParams), skip)
+		);
 
 		return this;
 	}
 
 	task({ skip, handler, ...restParams }: FluentTaskParameters) {
-		const command = new TaskCommand({
-			...restParams,
-			handler: () => {
-				return handler(this.#context.values());
-			},
-		});
-
-		this.#manager.register(this.#createTask(command, skip));
+		this.#manager.register(
+			this.#createTask(
+				new TaskHandler({
+					...restParams,
+					handler: () => {
+						return handler(this.#context.values());
+					},
+				}),
+				skip
+			)
+		);
 
 		return this;
 	}
 
-	#createTask(command: Command, skip: FluentCommonParameters["skip"]) {
+	#createTask(handler: Handler, skip: FluentCommonParameters["skip"]) {
 		return async () => {
 			if (skip?.(this.#context.values())) {
 				return;
 			}
 
-			const { key, value } = await command.execute();
+			const { key, value } = await handler.execute();
 
 			this.#context.set(key, value);
 		};
@@ -78,10 +113,14 @@ type FluentCommonParameters = {
 	skip?: (contextValues: ReturnType<Dictionary["values"]>) => boolean;
 };
 
-type FluentOptionParameters = OptionCommandParameters & FluentCommonParameters;
+type FluentOptionParameters = OptionHandlerParameters & FluentCommonParameters;
 
-type FluentTaskParameters = Omit<TaskCommandParameters, "handler"> & {
+type FluentInputParameters = InputHandlerParameters & FluentCommonParameters;
+
+type FluentTaskParameters = Omit<TaskHandlerParameters, "handler"> & {
 	handler: (
 		contextValues: ReturnType<Dictionary["values"]>
-	) => ReturnType<Command["execute"]>;
+	) => ReturnType<Handler["execute"]>;
 } & FluentCommonParameters;
+
+export const terminal = new Terminal();

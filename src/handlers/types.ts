@@ -1,8 +1,8 @@
-export interface Command {
+export interface Handler {
 	execute(): Promise<{ key: string; value: unknown }>;
 }
 
-export type CommandParameters<
+export type HandlerParameters<
 	ExtraParameters extends Record<string, unknown>
 > = {
 	key: string;
@@ -10,6 +10,6 @@ export type CommandParameters<
 
 export type GetCommandParameters<T> = T extends new (
 	parameter: infer Param
-) => Command
+) => Handler
 	? Param
 	: never;

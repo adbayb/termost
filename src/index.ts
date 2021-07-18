@@ -1,12 +1,13 @@
-import { Terminal } from "./terminal";
+import { terminal } from "./terminal";
 
 // @todo: only listr and inquirer for one level
 // @todo: add the concept of scope / command to created multiple commands (.ask() api
 // is used to define option => introduce a flag to control interactive mode with inquirer vs args command only)
 
-new Terminal()
-	.option({
-		type: "select:single",
+terminal
+	.command("plop")
+	.input({
+		type: "select:one",
 		key: "question1",
 		label: "What is your single choice?",
 		choices: ["singleOption1", "singleOption2"],
@@ -15,8 +16,8 @@ new Terminal()
 			return false;
 		},
 	})
-	.option({
-		type: "select:multiple",
+	.input({
+		type: "select:many",
 		key: "question2",
 		label: "What is your multiple choices?",
 		choices: ["multipleOption1", "multipleOption2"],
@@ -25,7 +26,7 @@ new Terminal()
 			return context.question1 !== "singleOption2";
 		},
 	})
-	.option({
+	.input({
 		type: "confirm",
 		key: "question3", // @todo: support alias via array ["question3", "q3"]
 		// @todo: add description for help
@@ -36,8 +37,8 @@ new Terminal()
 			return false;
 		},
 	})
-	.option({
-		type: "input",
+	.input({
+		type: "text",
 		key: "question4",
 		label: "What is your text input?",
 		defaultValue: "bypass next command",
@@ -46,10 +47,16 @@ new Terminal()
 		},
 	})
 	.option({
-		type: "args",
-		key: "myArgs",
-		description: "Useful CLI argument",
-		defaultValue: 25,
+		type: "flag",
+		key: "myFlag",
+		description: "Useful CLI flag",
+		defaultValue: 2,
+	})
+	.option({
+		type: "argument",
+		key: "myArg",
+		description: "Useful CLI arg",
+		defaultValue: "./index.ts",
 	})
 	.task({
 		key: "gitstatus",
