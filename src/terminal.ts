@@ -1,5 +1,3 @@
-import args from "args";
-import minimist from "minimist";
 import { OptionHandler, OptionHandlerParameters } from "./handlers/option";
 import { Dictionary } from "./core/dataStructure";
 import { CommandManager } from "./core/commandManager";
@@ -7,18 +5,17 @@ import { TaskHandler, TaskHandlerParameters } from "./handlers/task";
 import { Handler } from "./handlers/types";
 import { InputHandler, InputHandlerParameters } from "./handlers/input";
 
-// console.log(
-// 	// @ts-ignore
-// 	(new toto.Args() as typeof args)
-// 		.option("toto", "titi", 56)
-// 		.parse(process.argv)
-// );
+type Context = {
+	commandName?: string;
+	flags?: Record<string, boolean | string>;
+};
+
+// @todo: event emitter to manage global context and event dispatch
+const globalContext: Context = {};
 
 class Terminal {
 	constructor() {
-		// @note: side effect to allow help command being run before other commands
-		console.log(minimist(process.argv.slice(2)));
-		args.parse(process.argv);
+		this.#setContext();
 	}
 
 	// @note: the program is the top level command
@@ -33,18 +30,80 @@ class Terminal {
 	 * @returns The Command API
 	 */
 	command(name: string) {
-		args.command(name, "todo desc");
-
-		return new Command();
+		return new Command(name);
 	}
+
+	#setContext() {
+		const { args, flags } = this.#parseParameters();
+		const commandName = args[0];
+
+		console.log({ args, flags });
+
+		globalContext.commandName = commandName;
+		globalContext.flags = flags;
+	}
+
+	#parseParameters() {
+		const parameters = process.argv.slice(2);
+		const args: string[] = [];
+		const flags = new Dictionary<boolean | string>();
+		let currentFlag: string | undefined = undefined;
+		const castValue = (value: string | boolean) => {
+			return value;
+		};
+		const flushFlag = (value: string | boolean = true) => {
+			if (currentFlag) {
+				flags.set(currentFlag, castValue(value));
+				currentFlag = undefined;
+			}
+		};
+
+		for (const param of parameters) {
+			if (param[0] !== "-") {
+				if (!currentFlag) {
+					args.push(param);
+				} else {
+					flushFlag(param);
+				}
+
+				continue;
+			}
+
+			const isLongFlag = param[1] === "-";
+			const flagParams = isLongFlag
+				? [param.slice(2)]
+				: [...param.slice(1)];
+			const lastFlagIndex = flagParams.length - 1;
+
+			for (let i = 0; i <= lastFlagIndex; i++) {
+				const flag = flagParams[i] as string;
+
+				if (i === lastFlagIndex) {
+					flushFlag();
+					currentFlag = flag;
+				} else {
+					flags.set(flag, true);
+				}
+			}
+		}
+
+		flushFlag();
+
+		return { args, flags: flags.values() };
+	}
+
+	// @todo: flags/args management
+	// @todo: built-in flags --help and --version
 }
 
 class Command {
+	#name: string | undefined;
 	#manager: CommandManager;
-	#context: Dictionary;
+	#data: Dictionary;
 
-	constructor() {
-		this.#context = new Dictionary();
+	constructor(name?: string) {
+		this.#name = name;
+		this.#data = new Dictionary();
 		this.#manager = new CommandManager();
 	}
 
@@ -70,7 +129,7 @@ class Command {
 				new TaskHandler({
 					...restParams,
 					handler: () => {
-						return handler(this.#context.values());
+						return handler(this.#data.values());
 					},
 				}),
 				skip
@@ -82,21 +141,29 @@ class Command {
 
 	#createTask(handler: Handler, skip: FluentCommonParameters["skip"]) {
 		return async () => {
-			if (skip?.(this.#context.values())) {
+			if (skip?.(this.#data.values())) {
 				return;
 			}
 
 			const { key, value } = await handler.execute();
 
-			this.#context.set(key, value);
+			this.#data.set(key, value);
 		};
 	}
 
 	run() {
+		if (
+			this.#name !== undefined &&
+			globalContext.commandName !== this.#name
+		) {
+			// @note: named command are run only if it matches the current command name
+			return;
+		}
+
 		const run = async () => {
 			await this.#manager.start();
 
-			console.info("\nContext = ", this.#context.values());
+			console.info("\nContext = ", this.#data.values());
 		};
 
 		run();
@@ -110,7 +177,7 @@ class Command {
 }
 
 type FluentCommonParameters = {
-	skip?: (contextValues: ReturnType<Dictionary["values"]>) => boolean;
+	skip?: (data: ReturnType<Dictionary["values"]>) => boolean;
 };
 
 type FluentOptionParameters = OptionHandlerParameters & FluentCommonParameters;
@@ -119,7 +186,7 @@ type FluentInputParameters = InputHandlerParameters & FluentCommonParameters;
 
 type FluentTaskParameters = Omit<TaskHandlerParameters, "handler"> & {
 	handler: (
-		contextValues: ReturnType<Dictionary["values"]>
+		data: ReturnType<Dictionary["values"]>
 	) => ReturnType<Handler["execute"]>;
 } & FluentCommonParameters;
 

@@ -1,4 +1,3 @@
-import args from "args";
 import { Handler, HandlerParameters } from "./types";
 
 export class OptionHandler implements Handler {
@@ -8,11 +7,9 @@ export class OptionHandler implements Handler {
 		const { key, description, defaultValue, type } = this.properties;
 
 		if (type === "flag") {
-			args.option(key, description, defaultValue);
-
-			const flags = args.parse(process.argv);
-
-			return { key, value: flags[key] };
+			// args.option(key, description, defaultValue);
+			// const flags = args.parse(process.argv);
+			// return { key, value: flags[key] };
 		}
 
 		// @todo: arg management

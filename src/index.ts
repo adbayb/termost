@@ -5,7 +5,7 @@ import { terminal } from "./terminal";
 // is used to define option => introduce a flag to control interactive mode with inquirer vs args command only)
 
 terminal
-	.command("plop")
+	.command("hello")
 	.input({
 		type: "select:one",
 		key: "question1",

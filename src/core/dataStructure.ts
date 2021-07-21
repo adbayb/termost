@@ -22,28 +22,27 @@ export class Queue<Item> implements DataStructure {
 	}
 }
 
-export class Dictionary<Key extends string = string, Value = unknown>
-	implements DataStructure {
-	#data: Partial<Record<Key, Value>> = {};
+export class Dictionary<Value = unknown> implements DataStructure {
+	#data: Record<string, Value> = {};
 	#size = 0;
 
-	get(key: Key) {
+	get(key: string) {
 		return this.#data[key];
 	}
 
-	set(key: Key, value: Value) {
+	set(key: string, value: Value) {
 		this.#data[key] = value;
 		this.#size++;
 	}
 
-	remove(key: Key) {
+	remove(key: string) {
 		if (!(key in this.#data)) {
 			return undefined;
 		}
 
 		const { [key]: removedKey, ...newData } = this.#data;
 
-		this.#data = newData as Record<Key, Value>;
+		this.#data = newData;
 		this.#size--;
 
 		return removedKey;

@@ -41,16 +41,12 @@
     "@adbayb/eslint-config": "0.6.0",
     "@adbayb/prettier-config": "0.6.0",
     "@adbayb/ts-config": "0.6.0",
-    "@types/args": "3.0.0",
     "@types/inquirer": "7.3.2",
     "@types/listr": "0.14.3",
-    "@types/minimist": "1.2.2",
     "esbuild-register": "2.6.0"
   },
   "dependencies": {
-    "args": "5.0.1",
     "inquirer": "8.1.2",
-    "listr": "0.14.3",
-    "minimist": "1.2.5"
+    "listr": "0.14.3"
   }
 }
