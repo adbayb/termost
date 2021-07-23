@@ -3,15 +3,11 @@ import { Dictionary } from "./core/dataStructure";
 import { CommandManager } from "./core/commandManager";
 import { TaskHandler, TaskHandlerParameters } from "./handlers/task";
 import { Handler } from "./handlers/types";
-import { InputHandler, InputHandlerParameters } from "./handlers/input";
-
-type Context = {
-	commandName?: string;
-	flags?: Record<string, boolean | string>;
-};
-
-// @todo: event emitter to manage global context and event dispatch
-const globalContext: Context = {};
+import {
+	QuestionHandler,
+	QuestionHandlerParameters,
+} from "./handlers/question";
+import { Context, globalContext } from "./context";
 
 class Terminal {
 	constructor() {
@@ -43,15 +39,19 @@ class Terminal {
 		globalContext.flags = flags;
 	}
 
+	// eslint-disable-next-line sonarjs/cognitive-complexity
 	#parseParameters() {
 		const parameters = process.argv.slice(2);
 		const args: string[] = [];
-		const flags = new Dictionary<boolean | string>();
+
+		type FlagValue = NonNullable<Context["flags"]>[number];
+
+		const flags = new Dictionary<FlagValue>();
 		let currentFlag: string | undefined = undefined;
-		const castValue = (value: string | boolean) => {
+		const castValue = (value: FlagValue) => {
 			return value;
 		};
-		const flushFlag = (value: string | boolean = true) => {
+		const flushFlag = (value: FlagValue = true) => {
 			if (currentFlag) {
 				flags.set(currentFlag, castValue(value));
 				currentFlag = undefined;
@@ -115,9 +115,9 @@ class Command {
 		return this;
 	}
 
-	input({ skip, ...restParams }: FluentInputParameters) {
+	question({ skip, ...restParams }: FluentQuestionParameters) {
 		this.#manager.register(
-			this.#createTask(new InputHandler(restParams), skip)
+			this.#createTask(new QuestionHandler(restParams), skip)
 		);
 
 		return this;
@@ -182,7 +182,8 @@ type FluentCommonParameters = {
 
 type FluentOptionParameters = OptionHandlerParameters & FluentCommonParameters;
 
-type FluentInputParameters = InputHandlerParameters & FluentCommonParameters;
+type FluentQuestionParameters = QuestionHandlerParameters &
+	FluentCommonParameters;
 
 type FluentTaskParameters = Omit<TaskHandlerParameters, "handler"> & {
 	handler: (

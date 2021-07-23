@@ -1,12 +1,12 @@
 import { terminal } from "./terminal";
 
-// @todo: only listr and inquirer for one level
-// @todo: add the concept of scope / command to created multiple commands (.ask() api
-// is used to define option => introduce a flag to control interactive mode with inquirer vs args command only)
+const wait = (delay: number) => {
+	return new Promise((resolve) => setTimeout(resolve, delay));
+};
 
 terminal
 	.command("hello")
-	.input({
+	.question({
 		type: "select:one",
 		key: "question1",
 		label: "What is your single choice?",
@@ -16,7 +16,7 @@ terminal
 			return false;
 		},
 	})
-	.input({
+	.question({
 		type: "select:many",
 		key: "question2",
 		label: "What is your multiple choices?",
@@ -26,21 +26,21 @@ terminal
 			return context.question1 !== "singleOption2";
 		},
 	})
-	.input({
+	.question({
 		type: "confirm",
 		key: "question3", // @todo: support alias via array ["question3", "q3"]
 		// @todo: add description for help
 		// @todo: auto skip if the parsed arg flag are filled
-		label: "What is your confirm input?",
+		label: "What is your confirm question?",
 		defaultValue: true,
 		skip() {
 			return false;
 		},
 	})
-	.input({
+	.question({
 		type: "text",
 		key: "question4",
-		label: "What is your text input?",
+		label: "What is your text question?",
 		defaultValue: "bypass next command",
 		skip(context) {
 			return context.question3 as boolean;
@@ -62,10 +62,23 @@ terminal
 		key: "gitstatus",
 		label: "Checking git status",
 		async handler(/*context*/) {
+			console.log("Before");
+			await wait(5000);
+			console.log("After");
+
 			return { key: "question5", value: new Set(["plop"]) };
 		},
 		skip(context) {
 			return context.question4 === "bypass next command";
+		},
+	})
+	.question({
+		type: "text",
+		key: "question4",
+		label: "What is your text question?",
+		defaultValue: "bypass next command",
+		skip(context) {
+			return context.question3 as boolean;
 		},
 	})
 	.run();
