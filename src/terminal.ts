@@ -9,61 +9,77 @@ import {
 } from "./handlers/question";
 import { Context, globalContext } from "./context";
 
-class Terminal {
-	constructor() {
-		this.#setContext();
-	}
+// @todo: include it in context:
+class HelpBuilder extends Dictionary<string> {
+	// #data:
+}
 
-	// @note: the program is the top level command
+class Terminal {
 	/**
 	 * The top level command
 	 */
 	program = new Command();
+	#helpBuilder = new HelpBuilder();
+
+	constructor() {
+		this.#setContext();
+	}
 
 	/**
 	 * Allows to attach a new sub-command to the program
 	 * @param name - The CLI command name
+	 * @param description - The CLI command description
 	 * @returns The Command API
 	 */
-	command(name: string) {
+	command(name: string, description: string) {
+		this.#helpBuilder.set(name, description);
+
 		return new Command(name);
 	}
 
 	#setContext() {
-		const { args, flags } = this.#parseParameters();
-		const commandName = args[0];
+		const { command, operands, options } = this.#parseArguments();
 
-		console.log({ args, flags });
-
-		globalContext.commandName = commandName;
-		globalContext.flags = flags;
+		globalContext.command = command;
+		globalContext.options = options;
+		globalContext.operands = operands;
 	}
 
 	// eslint-disable-next-line sonarjs/cognitive-complexity
-	#parseParameters() {
+	#parseArguments() {
 		const parameters = process.argv.slice(2);
-		const args: string[] = [];
+		const restArguments: Array<string> = [];
 
-		type FlagValue = NonNullable<Context["flags"]>[number];
+		type OptionValue = Context["options"][number];
 
-		const flags = new Dictionary<FlagValue>();
-		let currentFlag: string | undefined = undefined;
-		const castValue = (value: FlagValue) => {
-			return value;
+		const options = new Dictionary<OptionValue>();
+		let currentOption: string | undefined = undefined;
+
+		const castValue = (value?: string) => {
+			if (value === undefined) {
+				return true;
+			}
+
+			try {
+				return JSON.parse(value) as OptionValue;
+			} catch {
+				return value;
+			}
 		};
-		const flushFlag = (value: FlagValue = true) => {
-			if (currentFlag) {
-				flags.set(currentFlag, castValue(value));
-				currentFlag = undefined;
+
+		const flushOption = (value?: string) => {
+			if (currentOption) {
+				options.set(currentOption, castValue(value));
+				currentOption = undefined;
 			}
 		};
 
 		for (const param of parameters) {
 			if (param[0] !== "-") {
-				if (!currentFlag) {
-					args.push(param);
+				if (!currentOption) {
+					restArguments.push(param);
 				} else {
-					flushFlag(param);
+					flushOption(param);
 				}
 
 				continue;
@@ -79,17 +95,19 @@ class Terminal {
 				const flag = flagParams[i] as string;
 
 				if (i === lastFlagIndex) {
-					flushFlag();
-					currentFlag = flag;
+					flushOption();
+					currentOption = flag;
 				} else {
-					flags.set(flag, true);
+					options.set(flag, true);
 				}
 			}
 		}
 
-		flushFlag();
+		flushOption();
 
-		return { args, flags: flags.values() };
+		const [command, ...operands] = restArguments;
+
+		return { command, operands, options: options.values() };
 	}
 
 	// @todo: flags/args management
@@ -152,10 +170,7 @@ class Command {
 	}
 
 	run() {
-		if (
-			this.#name !== undefined &&
-			globalContext.commandName !== this.#name
-		) {
+		if (this.#name !== undefined && globalContext.command !== this.#name) {
 			// @note: named command are run only if it matches the current command name
 			return;
 		}
