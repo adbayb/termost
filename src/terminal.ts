@@ -203,7 +203,7 @@ type FluentQuestionParameters = QuestionHandlerParameters &
 type FluentTaskParameters = Omit<TaskHandlerParameters, "handler"> & {
 	handler: (
 		data: ReturnType<Dictionary["values"]>
-	) => ReturnType<Handler["execute"]>;
+	) => ReturnType<TaskHandlerParameters["handler"]>;
 } & FluentCommonParameters;
 
 export const terminal = new Terminal();

@@ -55,59 +55,26 @@ terminal
 		defaultValue: 2,
 	})
 	.task({
-		key: "gitstatus",
+		key: "question5",
 		label: "Checking git status",
 		async handler(/*context*/) {
-			await wait(100);
+			await wait(2000);
 
-			return { key: "question5", value: new Set(["plop"]) };
+			return new Set(["plop"]);
 		},
 		skip(context) {
 			return context.question4 === "bypass next command";
 		},
 	})
+	.task({
+		key: "question6",
+		label: "Another long running tasks",
+		async handler(/*context*/) {
+			await wait(1000);
+
+			return "another";
+		},
+	})
 	.run();
 
 // cleanup();
-
-/*
-import args from "args";
-// @todo: custom implementation for listr!
-import Listr from "listr";
-
-const wait = (delay: number) => {
-	return new Promise((resolve) => {
-		setTimeout(resolve, delay);
-	});
-};
-
-const tasks = new Listr([
-	{
-		title: "Git",
-		task: () => {
-			return new Listr(
-				[
-					{
-						title: "Checking git status",
-						task: () => wait(5000),
-					},
-					{
-						title: "Checking remote history",
-						task: () => Promise.resolve("success"),
-					},
-				],
-				{ concurrent: true }
-			);
-		},
-	},
-	{
-		title: "Install package dependencies with Yarn",
-		task: (ctx, task) => wait(2000),
-	},
-]);
-
-// tasks.run().catch((err) => {
-// 	console.error(err);
-// });
-
-*/
