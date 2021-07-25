@@ -1,8 +1,8 @@
-import { globalContext } from "../context";
-import { Handler, HandlerParameters } from "./types";
+import { globalContext } from "../../../context";
+import { Executor, ExecutorInput } from "./types";
 
-export class OptionHandler implements Handler {
-	constructor(private properties: OptionHandlerParameters) {}
+export class OptionHandler implements Executor {
+	constructor(private properties: OptionExecutorInput) {}
 
 	async execute() {
 		const { key, description, defaultValue } = this.properties;
@@ -15,7 +15,7 @@ export class OptionHandler implements Handler {
 	}
 }
 
-export type OptionHandlerParameters = HandlerParameters<{
+export type OptionExecutorInput = ExecutorInput<{
 	description: string;
 	defaultValue?: string | number | boolean;
 }>;

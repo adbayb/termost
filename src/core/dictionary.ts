@@ -1,26 +1,4 @@
-export class Queue<Item> implements DataStructure {
-	#data: Array<Item> = [];
-
-	enqueue(item: Item) {
-		this.#data.push(item);
-	}
-
-	dequeue() {
-		return this.#data.shift();
-	}
-
-	isEmpty() {
-		return this.#data.length === 0;
-	}
-
-	clear() {
-		this.#data = [];
-	}
-
-	size() {
-		return this.#data.length;
-	}
-}
+import { DataStructure } from "./types";
 
 export class Dictionary<Value = unknown> implements DataStructure {
 	#data: Record<string, Value> = {};
@@ -63,9 +41,4 @@ export class Dictionary<Value = unknown> implements DataStructure {
 	size() {
 		return this.#size;
 	}
-}
-
-interface DataStructure {
-	clear(): void;
-	size(): number;
 }

@@ -1,9 +1,9 @@
-import { Queue } from "./dataStructure";
+import { Queue } from "./queue";
 
-export class CommandManager {
-	#queue: Queue<CommandManagerItem> = new Queue();
+export class TaskManager {
+	#queue: Queue<Task> = new Queue();
 
-	register(item: CommandManagerItem) {
+	register(item: Task) {
 		return this.#queue.enqueue(item);
 	}
 
@@ -26,4 +26,4 @@ export class CommandManager {
 	}
 }
 
-type CommandManagerItem = () => Promise<void>;
+type Task = () => Promise<void>;

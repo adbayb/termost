@@ -1,8 +1,8 @@
 import inquirer from "inquirer";
-import { Handler, HandlerParameters } from "./types";
+import { Executor, ExecutorInput } from "./types";
 
-export class QuestionHandler implements Handler {
-	constructor(private properties: QuestionHandlerParameters) {}
+export class QuestionHandler implements Executor {
+	constructor(private properties: QuestionExecutorInput) {}
 
 	async execute() {
 		const { key, defaultValue } = this.properties;
@@ -34,7 +34,7 @@ export class QuestionHandler implements Handler {
 	}
 }
 
-export type QuestionHandlerParameters = HandlerParameters<
+export type QuestionExecutorInput = ExecutorInput<
 	| {
 			type: "text";
 			label: string;
