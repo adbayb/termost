@@ -2,6 +2,8 @@ import inquirer from "inquirer";
 import { Executor, ExecutorInput } from "./types";
 
 export class QuestionHandler implements Executor {
+	#receiver = inquirer;
+
 	constructor(private properties: QuestionExecutorInput) {}
 
 	async execute() {
@@ -28,7 +30,7 @@ export class QuestionHandler implements Executor {
 			mappedProperties.message = this.properties.label;
 		}
 
-		const data = await inquirer.prompt([mappedProperties]);
+		const data = await this.#receiver.prompt([mappedProperties]);
 
 		return { key, value: data[key] };
 	}

@@ -14,11 +14,10 @@
   "license": "MIT",
   "scripts": {
     "start": "node -r esbuild-register example/index.ts",
-    "check:format": "prettier . --ignore-path .gitignore --ignore-path .prettierignore",
-    "check:lint": "eslint . --ignore-path .gitignore",
-    "check:types": "tsc --noEmit",
-    "format": "yarn check:format --write",
-    "lint": "yarn check:lint --fix"
+    "verify": "yarn lint & tsc --noEmit",
+    "fix": "yarn lint --fix",
+    "lint": "eslint . --ignore-path .gitignore",
+    "format": "prettier . --ignore-path .gitignore --ignore-path .prettierignore --write"
   },
   "prettier": "@adbayb/prettier-config",
   "eslintConfig": {
@@ -38,12 +37,15 @@
     ]
   },
   "devDependencies": {
-    "@adbayb/eslint-config": "0.6.0",
-    "@adbayb/prettier-config": "0.6.0",
-    "@adbayb/ts-config": "0.6.0",
-    "@types/inquirer": "7.3.2",
-    "@types/listr": "0.14.3",
-    "esbuild-register": "2.6.0"
+    "@adbayb/eslint-config": "0.7.0",
+    "@adbayb/prettier-config": "0.7.0",
+    "@adbayb/ts-config": "0.7.0",
+    "@types/inquirer": "7.3.3",
+    "@types/listr": "0.14.4",
+    "esbuild-register": "2.6.0",
+    "eslint": "7.31.0",
+    "prettier": "2.3.2",
+    "typescript": "4.3.5"
   },
   "dependencies": {
     "inquirer": "8.1.2",
