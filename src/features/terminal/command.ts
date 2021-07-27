@@ -5,21 +5,39 @@ import { OptionExecutorInput, OptionHandler } from "./executors/option";
 import { QuestionExecutorInput, QuestionHandler } from "./executors/question";
 import { TaskExecutorInput, TaskHandler } from "./executors/task";
 import { Executor, ExecutorInput } from "./executors/types";
+import { CommandMetadata } from "./types";
 
 export class Command {
 	#name: string | undefined;
 	#manager: TaskManager;
 	#data: Dictionary;
+	#metadata: CommandMetadata;
 
-	constructor(name?: string) {
+	constructor(name: string, description: string) {
 		this.#name = name;
 		this.#data = new Dictionary();
 		this.#manager = new TaskManager();
+		this.#metadata = {
+			description,
+			options: {},
+		};
+
+		// @note: bootstrap core options
+		this.option({
+			key: "help",
+			description: "Display the help center",
+		}).option({
+			key: "version",
+			description: "Print the version",
+		});
 	}
 
 	option(params: OptionExecutorInput) {
 		this.#manager.register(
-			this.#createTask(new OptionHandler(params), params.skip)
+			this.#createTask(
+				new OptionHandler({ ...params, metadata: this.#metadata }),
+				params.skip
+			)
 		);
 
 		return this;
@@ -49,21 +67,26 @@ export class Command {
 		return this;
 	}
 
-	#createTask(executor: Executor, skip: ExecutorInput["skip"]) {
-		return async () => {
-			if (skip?.(this.#data.values())) {
-				return;
+	run() {
+		// @note: if the user command doesn't match the the command instance name, then do not execute the command
+		if (globalContext.command !== this.#name) {
+			return;
+		}
+
+		const reservedOption = Object.keys(globalContext.options).find(
+			(userOption) =>
+				RESERVED_OPTIONS.includes(
+					userOption as typeof RESERVED_OPTIONS[number]
+				)
+		);
+
+		if (reservedOption) {
+			if (reservedOption === "help") {
+				this.#help();
+			} else if (reservedOption === "version") {
+				this.#version();
 			}
 
-			const { key, value } = await executor.execute();
-
-			this.#data.set(key, value);
-		};
-	}
-
-	run() {
-		if (this.#name !== undefined && globalContext.command !== this.#name) {
-			// @note: named command are run only if it matches the current command name
 			return;
 		}
 
@@ -72,8 +95,8 @@ export class Command {
 
 			console.info("Data = ", this.#data.values());
 			console.info(
-				"Global context = ",
-				JSON.stringify(globalContext, null, 4)
+				"Metadata = ",
+				JSON.stringify(this.#metadata, null, 4)
 			);
 		};
 
@@ -85,4 +108,26 @@ export class Command {
 			stop();
 		};
 	}
+
+	#help() {
+		console.info("TODO: help");
+	}
+
+	#version() {
+		console.info("TODO: version");
+	}
+
+	#createTask(executor: Executor, skip: ExecutorInput["skip"]) {
+		return async () => {
+			if (skip?.(this.#data.values())) {
+				return;
+			}
+
+			const { key, value } = await executor.execute();
+
+			this.#data.set(key, value);
+		};
+	}
 }
+
+const RESERVED_OPTIONS = ["help", "version"] as const;

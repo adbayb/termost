@@ -13,12 +13,7 @@ class Terminal {
 	 * @returns The Command API
 	 */
 	program(description: string) {
-		globalContext.metadata[DEFAULT_COMMAND_KEY] = {
-			description,
-			options: {},
-		};
-
-		return new Command();
+		return new Command(DEFAULT_COMMAND_KEY, description);
 	}
 
 	/**
@@ -28,12 +23,7 @@ class Terminal {
 	 * @returns The Command API
 	 */
 	command(name: string, description: string) {
-		globalContext.metadata[name] = {
-			description,
-			options: {},
-		};
-
-		return new Command(name);
+		return new Command(name, description);
 	}
 
 	#setContext() {
@@ -108,9 +98,6 @@ class Terminal {
 
 		return { command, operands, options: options.values() };
 	}
-
-	// @todo: flags/args management
-	// @todo: built-in flags --help and --version
 }
 
 export const terminal = new Terminal();
