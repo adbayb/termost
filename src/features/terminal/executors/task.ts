@@ -15,9 +15,7 @@ export class TaskHandler implements Executor {
 			task: async () => (value = await handler()),
 		});
 
-		await this.#receiver.run(); /*.catch((err) => {
-			console.error(err);
-		});*/
+		await this.#receiver.run();
 
 		return { key, value };
 	}

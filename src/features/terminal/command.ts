@@ -70,7 +70,11 @@ export class Command {
 		const run = async () => {
 			await this.#manager.start();
 
-			console.info("\nContext = ", this.#data.values());
+			console.info("Data = ", this.#data.values());
+			console.info(
+				"Global context = ",
+				JSON.stringify(globalContext, null, 4)
+			);
 		};
 
 		run();

@@ -1,21 +1,24 @@
-import { Context, globalContext } from "../../context";
+import { Context, DEFAULT_COMMAND_KEY, globalContext } from "../../context";
 import { Dictionary } from "../../core/dictionary";
 import { Command } from "./command";
 
-// @todo: include it in context:
-class HelpBuilder extends Dictionary<string> {
-	// #data:
-}
-
 class Terminal {
-	/**
-	 * The top level command
-	 */
-	program = new Command();
-	#helpBuilder = new HelpBuilder();
-
 	constructor() {
 		this.#setContext();
+	}
+
+	/**
+	 * Attaches the top level command
+	 * @param description - The CLI command description
+	 * @returns The Command API
+	 */
+	program(description: string) {
+		globalContext.metadata[DEFAULT_COMMAND_KEY] = {
+			description,
+			options: {},
+		};
+
+		return new Command();
 	}
 
 	/**
@@ -25,7 +28,10 @@ class Terminal {
 	 * @returns The Command API
 	 */
 	command(name: string, description: string) {
-		this.#helpBuilder.set(name, description);
+		globalContext.metadata[name] = {
+			description,
+			options: {},
+		};
 
 		return new Command(name);
 	}
@@ -98,7 +104,7 @@ class Terminal {
 
 		flushOption();
 
-		const [command, ...operands] = restArguments;
+		const [command = DEFAULT_COMMAND_KEY, ...operands] = restArguments;
 
 		return { command, operands, options: options.values() };
 	}

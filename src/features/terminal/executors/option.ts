@@ -8,6 +8,9 @@ export class OptionHandler implements Executor {
 		const { key, description, defaultValue } = this.properties;
 		const contextValue = globalContext.options[key];
 
+		globalContext.metadata[globalContext.command]!.options[key] =
+			description;
+
 		return {
 			key,
 			value: contextValue ?? defaultValue,
