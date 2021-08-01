@@ -7,7 +7,7 @@ const wait = (delay: number) => {
 // @todo: help command
 // @todo: toolbox (helpers such as exec)
 
-terminal
+const disable = terminal
 	.command({
 		name: "hello",
 		description: "Generate an hello world message",
@@ -78,6 +78,20 @@ terminal
 			return "another";
 		},
 	})
-	.run();
+	.enable();
+
+disable();
+
+terminal
+	.command({
+		name: "titi",
+		description: "Titi description",
+	})
+	.option({
+		name: "titiFlag",
+		description: "Useful CLI titi flag",
+		defaultValue: 40,
+	})
+	.enable();
 
 // cleanup();

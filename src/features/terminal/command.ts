@@ -67,10 +67,19 @@ export class Command {
 		return this;
 	}
 
-	run() {
+	/**
+	 * Enables the command by processing all executors (options, pending tasks...)
+	 * @returns The disable function to stop tasks and unregister the command on the fly
+	 */
+	enable() {
+		const disable = () => {
+			console.log("called");
+			this.#manager.stop();
+		};
+
 		// @note: if the user command doesn't match the the command instance name, then do not execute the command
 		if (globalContext.command !== this.#name) {
-			return;
+			return disable;
 		}
 
 		const reservedOption = Object.keys(globalContext.options).find(
@@ -87,7 +96,7 @@ export class Command {
 				this.#version();
 			}
 
-			return;
+			return disable;
 		}
 
 		const run = async () => {
@@ -102,15 +111,34 @@ export class Command {
 
 		run();
 
-		const stop = () => this.#manager.stop();
-
-		return function cleanup() {
-			stop();
-		};
+		return disable;
 	}
 
 	#help() {
-		console.info("TODO: help");
+		const { description, options } = this.#metadata;
+		const optionKeys = Object.keys(options);
+		const hasOption = optionKeys.length > 0;
+		const parts: Array<string> = [];
+
+		parts.push("Usage:");
+		// @todo: handle subcommands from program
+		// @todo: handle help and version inside terminal?
+		parts.push(
+			`TODO_GET_BIN ${this.#name} ${hasOption ? "[options]" : ""}`
+		);
+
+		parts.push("\nDescription:");
+		parts.push(description);
+
+		if (hasOption) {
+			parts.push("\nOptions:");
+
+			for (const key of optionKeys) {
+				parts.push(`  ${key.padEnd(10, " ")} ${options[key]}`);
+			}
+		}
+
+		console.log(parts.reduce((message, part) => `${message}${part}\n`, ""));
 	}
 
 	#version() {
