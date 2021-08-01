@@ -24,10 +24,10 @@ export class Command {
 
 		// @note: bootstrap core options
 		this.option({
-			key: "help",
+			name: "help",
 			description: "Display the help center",
 		}).option({
-			key: "version",
+			name: "version",
 			description: "Print the version",
 		});
 	}
@@ -123,9 +123,9 @@ export class Command {
 				return;
 			}
 
-			const { key, value } = await executor.execute();
+			const { name, value } = await executor.execute();
 
-			this.#data.set(key, value);
+			this.#data.set(name, value);
 		};
 	}
 }

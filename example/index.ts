@@ -8,10 +8,13 @@ const wait = (delay: number) => {
 // @todo: toolbox (helpers such as exec)
 
 terminal
-	.command("hello", "Generate an hello world message")
+	.command({
+		name: "hello",
+		description: "Generate an hello world message",
+	})
 	// .question({
 	// 	type: "select:one",
-	// 	key: "question1",
+	// 	name: "question1",
 	// 	label: "What is your single choice?",
 	// 	choices: ["singleOption1", "singleOption2"],
 	// 	defaultValue: "singleOption1",
@@ -21,7 +24,7 @@ terminal
 	// })
 	// .question({
 	// 	type: "select:many",
-	// 	key: "question2",
+	// 	name: "question2",
 	// 	label: "What is your multiple choices?",
 	// 	choices: ["multipleOption1", "multipleOption2"],
 	// 	defaultValue: ["multipleOption2"],
@@ -31,7 +34,7 @@ terminal
 	// })
 	// .question({
 	// 	type: "confirm",
-	// 	key: "question3", // @todo: support alias via array ["question3", "q3"]
+	// 	name: "question3", // @todo: support alias via array ["question3", "q3"]
 	// 	// @todo: add description for help
 	// 	// @todo: auto skip if the parsed arg flag are filled
 	// 	label: "What is your confirm question?",
@@ -42,7 +45,7 @@ terminal
 	// })
 	// .question({
 	// 	type: "text",
-	// 	key: "question4",
+	// 	name: "question4",
 	// 	label: "What is your text question?",
 	// 	defaultValue: "bypass next command",
 	// 	skip(context) {
@@ -50,12 +53,12 @@ terminal
 	// 	},
 	// })
 	.option({
-		key: "myFlag",
+		name: "myFlag",
 		description: "Useful CLI flag",
 		defaultValue: 2,
 	})
 	.task({
-		key: "question5",
+		name: "question5",
 		label: "Checking git status",
 		async handler(/*context*/) {
 			await wait(2000);
@@ -67,7 +70,7 @@ terminal
 		},
 	})
 	.task({
-		key: "question6",
+		name: "question6",
 		label: "Another long running tasks",
 		async handler(/*context*/) {
 			await wait(1000);

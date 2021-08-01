@@ -7,10 +7,10 @@ export class QuestionHandler implements Executor {
 	constructor(private properties: QuestionExecutorInput) {}
 
 	async execute() {
-		const { key, defaultValue } = this.properties;
+		const { name, defaultValue } = this.properties;
 
 		const mappedProperties: Record<string, unknown> = {
-			name: key,
+			name,
 			default: defaultValue,
 		};
 
@@ -32,7 +32,7 @@ export class QuestionHandler implements Executor {
 
 		const data = await this.#receiver.prompt([mappedProperties]);
 
-		return { key, value: data[key] };
+		return { name, value: data[name] };
 	}
 }
 

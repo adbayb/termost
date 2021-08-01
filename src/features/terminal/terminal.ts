@@ -22,8 +22,8 @@ class Terminal {
 	 * @param description - The CLI command description
 	 * @returns The Command API
 	 */
-	command(name: string, description: string) {
-		return new Command(name, description);
+	command(params: { name: string; description: string }) {
+		return new Command(params.name, params.description);
 	}
 
 	#setContext() {

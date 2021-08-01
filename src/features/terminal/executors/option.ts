@@ -5,17 +5,17 @@ import { Executor, ExecutorInput } from "./types";
 // @todo: transform class interface to function one (returning execute function)?
 export class OptionHandler implements Executor {
 	constructor(private properties: InternalOptionExecutorInput) {
-		const { key, description, metadata } = this.properties;
+		const { name, description, metadata } = this.properties;
 
-		metadata.options[key] = description;
+		metadata.options[name] = description;
 	}
 
 	async execute() {
-		const { key, defaultValue } = this.properties;
-		const contextValue = globalContext.options[key];
+		const { name, defaultValue } = this.properties;
+		const contextValue = globalContext.options[name];
 
 		return {
-			key,
+			name,
 			value: contextValue ?? defaultValue,
 		};
 	}
