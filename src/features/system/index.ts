@@ -1,1 +1,1 @@
-export { system } from "./system";
+export * as system from "./system";

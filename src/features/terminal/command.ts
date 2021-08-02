@@ -1,6 +1,7 @@
 import { globalContext } from "../../context";
 import { TaskManager } from "../../core/taskManager";
 import { Dictionary } from "../../core/dictionary";
+import { system } from "../system";
 import { OptionExecutorInput, OptionHandler } from "./executors/option";
 import { QuestionExecutorInput, QuestionHandler } from "./executors/question";
 import { TaskExecutorInput, TaskHandler } from "./executors/task";
@@ -73,7 +74,6 @@ export class Command {
 	 */
 	enable() {
 		const disable = () => {
-			console.log("called");
 			this.#manager.stop();
 		};
 
@@ -118,27 +118,37 @@ export class Command {
 		const { description, options } = this.#metadata;
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
-		const parts: Array<string> = [];
+		const printTitle = (message: string) =>
+			system.print(`\n${message}:`, {
+				color: "yellow",
+				modifier: ["bold", "underline", "uppercase"],
+			});
+		const printLabelValue = (label: string, value: string) =>
+			system.print(
+				`  ${system.format(label.padEnd(10, " "), {
+					color: "green",
+				})} ${value}`
+			);
 
-		parts.push("Usage:");
+		printTitle("Usage");
 		// @todo: handle subcommands from program
 		// @todo: handle help and version inside terminal?
-		parts.push(
-			`TODO_GET_BIN ${this.#name} ${hasOption ? "[options]" : ""}`
+		system.print(
+			`${system.format(`${process.argv0} ${this.#name}`, {
+				color: "green",
+			})} ${hasOption ? "[options]" : ""}`
 		);
 
-		parts.push("\nDescription:");
-		parts.push(description);
+		printTitle("Description");
+		system.print(description);
 
 		if (hasOption) {
-			parts.push("\nOptions:");
+			printTitle("Options");
 
 			for (const key of optionKeys) {
-				parts.push(`  ${key.padEnd(10, " ")} ${options[key]}`);
+				printLabelValue(key, options[key] as string);
 			}
 		}
-
-		console.log(parts.reduce((message, part) => `${message}${part}\n`, ""));
 	}
 
 	#version() {
