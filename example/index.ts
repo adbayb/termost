@@ -83,12 +83,20 @@ const disable = terminal
 disable();
 
 terminal
-	.command({
-		name: "titi",
-		description: "Titi description",
-	})
+	.program("The global command")
 	.option({
 		name: "titiFlag",
+		description: "Useful CLI titi flag",
+		defaultValue: 40,
+	})
+	.enable();
+
+// @todo: fix error tyty command not available within program's help if defined after program enable call
+// @todo: for this, handle program help and version inside terminal object
+terminal
+	.command({ name: "tyty", description: "aie aie" })
+	.option({
+		name: "toto",
 		description: "Useful CLI titi flag",
 		defaultValue: 40,
 	})

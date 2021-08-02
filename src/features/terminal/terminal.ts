@@ -23,13 +23,15 @@ class Terminal {
 	 * @returns The Command API
 	 */
 	command(params: { name: string; description: string }) {
+		globalContext.commandRegistry.push(params);
+
 		return new Command(params.name, params.description);
 	}
 
 	#setContext() {
 		const { command, operands, options } = this.#parseArguments();
 
-		globalContext.command = command;
+		globalContext.currentCommand = command;
 		globalContext.options = options;
 		globalContext.operands = operands;
 	}

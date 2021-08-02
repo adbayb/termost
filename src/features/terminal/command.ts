@@ -1,4 +1,4 @@
-import { globalContext } from "../../context";
+import { DEFAULT_COMMAND_KEY, globalContext } from "../../context";
 import { TaskManager } from "../../core/taskManager";
 import { Dictionary } from "../../core/dictionary";
 import { system } from "../system";
@@ -78,7 +78,7 @@ export class Command {
 		};
 
 		// @note: if the user command doesn't match the the command instance name, then do not execute the command
-		if (globalContext.command !== this.#name) {
+		if (globalContext.currentCommand !== this.#name) {
 			return disable;
 		}
 
@@ -118,6 +118,9 @@ export class Command {
 		const { description, options } = this.#metadata;
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
+		const hasCommands =
+			this.#name === DEFAULT_COMMAND_KEY &&
+			globalContext.commandRegistry.length > 0;
 		const printTitle = (message: string) =>
 			system.print(`\n${message}:`, {
 				color: "yellow",
@@ -131,12 +134,15 @@ export class Command {
 			);
 
 		printTitle("Usage");
-		// @todo: handle subcommands from program
-		// @todo: handle help and version inside terminal?
 		system.print(
-			`${system.format(`${process.argv0} ${this.#name}`, {
-				color: "green",
-			})} ${hasOption ? "[options]" : ""}`
+			`${system.format(
+				`${process.argv0}${hasCommands ? "" : ` ${this.#name}`}`,
+				{
+					color: "green",
+				}
+			)} ${hasCommands ? "<command> " : ""}${
+				hasOption ? "[options]" : ""
+			}`
 		);
 
 		printTitle("Description");
@@ -147,6 +153,14 @@ export class Command {
 
 			for (const key of optionKeys) {
 				printLabelValue(key, options[key] as string);
+			}
+		}
+
+		if (hasCommands) {
+			printTitle("Commands");
+
+			for (const { name, description } of globalContext.commandRegistry) {
+				printLabelValue(name, description);
 			}
 		}
 	}
