@@ -31,6 +31,14 @@ export class Command {
 			name: "version",
 			description: "Print the version",
 		});
+
+		// @note: if the user command doesn't match the the command instance name, then do not execute the command
+		if (globalContext.currentCommand === this.#name) {
+			// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
+			// It'll allow to make sure that the `globalContext` is correctly filled with all commands
+			// metadata (especially to let the global help option to display all available commands):
+			setTimeout(() => this.#enable(), 0);
+		}
 	}
 
 	option(params: OptionExecutorInput) {
@@ -72,46 +80,20 @@ export class Command {
 	 * Enables the command by processing all executors (options, pending tasks...)
 	 * @returns The disable function to stop tasks and unregister the command on the fly
 	 */
-	enable() {
-		const disable = () => {
-			this.#manager.stop();
-		};
-
-		// @note: if the user command doesn't match the the command instance name, then do not execute the command
-		if (globalContext.currentCommand !== this.#name) {
-			return disable;
-		}
-
+	async #enable() {
 		const reservedOption = Object.keys(globalContext.options).find(
-			(userOption) =>
-				RESERVED_OPTIONS.includes(
-					userOption as typeof RESERVED_OPTIONS[number]
-				)
+			(userOption) => ["help", "version"].includes(userOption)
 		);
 
-		if (reservedOption) {
-			if (reservedOption === "help") {
-				this.#help();
-			} else if (reservedOption === "version") {
-				this.#version();
-			}
-
-			return disable;
+		if (reservedOption === "help") {
+			return this.#help();
 		}
 
-		const run = async () => {
-			await this.#manager.start();
+		if (reservedOption === "version") {
+			return this.#version();
+		}
 
-			console.info("Data = ", this.#data.values());
-			console.info(
-				"Metadata = ",
-				JSON.stringify(this.#metadata, null, 4)
-			);
-		};
-
-		run();
-
-		return disable;
+		return this.#manager.start();
 	}
 
 	#help() {
@@ -181,5 +163,3 @@ export class Command {
 		};
 	}
 }
-
-const RESERVED_OPTIONS = ["help", "version"] as const;
