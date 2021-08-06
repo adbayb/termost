@@ -4,10 +4,14 @@ const wait = (delay: number) => {
 	return new Promise((resolve) => setTimeout(resolve, delay));
 };
 
+// @todo: version display
+// @todo: supports aliased option (use minimist?)
+// @todo: clean others todos
+
 terminal
 	.command({
-		name: "hello",
-		description: "Generate an hello world message",
+		name: "interact",
+		description: "Interactive example",
 	})
 	.question({
 		type: "select:one",
@@ -78,18 +82,46 @@ terminal
 		},
 	});
 
-terminal.program("Quickly bundle your library").task({
-	name: "git",
-	label: "Checking git status",
-	async handler() {
-		await wait(3000);
+terminal.program("Quickly bundle your library");
 
-		return new Set(["plop"]);
-	},
-});
+terminal
+	.command({
+		name: "build",
+		description: "Transpile and bundle in production mode",
+	})
+	// @todo: make `name` optional and fill ctx only if name is specified consumer side
+	// @todo: rename name as key
+	.task({
+		name: "transpile",
+		label: "Building esm, cjs 👷‍♂️",
+		async handler() {
+			await wait(1000);
+		},
+	})
+	.task({
+		name: "size",
+		label: "Calculating bundle size 📐",
+		async handler() {
+			await wait(1000);
 
-terminal.command({ name: "tyty", description: "aie aie" }).option({
-	name: "toto",
-	description: "Useful CLI titi flag",
-	defaultValue: 40,
-});
+			// @fix: display glitch (output API?)
+			console.log(
+				`\n📦 main.js\n${String(223434).padStart(11)} B  raw\n${String(
+					56789
+				).padStart(11)} B gzip\n`
+			);
+		},
+	});
+
+terminal
+	.command({
+		name: "watch",
+		description: "Rebuild your assets on any code change",
+	})
+	.task({
+		name: "transpile",
+		label: `Watching 🔎 last at ${new Date().toLocaleTimeString()}`,
+		async handler() {
+			return await wait(1000);
+		},
+	});

@@ -123,7 +123,7 @@ export class Command {
 					color: "green",
 				}
 			)} ${hasCommands ? "<command> " : ""}${
-				hasOption ? "[options]" : ""
+				hasOption ? "[...options]" : ""
 			}`
 		);
 
