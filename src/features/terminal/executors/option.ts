@@ -11,11 +11,11 @@ export class OptionHandler implements Executor {
 	}
 
 	async execute() {
-		const { name, defaultValue } = this.properties;
+		const { key, name, defaultValue } = this.properties;
 		const contextValue = globalContext.options[name];
 
 		return {
-			name,
+			key,
 			value: contextValue ?? defaultValue,
 		};
 	}
@@ -26,6 +26,7 @@ type InternalOptionExecutorInput = OptionExecutorInput & {
 };
 
 export type OptionExecutorInput = ExecutorInput<{
+	name: string;
 	description: string;
 	defaultValue?: string | number | boolean;
 }>;

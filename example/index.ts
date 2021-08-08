@@ -6,12 +6,10 @@ const wait = (delay: number) => {
 
 const program = terminal("Quickly bundle your library");
 
-// @todo: version display (automatic from package metadata)
-// @todo: supports aliased option (use minimist?)
+// **@todo: create print function (expose banner methods based upon type)**
+// **@todo: version display (automatic from package metadata)**
+// **@todo: supports aliased option (use minimist?)**
 // @todo: clean others todos
-// @todo: remove program uneeded call and make terminal extends Commad (rename terminal to termost?)
-// @todo: rename `name` to `key`
-// @todo: create print function (expose banner methods based upon type)
 // @todo: add exec helpers to task() and remove system export
 
 program
@@ -21,7 +19,7 @@ program
 	})
 	.question({
 		type: "select:one",
-		name: "question1",
+		key: "question1",
 		label: "What is your single choice?",
 		choices: ["singleOption1", "singleOption2"],
 		defaultValue: "singleOption1",
@@ -31,7 +29,7 @@ program
 	})
 	.question({
 		type: "select:many",
-		name: "question2",
+		key: "question2",
 		label: "What is your multiple choices?",
 		choices: ["multipleOption1", "multipleOption2"],
 		defaultValue: ["multipleOption2"],
@@ -41,7 +39,7 @@ program
 	})
 	.question({
 		type: "confirm",
-		name: "question3", // @todo: support alias via array ["question3", "q3"]
+		key: "question3", // @todo: support alias via array ["question3", "q3"]
 		// @todo: add description for help
 		// @todo: auto skip if the parsed arg flag are filled
 		label: "What is your confirm question?",
@@ -52,7 +50,7 @@ program
 	})
 	.question({
 		type: "text",
-		name: "question4",
+		key: "question4",
 		label: "What is your text question?",
 		defaultValue: "bypass next command",
 		skip(context) {
@@ -65,7 +63,6 @@ program
 		defaultValue: 2,
 	})
 	.task({
-		name: "question5",
 		label: "Checking git status",
 		async handler(/*context*/) {
 			await wait(2000);
@@ -77,7 +74,6 @@ program
 		},
 	})
 	.task({
-		name: "question6",
 		label: "Another long running tasks",
 		async handler(context) {
 			await wait(1000);
@@ -97,14 +93,12 @@ program
 	// @todo: make `name` optional and fill ctx only if name is specified consumer side
 	// @todo: rename name as key
 	.task({
-		name: "transpile",
 		label: "Building esm, cjs 👷‍♂️",
 		async handler() {
 			await wait(1000);
 		},
 	})
 	.task({
-		name: "size",
 		label: "Calculating bundle size 📐",
 		async handler() {
 			await wait(1000);
@@ -124,7 +118,6 @@ program
 		description: "Rebuild your assets on any code change",
 	})
 	.task({
-		name: "transpile",
 		label: `Watching 🔎 last at ${new Date().toLocaleTimeString()}`,
 		async handler() {
 			return await wait(1000);
@@ -134,7 +127,7 @@ program
 program
 	.question({
 		type: "select:one",
-		name: "question1",
+		key: "question1",
 		label: "What is your single choice?",
 		choices: ["singleOption1", "singleOption2"],
 		defaultValue: "singleOption1",
@@ -142,10 +135,17 @@ program
 			return false;
 		},
 	})
+	.option({
+		key: "tutu",
+		name: "myFlag",
+		description: "Useful CLI flag",
+		defaultValue: 100,
+	})
 	.task({
-		name: "transpile",
 		label: `Watching 🔎 last at ${new Date().toLocaleTimeString()}`,
-		async handler() {
+		async handler(context) {
+			console.log(context);
+
 			return await wait(1000);
 		},
 	});

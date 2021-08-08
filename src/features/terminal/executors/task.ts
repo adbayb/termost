@@ -7,7 +7,7 @@ export class TaskHandler implements Executor {
 	constructor(private properties: InternalTaskExecutorInput) {}
 
 	async execute() {
-		const { name, label, handler } = this.properties;
+		const { key, label, handler } = this.properties;
 		let value: unknown;
 
 		this.#receiver.add({
@@ -17,7 +17,7 @@ export class TaskHandler implements Executor {
 
 		await this.#receiver.run();
 
-		return { name, value };
+		return { key, value };
 	}
 }
 

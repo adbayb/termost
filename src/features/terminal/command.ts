@@ -158,9 +158,11 @@ export class Command {
 				return;
 			}
 
-			const { name, value } = await executor.execute();
+			const { key, value } = await executor.execute();
 
-			this.#data.set(name, value);
+			if (key) {
+				this.#data.set(key, value);
+			}
 		};
 	}
 }

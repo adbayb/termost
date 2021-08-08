@@ -7,10 +7,10 @@ export class QuestionHandler implements Executor {
 	constructor(private properties: QuestionExecutorInput) {}
 
 	async execute() {
-		const { name, defaultValue } = this.properties;
+		const { key, defaultValue } = this.properties;
 
 		const mappedProperties: Record<string, unknown> = {
-			name,
+			name: key,
 			default: defaultValue,
 		};
 
@@ -32,31 +32,33 @@ export class QuestionHandler implements Executor {
 
 		const data = await this.#receiver.prompt([mappedProperties]);
 
-		return { name, value: data[name] };
+		return { key, value: data[key] };
 	}
 }
 
 export type QuestionExecutorInput = ExecutorInput<
-	| {
-			type: "text";
-			label: string;
-			defaultValue?: string;
-	  }
-	| {
-			type: "confirm";
-			label: string;
-			defaultValue?: boolean;
-	  }
-	| {
-			type: "select:one";
-			label: string;
-			choices: Array<string>;
-			defaultValue?: string;
-	  }
-	| {
-			type: "select:many";
-			label: string;
-			choices: Array<string>;
-			defaultValue?: Array<string>;
-	  }
+	{ key: string } & (
+		| {
+				type: "text";
+				label: string;
+				defaultValue?: string;
+		  }
+		| {
+				type: "confirm";
+				label: string;
+				defaultValue?: boolean;
+		  }
+		| {
+				type: "select:one";
+				label: string;
+				choices: Array<string>;
+				defaultValue?: string;
+		  }
+		| {
+				type: "select:many";
+				label: string;
+				choices: Array<string>;
+				defaultValue?: Array<string>;
+		  }
+	)
 >;
