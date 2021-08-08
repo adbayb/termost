@@ -4,11 +4,17 @@ const wait = (delay: number) => {
 	return new Promise((resolve) => setTimeout(resolve, delay));
 };
 
-// @todo: version display
+const program = terminal("Quickly bundle your library");
+
+// @todo: version display (automatic from package metadata)
 // @todo: supports aliased option (use minimist?)
 // @todo: clean others todos
+// @todo: remove program uneeded call and make terminal extends Commad (rename terminal to termost?)
+// @todo: rename `name` to `key`
+// @todo: create print function (expose banner methods based upon type)
+// @todo: add exec helpers to task() and remove system export
 
-terminal
+program
 	.command({
 		name: "interact",
 		description: "Interactive example",
@@ -76,15 +82,14 @@ terminal
 		async handler(context) {
 			await wait(1000);
 
+			// @todo: fix glitch ui
 			console.log("Result = ", context);
 
 			return "another";
 		},
 	});
 
-terminal.program("Quickly bundle your library");
-
-terminal
+program
 	.command({
 		name: "build",
 		description: "Transpile and bundle in production mode",
@@ -113,10 +118,29 @@ terminal
 		},
 	});
 
-terminal
+program
 	.command({
 		name: "watch",
 		description: "Rebuild your assets on any code change",
+	})
+	.task({
+		name: "transpile",
+		label: `Watching 🔎 last at ${new Date().toLocaleTimeString()}`,
+		async handler() {
+			return await wait(1000);
+		},
+	});
+
+program
+	.question({
+		type: "select:one",
+		name: "question1",
+		label: "What is your single choice?",
+		choices: ["singleOption1", "singleOption2"],
+		defaultValue: "singleOption1",
+		skip() {
+			return false;
+		},
 	})
 	.task({
 		name: "transpile",

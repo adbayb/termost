@@ -2,18 +2,10 @@ import { Context, DEFAULT_COMMAND_KEY, globalContext } from "../../context";
 import { Dictionary } from "../../core/dictionary";
 import { Command } from "./command";
 
-class Terminal {
-	constructor() {
+class Terminal extends Command {
+	constructor(description: string) {
+		super(DEFAULT_COMMAND_KEY, description);
 		this.#setContext();
-	}
-
-	/**
-	 * Attaches the top level command
-	 * @param description - The CLI command description
-	 * @returns The Command API
-	 */
-	program(description: string) {
-		return new Command(DEFAULT_COMMAND_KEY, description);
 	}
 
 	/**
@@ -102,4 +94,5 @@ class Terminal {
 	}
 }
 
-export const terminal = new Terminal();
+export const terminal = (...args: ConstructorParameters<typeof Terminal>) =>
+	new Terminal(...args);

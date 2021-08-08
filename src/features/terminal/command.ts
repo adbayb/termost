@@ -23,7 +23,6 @@ export class Command {
 			options: {},
 		};
 
-		// @note: bootstrap core options
 		this.option({
 			name: "help",
 			description: "Display the help center",
@@ -32,13 +31,15 @@ export class Command {
 			description: "Print the version",
 		});
 
-		// @note: if the user command doesn't match the the command instance name, then do not execute the command
-		if (globalContext.currentCommand === this.#name) {
-			// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
-			// It'll allow to make sure that the `globalContext` is correctly filled with all commands
-			// metadata (especially to let the global help option to display all available commands):
-			setTimeout(() => this.#enable(), 0);
-		}
+		setTimeout(() => {
+			// @note: if the user command doesn't match the the command instance name, then do not execute the command
+			if (globalContext.currentCommand === this.#name) {
+				// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
+				// It'll allow to make sure that the `globalContext` is correctly filled with all commands
+				// metadata (especially to let the global help option to display all available commands):
+				this.#enable();
+			}
+		}, 0);
 	}
 
 	option(params: OptionExecutorInput) {
