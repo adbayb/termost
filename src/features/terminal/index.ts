@@ -1,1 +1,0 @@
-export { terminal } from "./terminal";

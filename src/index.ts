@@ -1,4 +1,5 @@
 // @todo: exclude linebreaks between single line export on eslint-config
-export * from "./features/terminal";
+import { termost } from "./termost";
 
-export * from "./features/system";
+// eslint-disable-next-line import/no-default-export
+export default termost;

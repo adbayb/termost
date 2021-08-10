@@ -1,6 +1,6 @@
 import { DataStructure } from "./types";
 
-export class Queue<Item> implements DataStructure {
+class Queue<Item> implements DataStructure {
 	#data: Array<Item> = [];
 
 	enqueue(item: Item) {
@@ -21,5 +21,17 @@ export class Queue<Item> implements DataStructure {
 
 	size() {
 		return this.#data.length;
+	}
+}
+
+export class AsyncQueue extends Queue<() => Promise<void>> {
+	async traverse() {
+		while (!this.isEmpty()) {
+			const task = this.dequeue();
+
+			if (task) {
+				await task();
+			}
+		}
 	}
 }

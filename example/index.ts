@@ -1,10 +1,10 @@
-import { terminal } from "../src";
+import termost from "../src";
 
 const wait = (delay: number) => {
 	return new Promise((resolve) => setTimeout(resolve, delay));
 };
 
-const program = terminal("Quickly bundle your library");
+const program = termost("Quickly bundle your library");
 
 // **@todo: create print function (expose banner methods based upon type)**
 // **@todo: version display (automatic from package metadata)**
@@ -39,9 +39,7 @@ program
 	})
 	.question({
 		type: "confirm",
-		key: "question3", // @todo: support alias via array ["question3", "q3"]
-		// @todo: add description for help
-		// @todo: auto skip if the parsed arg flag are filled
+		key: "question3",
 		label: "What is your confirm question?",
 		defaultValue: true,
 		skip() {
@@ -77,7 +75,6 @@ program
 		label: "Another long running tasks",
 		async handler(context) {
 			await wait(1000);
-
 			// @todo: fix glitch ui
 			console.log("Result = ", context);
 
@@ -90,8 +87,6 @@ program
 		name: "build",
 		description: "Transpile and bundle in production mode",
 	})
-	// @todo: make `name` optional and fill ctx only if name is specified consumer side
-	// @todo: rename name as key
 	.task({
 		label: "Building esm, cjs 👷‍♂️",
 		async handler() {
@@ -127,7 +122,7 @@ program
 program
 	.question({
 		type: "select:one",
-		key: "question1",
+		key: "plop",
 		label: "What is your single choice?",
 		choices: ["singleOption1", "singleOption2"],
 		defaultValue: "singleOption1",

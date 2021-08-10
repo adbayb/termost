@@ -1,28 +1,21 @@
 import { DEFAULT_COMMAND_KEY, globalContext } from "../../context";
-import { TaskManager } from "../../core/taskManager";
-import { Dictionary } from "../../core/dictionary";
+import { AsyncQueue } from "../../core/queue";
 import { system } from "../system";
-import { OptionExecutorInput, OptionHandler } from "./executors/option";
-import { QuestionExecutorInput, QuestionHandler } from "./executors/question";
-import { TaskExecutorInput, TaskHandler } from "./executors/task";
-import { Executor, ExecutorInput } from "./executors/types";
-import { CommandMetadata } from "./types";
+import { FluentInterface } from "./fluentInterface";
 
-export class Command {
+export class Command extends FluentInterface {
 	#name: string | undefined;
-	#manager: TaskManager;
-	#data: Dictionary;
-	#metadata: CommandMetadata;
 
 	constructor(name: string, description: string) {
-		this.#name = name;
-		this.#data = new Dictionary();
-		this.#manager = new TaskManager();
-		this.#metadata = {
-			description,
-			options: {},
-		};
+		super({
+			instructionManager: new AsyncQueue(),
+			metadata: {
+				description,
+				options: {},
+			},
+		});
 
+		this.#name = name;
 		this.option({
 			name: "help",
 			description: "Display the help center",
@@ -42,41 +35,6 @@ export class Command {
 		}, 0);
 	}
 
-	option(params: OptionExecutorInput) {
-		this.#manager.register(
-			this.#createTask(
-				new OptionHandler({ ...params, metadata: this.#metadata }),
-				params.skip
-			)
-		);
-
-		return this;
-	}
-
-	question(params: QuestionExecutorInput) {
-		this.#manager.register(
-			this.#createTask(new QuestionHandler(params), params.skip)
-		);
-
-		return this;
-	}
-
-	task({ skip, handler, ...restParams }: TaskExecutorInput) {
-		this.#manager.register(
-			this.#createTask(
-				new TaskHandler({
-					...restParams,
-					handler: () => {
-						return handler(this.#data.values());
-					},
-				}),
-				skip
-			)
-		);
-
-		return this;
-	}
-
 	/**
 	 * Enables the command by processing all executors (options, pending tasks...)
 	 * @returns The disable function to stop tasks and unregister the command on the fly
@@ -94,11 +52,11 @@ export class Command {
 			return this.#version();
 		}
 
-		return this.#manager.start();
+		this.instructionManager.traverse();
 	}
 
 	#help() {
-		const { description, options } = this.#metadata;
+		const { description, options } = this.metadata;
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
 		const hasCommands =
@@ -131,14 +89,6 @@ export class Command {
 		printTitle("Description");
 		system.print(description);
 
-		if (hasOption) {
-			printTitle("Options");
-
-			for (const key of optionKeys) {
-				printLabelValue(key, options[key] as string);
-			}
-		}
-
 		if (hasCommands) {
 			printTitle("Commands");
 
@@ -146,23 +96,17 @@ export class Command {
 				printLabelValue(name, description);
 			}
 		}
+
+		if (hasOption) {
+			printTitle("Options");
+
+			for (const key of optionKeys) {
+				printLabelValue(key, options[key] as string);
+			}
+		}
 	}
 
 	#version() {
 		console.info("TODO: version");
-	}
-
-	#createTask(executor: Executor, skip: ExecutorInput["skip"]) {
-		return async () => {
-			if (skip?.(this.#data.values())) {
-				return;
-			}
-
-			const { key, value } = await executor.execute();
-
-			if (key) {
-				this.#data.set(key, value);
-			}
-		};
 	}
 }
