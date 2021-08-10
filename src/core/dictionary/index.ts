@@ -1,4 +1,4 @@
-import { DataStructure } from "./types";
+import { DataStructure } from "../types";
 
 export class Dictionary<Value = unknown> implements DataStructure {
 	#data: Record<string, Value> = {};

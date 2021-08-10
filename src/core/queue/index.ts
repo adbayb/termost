@@ -1,4 +1,4 @@
-import { DataStructure } from "./types";
+import { DataStructure } from "../types";
 
 class Queue<Item> implements DataStructure {
 	#data: Array<Item> = [];

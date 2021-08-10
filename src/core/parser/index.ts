@@ -1,5 +1,5 @@
-import { Context } from "../context";
-import { Dictionary } from "./dictionary";
+import { Context } from "../../context";
+import { Dictionary } from "../dictionary";
 
 type OptionValue = Context["options"][number];
 
