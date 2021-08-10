@@ -1,5 +1,6 @@
 import { Dictionary } from "../../core/dictionary";
 import { AsyncQueue } from "../../core/queue";
+import { MessageParameters, createMessage } from "../message";
 import { OptionParameters, createOption } from "../option";
 import { QuestionParameters, createQuestion } from "../question";
 import { TaskParameters, createTask } from "../task";
@@ -22,6 +23,22 @@ export class FluentInterface {
 		this.#data = new Dictionary();
 		this.instructionManager = instructionManager;
 		this.metadata = metadata;
+	}
+
+	message(parameters: MessageParameters) {
+		return this.#createInstruction(
+			(messageParams) =>
+				createMessage({
+					...messageParams,
+					handler: (helpers) => {
+						return messageParams.handler(
+							helpers,
+							this.#data.values()
+						);
+					},
+				}),
+			parameters
+		);
 	}
 
 	option(parameters: OptionParameters) {

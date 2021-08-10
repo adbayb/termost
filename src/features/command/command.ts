@@ -1,6 +1,6 @@
 import { DEFAULT_COMMAND_KEY, globalContext } from "../../context";
 import { AsyncQueue } from "../../core/queue";
-import { system } from "../system";
+import { format } from "../message/helpers";
 import { FluentInterface } from "./fluentInterface";
 
 export class Command extends FluentInterface {
@@ -62,21 +62,23 @@ export class Command extends FluentInterface {
 		const hasCommands =
 			this.#name === DEFAULT_COMMAND_KEY &&
 			globalContext.commandRegistry.length > 0;
+		const print = (...parameters: Parameters<typeof format>) =>
+			console.log(format(...parameters));
 		const printTitle = (message: string) =>
-			system.print(`\n${message}:`, {
+			print(`\n${message}:`, {
 				color: "yellow",
 				modifier: ["bold", "underline", "uppercase"],
 			});
 		const printLabelValue = (label: string, value: string) =>
-			system.print(
-				`  ${system.format(label.padEnd(10, " "), {
+			print(
+				`  ${format(label.padEnd(10, " "), {
 					color: "green",
 				})} ${value}`
 			);
 
 		printTitle("Usage");
-		system.print(
-			`${system.format(
+		print(
+			`${format(
 				`${process.argv0}${hasCommands ? "" : ` ${this.#name}`}`,
 				{
 					color: "green",
@@ -87,7 +89,7 @@ export class Command extends FluentInterface {
 		);
 
 		printTitle("Description");
-		system.print(description);
+		print(description);
 
 		if (hasCommands) {
 			printTitle("Commands");

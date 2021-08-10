@@ -6,11 +6,11 @@ const wait = (delay: number) => {
 
 const program = termost("Quickly bundle your library");
 
-// **@todo: create print function (expose banner methods based upon type)**
 // **@todo: version display (automatic from package metadata)**
 // **@todo: supports aliased option (use minimist?)**
 // @todo: clean others todos
 // @todo: add exec helpers to task() and remove system export
+// @todo: rename context to data?
 
 program
 	.command({
@@ -23,9 +23,6 @@ program
 		label: "What is your single choice?",
 		choices: ["singleOption1", "singleOption2"],
 		defaultValue: "singleOption1",
-		skip() {
-			return false;
-		},
 	})
 	.question({
 		type: "select:many",
@@ -33,8 +30,8 @@ program
 		label: "What is your multiple choices?",
 		choices: ["multipleOption1", "multipleOption2"],
 		defaultValue: ["multipleOption2"],
-		skip(context) {
-			return context.question1 !== "singleOption2";
+		skip(data) {
+			return data.question1 !== "singleOption2";
 		},
 	})
 	.question({
@@ -42,17 +39,14 @@ program
 		key: "question3",
 		label: "What is your confirm question?",
 		defaultValue: true,
-		skip() {
-			return false;
-		},
 	})
 	.question({
 		type: "text",
 		key: "question4",
 		label: "What is your text question?",
 		defaultValue: "bypass next command",
-		skip(context) {
-			return context.question3 as boolean;
+		skip(data) {
+			return Boolean(data.question3);
 		},
 	})
 	.option({
@@ -62,21 +56,19 @@ program
 	})
 	.task({
 		label: "Checking git status",
-		async handler(/*context*/) {
+		async handler(/*data*/) {
 			await wait(2000);
 
 			return new Set(["plop"]);
 		},
-		skip(context) {
-			return context.question4 === "bypass next command";
+		skip(data) {
+			return data.question4 === "bypass next command";
 		},
 	})
 	.task({
 		label: "Another long running tasks",
-		async handler(context) {
+		async handler() {
 			await wait(1000);
-			// @todo: fix glitch ui
-			console.log("Result = ", context);
 
 			return "another";
 		},
@@ -94,15 +86,68 @@ program
 		},
 	})
 	.task({
+		key: "size",
 		label: "Calculating bundle size 📐",
 		async handler() {
 			await wait(1000);
 
-			// @fix: display glitch (output API?)
+			return 223434;
+		},
+	})
+	.message({
+		handler(helpers, data) {
+			const size = data.size as number;
+
+			helpers.print([
+				"📦 main.js",
+				`   ${String(size).padEnd(8)} B  raw`,
+				`   ${String(size / 3).padEnd(8)} B  gzip`,
+				"📦 other.js",
+				`   ${String(size).padEnd(8)} B  raw`,
+				`   ${String(size / 3).padEnd(8)} B  gzip`,
+			]);
+
+			helpers.print(
+				[
+					"📦 main.js",
+					`   ${String(size).padEnd(8)} B  raw`,
+					`   ${String(size / 3).padEnd(8)} B  gzip`,
+					"📦 other.js",
+					`   ${String(size).padEnd(8)} B  raw`,
+					`   ${String(size / 3).padEnd(8)} B  gzip`,
+				],
+				{ type: "warning" }
+			);
+
+			helpers.print(
+				[
+					"📦 main.js",
+					`   ${String(size).padEnd(8)} B  raw`,
+					`   ${String(size / 3).padEnd(8)} B  gzip`,
+					"📦 other.js",
+					`   ${String(size).padEnd(8)} B  raw`,
+					`   ${String(size / 3).padEnd(8)} B  gzip`,
+				],
+				{ type: "error" }
+			);
+
+			helpers.print(
+				[
+					"📦 main.js",
+					`   ${String(size).padEnd(8)} B  raw`,
+					`   ${String(size / 3).padEnd(8)} B  gzip`,
+					"📦 other.js",
+					`   ${String(size).padEnd(8)} B  raw`,
+					`   ${String(size / 3).padEnd(8)} B  gzip`,
+				],
+				{ type: "success", label: "Output sizes" }
+			);
+
 			console.log(
-				`\n📦 main.js\n${String(223434).padStart(11)} B  raw\n${String(
-					56789
-				).padStart(11)} B gzip\n`
+				helpers.format("Custom formatting", {
+					color: "white",
+					modifier: ["italic", "strikethrough"],
+				})
 			);
 		},
 	});
@@ -126,9 +171,6 @@ program
 		label: "What is your single choice?",
 		choices: ["singleOption1", "singleOption2"],
 		defaultValue: "singleOption1",
-		skip() {
-			return false;
-		},
 	})
 	.option({
 		key: "tutu",
@@ -138,9 +180,7 @@ program
 	})
 	.task({
 		label: `Watching 🔎 last at ${new Date().toLocaleTimeString()}`,
-		async handler(context) {
-			console.log(context);
-
+		async handler() {
 			return await wait(1000);
 		},
 	});

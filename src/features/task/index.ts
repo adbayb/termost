@@ -2,7 +2,7 @@ import Listr from "listr";
 import { ContextValues, Instruction, InstructionParameters } from "../types";
 
 export const createTask = (parameters: InternalTaskParameters): Instruction => {
-	const { key, label, handler } = parameters;
+	const { label, handler } = parameters;
 	const receiver = new Listr();
 
 	return async function execute() {
@@ -15,7 +15,7 @@ export const createTask = (parameters: InternalTaskParameters): Instruction => {
 
 		await receiver.run();
 
-		return { key, value };
+		return value;
 	};
 };
 
