@@ -1,5 +1,3 @@
-import { Dictionary } from "../core/dictionary";
-
 export type InstructionParameters<
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	ExtraParameters extends Record<string, unknown> = {}
@@ -9,21 +7,26 @@ export type InstructionParameters<
 	 * By default, if no provided key, the output is not included in the context.
 	 */
 	key?: string;
-	skip?: (context: ContextValues) => boolean;
+	skip?: (values: CommandContextValues) => boolean;
 } & ExtraParameters;
 
 /**
  * Follows the command design pattern
  */
-export type Instruction<Value = unknown> = () => Promise<Value>;
+export type Instruction<Value = CommandContextValues[number]> = (
+	context: CommandContext
+) => Promise<Value>;
 
 export type CreateInstruction<Parameters extends InstructionParameters> = (
 	parameters: Parameters
-) => Instruction<unknown>;
+) => Instruction;
 
-export type ContextValues = ReturnType<Dictionary["values"]>;
+export type CommandContextValues = Record<string, any>;
 
-export type Metadata = {
-	description: string;
-	options: Record<string, string>;
+export type CommandContext = {
+	values: CommandContextValues;
+	metadata: {
+		description: string;
+		options: Record<string, string>;
+	};
 };

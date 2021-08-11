@@ -1,16 +1,20 @@
 import Listr from "listr";
-import { ContextValues, Instruction, InstructionParameters } from "../types";
+import {
+	CommandContextValues,
+	Instruction,
+	InstructionParameters,
+} from "../types";
 
-export const createTask = (parameters: InternalTaskParameters): Instruction => {
+export const createTask = (parameters: TaskParameters): Instruction => {
 	const { label, handler } = parameters;
 	const receiver = new Listr();
 
-	return async function execute() {
+	return async function execute(context) {
 		let value: unknown;
 
 		receiver.add({
 			title: label,
-			task: async () => (value = await handler()),
+			task: async () => (value = await handler(context.values)),
 		});
 
 		await receiver.run();
@@ -19,11 +23,7 @@ export const createTask = (parameters: InternalTaskParameters): Instruction => {
 	};
 };
 
-type InternalTaskParameters = Omit<TaskParameters, "handler"> & {
-	handler: () => ReturnType<TaskParameters["handler"]>;
-};
-
 export type TaskParameters = InstructionParameters<{
 	label: string;
-	handler: (context: ContextValues) => Promise<unknown>;
+	handler: (context: CommandContextValues) => Promise<unknown>;
 }>;

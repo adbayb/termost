@@ -1,44 +1,33 @@
-import { Dictionary } from "../../core/dictionary";
 import { AsyncQueue } from "../../core/queue";
 import { MessageParameters, createMessage } from "../message";
 import { OptionParameters, createOption } from "../option";
 import { QuestionParameters, createQuestion } from "../question";
 import { TaskParameters, createTask } from "../task";
-import { CreateInstruction, InstructionParameters, Metadata } from "../types";
+import {
+	CommandContext,
+	CreateInstruction,
+	InstructionParameters,
+} from "../types";
 
 export class FluentInterface {
-	#data: Dictionary;
 	// @note: soft private through protected (ie. type checking only but still accessible runtime side)
 	// since JavaScript runtime doesn't handle yet access to private field from inherited classes:
-	protected instructionManager: AsyncQueue;
-	protected metadata: Metadata;
+	protected context: CommandContext;
+	protected manager: AsyncQueue;
 
-	constructor({
-		instructionManager,
-		metadata,
-	}: {
-		instructionManager: AsyncQueue;
-		metadata: Metadata;
-	}) {
-		this.#data = new Dictionary();
-		this.instructionManager = instructionManager;
-		this.metadata = metadata;
+	constructor(description: string) {
+		this.manager = new AsyncQueue();
+		this.context = {
+			values: {},
+			metadata: {
+				description,
+				options: {},
+			},
+		};
 	}
 
 	message(parameters: MessageParameters) {
-		return this.#createInstruction(
-			(messageParams) =>
-				createMessage({
-					...messageParams,
-					handler: (helpers) => {
-						return messageParams.handler(
-							helpers,
-							this.#data.values()
-						);
-					},
-				}),
-			parameters
-		);
+		return this.#createInstruction(createMessage, parameters);
 	}
 
 	option(parameters: OptionParameters) {
@@ -46,7 +35,7 @@ export class FluentInterface {
 			(optionParams) =>
 				createOption({
 					...optionParams,
-					metadata: this.metadata,
+					context: this.context,
 				}),
 			parameters
 		);
@@ -57,16 +46,7 @@ export class FluentInterface {
 	}
 
 	task(parameters: TaskParameters) {
-		return this.#createInstruction(
-			(taskParams) =>
-				createTask({
-					...taskParams,
-					handler: () => {
-						return taskParams.handler(this.#data.values());
-					},
-				}),
-			parameters
-		);
+		return this.#createInstruction(createTask, parameters);
 	}
 
 	#createInstruction<Parameters extends InstructionParameters>(
@@ -75,17 +55,17 @@ export class FluentInterface {
 	) {
 		const instruction = createInstruction(parameters);
 
-		this.instructionManager.enqueue(async () => {
+		this.manager.enqueue(async () => {
 			const { key, skip } = parameters;
 
-			if (skip?.(this.#data.values())) {
+			if (skip?.(this.context.values)) {
 				return;
 			}
 
-			const value = await instruction();
+			const value = await instruction(this.context);
 
 			if (key) {
-				this.#data.set(key, value);
+				this.context.values[key] = value;
 			}
 		});
 

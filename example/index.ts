@@ -6,10 +6,9 @@ const wait = (delay: number) => {
 
 const program = termost("Quickly bundle your library");
 
-// **@todo: version display (automatic from package metadata)**
+// **@todo: version display (automatic from package metavalues)**
 // @todo: clean others todos
 // @todo: add exec helpers to task() and remove system export
-// @todo: rename context to data?
 
 program
 	.command({
@@ -29,8 +28,8 @@ program
 		label: "What is your multiple choices?",
 		choices: ["multipleOption1", "multipleOption2"],
 		defaultValue: ["multipleOption2"],
-		skip(data) {
-			return data.question1 !== "singleOption2";
+		skip(values) {
+			return values.question1 !== "singleOption2";
 		},
 	})
 	.question({
@@ -44,8 +43,8 @@ program
 		key: "question4",
 		label: "What is your text question?",
 		defaultValue: "bypass next command",
-		skip(data) {
-			return Boolean(data.question3);
+		skip(values) {
+			return Boolean(values.question3);
 		},
 	})
 	.option({
@@ -55,13 +54,13 @@ program
 	})
 	.task({
 		label: "Checking git status",
-		async handler(/*data*/) {
+		async handler(/*values*/) {
 			await wait(2000);
 
 			return new Set(["plop"]);
 		},
-		skip(data) {
-			return data.question4 === "bypass next command";
+		skip(values) {
+			return values.question4 === "bypass next command";
 		},
 	})
 	.task({
@@ -94,8 +93,8 @@ program
 		},
 	})
 	.message({
-		handler(helpers, data) {
-			const size = data.size as number;
+		handler(values, helpers) {
+			const size = values.size as number;
 
 			helpers.print([
 				"📦 main.js",
@@ -177,7 +176,7 @@ program
 		defaultValue: 1,
 	})
 	.message({
-		handler(_, data) {
-			console.log("plop", data);
+		handler(values) {
+			console.log("values", values);
 		},
 	});

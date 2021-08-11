@@ -1,13 +1,15 @@
-import { ContextValues, Instruction, InstructionParameters } from "../types";
+import {
+	CommandContextValues,
+	Instruction,
+	InstructionParameters,
+} from "../types";
 import { format, print } from "./helpers";
 
-export const createMessage = (
-	parameters: InternalMessageParameters
-): Instruction => {
+export const createMessage = (parameters: MessageParameters): Instruction => {
 	const { handler } = parameters;
 
-	return async function execute() {
-		handler(HELPERS);
+	return async function execute(context) {
+		handler(context.values, HELPERS);
 	};
 };
 
@@ -16,15 +18,12 @@ const HELPERS = {
 	print,
 };
 
-type InternalMessageParameters = Omit<MessageParameters, "handler"> & {
-	handler: (
-		helpers: typeof HELPERS
-	) => ReturnType<MessageParameters["handler"]>;
-};
-
 export type MessageParameters = Omit<
 	InstructionParameters<{
-		handler: (helpers: typeof HELPERS, context: ContextValues) => void;
+		handler: (
+			values: CommandContextValues,
+			helpers: typeof HELPERS
+		) => void;
 	}>,
 	"key"
 >;

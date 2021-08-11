@@ -1,5 +1,4 @@
 import { DEFAULT_COMMAND_KEY, globalContext } from "../../context";
-import { AsyncQueue } from "../../core/queue";
 import { format } from "../message/helpers";
 import { FluentInterface } from "./fluentInterface";
 
@@ -7,13 +6,7 @@ export class Command extends FluentInterface {
 	#name: string | undefined;
 
 	constructor(name: string, description: string) {
-		super({
-			instructionManager: new AsyncQueue(),
-			metadata: {
-				description,
-				options: {},
-			},
-		});
+		super(description);
 
 		this.#name = name;
 		this.option({
@@ -52,11 +45,11 @@ export class Command extends FluentInterface {
 			return this.#version();
 		}
 
-		this.instructionManager.traverse();
+		this.manager.traverse();
 	}
 
 	#help() {
-		const { description, options } = this.metadata;
+		const { description, options } = this.context.metadata;
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
 		const hasCommands =

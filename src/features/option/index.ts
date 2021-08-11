@@ -1,13 +1,13 @@
 import { globalContext } from "../../context";
-import { Instruction, InstructionParameters, Metadata } from "../types";
+import { CommandContext, Instruction, InstructionParameters } from "../types";
 
 export const createOption = (
 	parameters: InternalOptionParameters
 ): Instruction => {
-	const { name, defaultValue, description, metadata } = parameters;
+	const { name, defaultValue, description, context } = parameters;
 	const aliases = typeof name === "string" ? [name] : name;
 
-	metadata.options[aliases.join(", ")] = description;
+	context.metadata.options[aliases.join(", ")] = description;
 
 	return async function execute() {
 		let value: unknown;
@@ -25,7 +25,7 @@ export const createOption = (
 };
 
 type InternalOptionParameters = OptionParameters & {
-	metadata: Metadata;
+	context: CommandContext;
 };
 
 export type OptionParameters = InstructionParameters<{
