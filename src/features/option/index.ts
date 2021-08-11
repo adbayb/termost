@@ -5,9 +5,12 @@ export const createOption = (
 	parameters: InternalOptionParameters
 ): Instruction => {
 	const { name, defaultValue, description, context } = parameters;
-	const aliases = typeof name === "string" ? [name] : name;
+	const aliases = typeof name === "string" ? [name] : [name.long, name.short];
+	const metadataKey = aliases
+		.map((alias, index) => "-".repeat(2 - index) + alias)
+		.join(", ");
 
-	context.metadata.options[aliases.join(", ")] = description;
+	context.metadata.options[metadataKey] = description;
 
 	return async function execute() {
 		let value: unknown;
@@ -29,7 +32,7 @@ type InternalOptionParameters = OptionParameters & {
 };
 
 export type OptionParameters = InstructionParameters<{
-	name: string | Array<string>;
+	name: string | { long: string; short: string };
 	description: string;
 	defaultValue?: string | number | boolean;
 }>;

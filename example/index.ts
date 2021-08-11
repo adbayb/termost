@@ -54,7 +54,7 @@ program
 	})
 	.task({
 		label: "Checking git status",
-		async handler(/*values*/) {
+		async handler() {
 			await wait(2000);
 
 			return new Set(["plop"]);
@@ -165,7 +165,7 @@ program
 program
 	.option({
 		key: "optionWithAlias",
-		name: ["shortOption", "s"],
+		name: { long: "shortOption", short: "s" },
 		description: "Useful CLI flag",
 		defaultValue: 0,
 	})

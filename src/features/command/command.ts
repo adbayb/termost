@@ -62,9 +62,13 @@ export class Command extends FluentInterface {
 				color: "yellow",
 				modifier: ["bold", "underline", "uppercase"],
 			});
-		const printLabelValue = (label: string, value: string) =>
+		const printLabelValue = (
+			label: string,
+			value: string,
+			padding: number
+		) =>
 			print(
-				`  ${format(label.padEnd(10, " "), {
+				`  ${format(label.padEnd(padding + 1, " "), {
 					color: "green",
 				})} ${value}`
 			);
@@ -84,11 +88,18 @@ export class Command extends FluentInterface {
 		printTitle("Description");
 		print(description);
 
+		const padding = [
+			...globalContext.commandRegistry.map((command) => command.name),
+			...optionKeys,
+		].reduce((padding, item) => {
+			return Math.max(padding, item.length);
+		}, 0);
+
 		if (hasCommands) {
 			printTitle("Commands");
 
 			for (const { name, description } of globalContext.commandRegistry) {
-				printLabelValue(name, description);
+				printLabelValue(name, description, padding);
 			}
 		}
 
@@ -96,7 +107,7 @@ export class Command extends FluentInterface {
 			printTitle("Options");
 
 			for (const key of optionKeys) {
-				printLabelValue(key, options[key] as string);
+				printLabelValue(key, options[key] as string, padding);
 			}
 		}
 	}
