@@ -4,7 +4,7 @@ import { MessageParameters, createMessage } from "../message";
 import { OptionParameters, createOption } from "../option";
 import { QuestionParameters, createQuestion } from "../question";
 import { TaskParameters, createTask } from "../task";
-import { CreateInstruction, InstructionParameters } from "../types";
+import { CreateInstruction, InstructionParameters, Metadata } from "../types";
 
 export class FluentInterface {
 	#data: Dictionary;
@@ -42,9 +42,14 @@ export class FluentInterface {
 	}
 
 	option(parameters: OptionParameters) {
-		this.metadata.options[parameters.name] = parameters.description;
-
-		return this.#createInstruction(createOption, parameters);
+		return this.#createInstruction(
+			(optionParams) =>
+				createOption({
+					...optionParams,
+					metadata: this.metadata,
+				}),
+			parameters
+		);
 	}
 
 	question(parameters: QuestionParameters) {
@@ -87,8 +92,3 @@ export class FluentInterface {
 		return this;
 	}
 }
-
-type Metadata = {
-	description: string;
-	options: Record<string, string>;
-};

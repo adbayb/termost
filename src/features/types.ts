@@ -22,3 +22,8 @@ export type CreateInstruction<Parameters extends InstructionParameters> = (
 ) => Instruction<unknown>;
 
 export type ContextValues = ReturnType<Dictionary["values"]>;
+
+export type Metadata = {
+	description: string;
+	options: Record<string, string>;
+};

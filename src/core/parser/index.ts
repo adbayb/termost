@@ -1,63 +1,74 @@
 import { Context } from "../../context";
-import { Dictionary } from "../dictionary";
-
-type OptionValue = Context["options"][number];
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const parseArguments = () => {
 	const parameters = process.argv.slice(2);
-	const restArguments: Array<string> = [];
-	const options = new Dictionary<OptionValue>();
-	let currentOption: string | undefined = undefined;
+	let command: string | undefined;
+	const operands: Array<string> = [];
+	const options: Record<string, string | boolean | number> = {};
+	let currentOptionName: string | undefined;
 
-	const flushOption = (value?: string) => {
-		if (currentOption) {
-			options.set(currentOption, castValue(value));
-			currentOption = undefined;
+	const addOptimisticOption = (name: string, value?: string | boolean) => {
+		if (value) {
+			options[name] = typeof value === "string" ? castValue(value) : true;
+		} else {
+			currentOptionName = name;
 		}
 	};
 
-	for (const param of parameters) {
-		if (param[0] !== "-") {
-			if (!currentOption) {
-				restArguments.push(param);
-			} else {
-				flushOption(param);
-			}
-
-			continue;
+	const flushOptimisticOption = () => {
+		if (currentOptionName) {
+			options[currentOptionName] = true;
+			currentOptionName = undefined;
 		}
+	};
 
-		const isLongFlag = param[1] === "-";
-		const flagParams = isLongFlag ? [param.slice(2)] : [...param.slice(1)];
-		const lastFlagIndex = flagParams.length - 1;
+	for (const parameter of parameters) {
+		const shortFlagMatchResult = SHORT_FLAG_REGEX.exec(parameter)?.groups;
+		const longFlagMatchResult = LONG_FLAG_REGEX.exec(parameter)?.groups;
 
-		for (let i = 0; i <= lastFlagIndex; i++) {
-			const flag = flagParams[i] as string;
+		if (shortFlagMatchResult || longFlagMatchResult) {
+			flushOptimisticOption();
 
-			if (i === lastFlagIndex) {
-				flushOption();
-				currentOption = flag;
+			let name: string | undefined;
+
+			if (shortFlagMatchResult && (name = shortFlagMatchResult.name)) {
+				const optionFlags = name.split("");
+				const lastIndex = optionFlags.length - 1;
+
+				optionFlags.forEach((flag, index) => {
+					addOptimisticOption(
+						flag,
+						lastIndex === index ? undefined : true
+					);
+				});
+			} else if (
+				longFlagMatchResult &&
+				(name = longFlagMatchResult.name)
+			) {
+				addOptimisticOption(name, longFlagMatchResult.value);
+			}
+		} else {
+			if (currentOptionName) {
+				options[currentOptionName] = castValue(parameter);
+				currentOptionName = undefined;
 			} else {
-				options.set(flag, true);
+				!command ? (command = parameter) : operands.push(parameter);
 			}
 		}
 	}
 
-	flushOption();
+	flushOptimisticOption();
 
-	const [command, ...operands] = restArguments;
-
-	return { command, operands, options: options.values() };
+	return { command, operands, options };
 };
 
-const castValue = (value?: string) => {
-	if (value === undefined) {
-		return true;
-	}
+const SHORT_FLAG_REGEX = /^-(?<name>(?!-).*)$/;
+const LONG_FLAG_REGEX = /^--(?<name>.*?)(?:=(?<value>.+))?$/;
 
+const castValue = (value: string) => {
 	try {
-		return JSON.parse(value) as OptionValue;
+		return JSON.parse(value) as Context["options"][number];
 	} catch {
 		return value;
 	}

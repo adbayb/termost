@@ -7,7 +7,6 @@ const wait = (delay: number) => {
 const program = termost("Quickly bundle your library");
 
 // **@todo: version display (automatic from package metadata)**
-// **@todo: supports aliased option (use minimist?)**
 // @todo: clean others todos
 // @todo: add exec helpers to task() and remove system export
 // @todo: rename context to data?
@@ -165,22 +164,20 @@ program
 	});
 
 program
-	.question({
-		type: "select:one",
-		key: "plop",
-		label: "What is your single choice?",
-		choices: ["singleOption1", "singleOption2"],
-		defaultValue: "singleOption1",
+	.option({
+		key: "optionWithAlias",
+		name: ["shortOption", "s"],
+		description: "Useful CLI flag",
+		defaultValue: 0,
 	})
 	.option({
-		key: "tutu",
-		name: "myFlag",
+		key: "optionWithoutAlias",
+		name: "longOption",
 		description: "Useful CLI flag",
-		defaultValue: 100,
+		defaultValue: 1,
 	})
-	.task({
-		label: `Watching 🔎 last at ${new Date().toLocaleTimeString()}`,
-		async handler() {
-			return await wait(1000);
+	.message({
+		handler(_, data) {
+			console.log("plop", data);
 		},
 	});
