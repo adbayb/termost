@@ -6,9 +6,9 @@ const wait = (delay: number) => {
 
 const program = termost("Quickly bundle your library");
 
-// **@todo: version display (automatic from package metavalues)**
+// **@todo: main program name and version display (automaticly from package metavalues)**
+// @todo: review key vs name + key requirements (such as in question)
 // @todo: clean others todos
-// @todo: add exec helpers to task() and remove system export
 
 program
 	.command({
@@ -94,7 +94,7 @@ program
 	})
 	.message({
 		handler(values, helpers) {
-			const size = values.size as number;
+			const size: number = values.size;
 
 			helpers.print([
 				"📦 main.js",
@@ -175,8 +175,20 @@ program
 		description: "Useful CLI flag",
 		defaultValue: 1,
 	})
+	.task({
+		key: "ls",
+		label: "Retrieves files",
+		async handler(_, helpers) {
+			await wait(1000);
+
+			return await helpers.exec("ls -al", {
+				cwd: process.cwd(),
+			});
+		},
+	})
 	.message({
-		handler(values) {
+		handler(values, helpers) {
+			helpers.print(values.ls);
 			console.log("values", values);
 		},
 	});
