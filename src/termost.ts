@@ -11,7 +11,7 @@ export function termost(configuration: {
 	version: string;
 }): Termost;
 export function termost(description: string): Termost;
-export function termost(args: any): Termost {
+export function termost(parameter: any): Termost {
 	let description: string;
 	let name: string;
 	let version: string;
@@ -21,13 +21,13 @@ export function termost(args: any): Termost {
 		options,
 	} = parseArguments();
 
-	if (isObject(args)) {
-		description = args.description;
-		name = args.name;
-		version = args.version;
+	if (isObject(parameter)) {
+		description = parameter.description;
+		name = parameter.name;
+		version = parameter.version;
 	} else {
 		const packageMetadata = getPackageMetadata();
-		description = args;
+		description = parameter;
 		name = packageMetadata.name;
 		version = packageMetadata.version;
 	}

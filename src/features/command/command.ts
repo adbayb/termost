@@ -53,16 +53,18 @@ export class Command extends FluentInterface {
 		const { description, options } = this.commandContext.metadata;
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
-		const hasCommands =
-			this.#name === DEFAULT_COMMAND_NAME &&
-			this.programContext.commandRegistry.length > 0;
+		const hasCommands = this.programContext.commandRegistry.length > 0;
+		const isRootCommand = this.#name === DEFAULT_COMMAND_NAME;
+
 		const rawPrint = (...parameters: Parameters<typeof format>) =>
 			console.log(format(...parameters));
+
 		const printTitle = (message: string) =>
 			rawPrint(`\n${message}:`, {
 				color: "yellow",
 				modifier: ["bold", "underline", "uppercase"],
 			});
+
 		const printLabelValue = (
 			label: string,
 			value: string,
@@ -78,7 +80,7 @@ export class Command extends FluentInterface {
 		rawPrint(
 			`${format(
 				`${this.programContext.name}${
-					hasCommands ? "" : ` ${String(this.#name)}`
+					isRootCommand ? "" : ` ${String(this.#name)}`
 				}`,
 				{
 					color: "green",
