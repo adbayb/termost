@@ -1,6 +1,6 @@
 {
 	"name": "termost",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Get the most of your terminal",
 	"author": {
 		"name": "Ayoub Adib",
@@ -12,13 +12,45 @@
 		"url": "git@github.com:adbayb/termost.git"
 	},
 	"license": "MIT",
+	"source": "src/index.ts",
+	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
 	"scripts": {
+		"prepublishOnly": "yarn lint && yarn test && yarn build",
 		"start": "node -r esbuild-register example/index.ts",
+		"build": "rm -rf dist && tsc",
 		"verify": "yarn lint & tsc --noEmit",
 		"fix": "yarn lint --fix",
 		"lint": "eslint . --ignore-path .gitignore",
 		"format": "prettier . --ignore-path .gitignore --ignore-path .prettierignore --write",
-		"test": "jest"
+		"test": "jest",
+		"release": "semantic-release"
+	},
+	"dependencies": {
+		"chalk": "4.1.2",
+		"inquirer": "8.1.2",
+		"listr": "0.14.3"
+	},
+	"devDependencies": {
+		"@adbayb/eslint-config": "0.7.0",
+		"@adbayb/prettier-config": "0.7.0",
+		"@adbayb/ts-config": "0.7.0",
+		"@semantic-release/git": "9.0.0",
+		"@types/inquirer": "7.3.3",
+		"@types/jest": "27.0.0",
+		"@types/listr": "0.14.4",
+		"esbuild": "0.12.19",
+		"esbuild-jest": "0.5.0",
+		"esbuild-register": "2.6.0",
+		"eslint": "7.31.0",
+		"husky": "4.3.8",
+		"jest": "27.0.6",
+		"lint-staged": "11.1.2",
+		"prettier": "2.3.2",
+		"semantic-release": "17.4.4",
+		"typescript": "4.3.5"
 	},
 	"prettier": "@adbayb/prettier-config",
 	"eslintConfig": {
@@ -42,25 +74,57 @@
 			"yarn format"
 		]
 	},
-	"devDependencies": {
-		"@adbayb/eslint-config": "0.7.0",
-		"@adbayb/prettier-config": "0.7.0",
-		"@adbayb/ts-config": "0.7.0",
-		"@types/inquirer": "7.3.3",
-		"@types/jest": "27.0.0",
-		"@types/listr": "0.14.4",
-		"esbuild-jest": "0.5.0",
-		"esbuild-register": "2.6.0",
-		"eslint": "7.31.0",
-		"husky": "4.3.8",
-		"jest": "27.0.6",
-		"lint-staged": "11.1.2",
-		"prettier": "2.3.2",
-		"typescript": "4.3.5"
-	},
-	"dependencies": {
-		"chalk": "4.1.2",
-		"inquirer": "8.1.2",
-		"listr": "0.14.3"
+	"release": {
+		"branches": [
+			"main"
+		],
+		"ci": false,
+		"plugins": [
+			[
+				"@semantic-release/commit-analyzer",
+				{
+					"releaseRules": [
+						{
+							"breaking": true,
+							"release": "major"
+						},
+						{
+							"revert": true,
+							"release": "patch"
+						},
+						{
+							"type": "feat",
+							"release": "minor"
+						},
+						{
+							"type": "fix",
+							"release": "patch"
+						},
+						{
+							"type": "perf",
+							"release": "patch"
+						},
+						{
+							"type": "refactor",
+							"release": "patch"
+						},
+						{
+							"type": "chore",
+							"scope": "deps",
+							"release": "patch"
+						}
+					]
+				}
+			],
+			"@semantic-release/release-notes-generator",
+			"@semantic-release/npm",
+			[
+				"@semantic-release/git",
+				{
+					"message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
+				}
+			],
+			"@semantic-release/github"
+		]
 	}
 }
