@@ -9,11 +9,11 @@ export class Command extends FluentInterface {
 	constructor(
 		name: CommandName,
 		description: string,
-		programContext?: ProgramContext
+		programContext: ProgramContext
 	) {
 		super(description, programContext);
-		this.#name = name;
 
+		this.#name = name;
 		this.option({
 			name: "help",
 			description: "Display the help center",
@@ -39,27 +39,27 @@ export class Command extends FluentInterface {
 	 */
 	async #enable() {
 		if ("help" in this.programContext.options) {
-			return this.#help();
+			return this.#showHelp();
 		}
 
 		if ("version" in this.programContext.options) {
-			return this.#version();
+			return this.#showVersion();
 		}
 
 		this.manager.traverse();
 	}
 
-	#help() {
+	#showHelp() {
 		const { description, options } = this.commandContext.metadata;
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
 		const hasCommands =
 			this.#name === DEFAULT_COMMAND_NAME &&
 			this.programContext.commandRegistry.length > 0;
-		const print = (...parameters: Parameters<typeof format>) =>
+		const rawPrint = (...parameters: Parameters<typeof format>) =>
 			console.log(format(...parameters));
 		const printTitle = (message: string) =>
-			print(`\n${message}:`, {
+			rawPrint(`\n${message}:`, {
 				color: "yellow",
 				modifier: ["bold", "underline", "uppercase"],
 			});
@@ -68,16 +68,16 @@ export class Command extends FluentInterface {
 			value: string,
 			padding: number
 		) =>
-			print(
+			rawPrint(
 				`  ${format(label.padEnd(padding + 1, " "), {
 					color: "green",
 				})} ${value}`
 			);
 
 		printTitle("Usage");
-		print(
+		rawPrint(
 			`${format(
-				`${process.argv0}${
+				`${this.programContext.name}${
 					hasCommands ? "" : ` ${String(this.#name)}`
 				}`,
 				{
@@ -89,7 +89,7 @@ export class Command extends FluentInterface {
 		);
 
 		printTitle("Description");
-		print(description);
+		rawPrint(description);
 
 		const padding = [
 			...this.programContext.commandRegistry.map(
@@ -118,7 +118,7 @@ export class Command extends FluentInterface {
 		}
 	}
 
-	#version() {
-		console.info("TODO: version");
+	#showVersion() {
+		console.info(this.programContext.version);
 	}
 }

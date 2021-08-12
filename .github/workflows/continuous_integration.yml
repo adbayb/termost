@@ -1,0 +1,55 @@
+name: Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+    setup:
+        timeout-minutes: 5
+        name: Setup the cache
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v2
+            - name: Use Node.js latest
+              uses: actions/setup-node@v2
+              with:
+                  node-version: lts/*
+                  cache: yarn
+            - name: Install
+              run: yarn install --frozen-lockfile --prefer-offline
+    check:
+        timeout-minutes: 5
+        needs: setup
+        name: Check the code
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v2
+            - name: Use Node.js latest
+              uses: actions/setup-node@v2
+              with:
+                  node-version: lts/*
+                  cache: yarn
+            - name: Restore dependency cache
+              run: yarn
+            - name: Lint
+              run: yarn lint
+            - name: Test
+              run: yarn test
+    build:
+        timeout-minutes: 5
+        needs: check
+        name: Build the library
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v2
+            - name: Use Node.js latest
+              uses: actions/setup-node@v2
+              with:
+                  node-version: lts/*
+                  cache: yarn
+            - name: Restore dependency cache
+              run: yarn
+            - name: Build
+              run: yarn build

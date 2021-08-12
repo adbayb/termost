@@ -17,13 +17,9 @@ export class FluentInterface {
 	protected commandContext: CommandContext;
 	protected manager: AsyncQueue;
 
-	constructor(description: string, programContext?: ProgramContext) {
+	constructor(description: string, programContext: ProgramContext) {
 		this.manager = new AsyncQueue();
-		this.programContext = programContext || {
-			commandRegistry: [],
-			operands: [],
-			options: {},
-		};
+		this.programContext = programContext;
 		this.commandContext = {
 			values: {},
 			metadata: {

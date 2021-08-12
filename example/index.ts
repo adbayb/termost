@@ -4,10 +4,13 @@ const wait = (delay: number) => {
 	return new Promise((resolve) => setTimeout(resolve, delay));
 };
 
-const program = termost("Quickly bundle your library");
+const program = termost({
+	name: "toto",
+	version: "v6",
+	description: "Quickly bundle your library",
+});
 
 // **@todo: main program name and version display (automaticly from package metavalues)**
-// @todo: clean others todos
 
 program
 	.command({

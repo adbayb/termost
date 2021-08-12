@@ -11,6 +11,8 @@ export type CommandContext = {
 };
 
 export type ProgramContext = {
+	name: string;
+	version: string;
 	commandRegistry: Array<{
 		name: Exclude<CommandName, symbol>;
 		description: string;

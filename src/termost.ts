@@ -1,17 +1,40 @@
+/* eslint-disable padding-line-between-statements */
 import { DEFAULT_COMMAND_NAME } from "./constants";
 import { parseArguments } from "./core/parser";
 import { Command } from "./features/command";
+import { ProgramContext } from "./features/types";
 
-export const termost = (
-	...parameters: ConstructorParameters<typeof Termost>
-) => {
-	return new Termost(...parameters);
-};
+export function termost(configuration: {
+	name: string;
+	description: string;
+	version: string;
+}): Termost;
+export function termost(description: string): Termost;
+export function termost(args: any): Termost {
+	const {
+		command = DEFAULT_COMMAND_NAME,
+		operands,
+		options,
+	} = parseArguments();
+	const description = isObject(args) ? args.description : args;
+	const name = isObject(args) ? args.name : "termost";
+	const version = isObject(args) ? args.version : "v1.2.0";
+
+	const programContext = {
+		commandRegistry: [],
+		currentCommand: command,
+		name,
+		operands,
+		options,
+		version,
+	};
+
+	return new Termost(description, programContext);
+}
 
 class Termost extends Command {
-	constructor(description: string) {
-		super(DEFAULT_COMMAND_NAME, description);
-		this.#hydrateContext();
+	constructor(description: string, programContext: ProgramContext) {
+		super(DEFAULT_COMMAND_NAME, description, programContext);
 	}
 
 	/**
@@ -29,16 +52,8 @@ class Termost extends Command {
 			this.programContext
 		);
 	}
-
-	#hydrateContext() {
-		const {
-			command = DEFAULT_COMMAND_NAME,
-			operands,
-			options,
-		} = parseArguments();
-
-		this.programContext.currentCommand = command;
-		this.programContext.options = options;
-		this.programContext.operands = operands;
-	}
 }
+
+const isObject = (value: unknown): value is Record<string, any> => {
+	return value !== null && typeof value === "object";
+};

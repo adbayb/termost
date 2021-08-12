@@ -1,0 +1,39 @@
+name: Release
+
+on: workflow_dispatch
+
+jobs:
+    setup:
+        timeout-minutes: 5
+        name: Setup the cache
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v2
+            - name: Use Node.js latest
+              uses: actions/setup-node@v2
+              with:
+                  node-version: lts/*
+                  cache: yarn
+            - name: Install
+              run: yarn install --frozen-lockfile --prefer-offline
+    release:
+        timeout-minutes: 5
+        needs: setup
+        name: Release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v2
+            - name: Use Node.js latest
+              uses: actions/setup-node@v2
+              with:
+                  node-version: lts/*
+                  cache: yarn
+            - name: Restore dependency cache
+              run: yarn
+            - name: Release
+              run: yarn semantic-release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
