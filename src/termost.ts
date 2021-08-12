@@ -1,4 +1,4 @@
-import { DEFAULT_COMMAND_KEY, globalContext } from "./context";
+import { DEFAULT_COMMAND_NAME } from "./constants";
 import { parseArguments } from "./core/parser";
 import { Command } from "./features/command";
 
@@ -10,8 +10,8 @@ export const termost = (
 
 class Termost extends Command {
 	constructor(description: string) {
-		super(DEFAULT_COMMAND_KEY, description);
-		this.#setContext();
+		super(DEFAULT_COMMAND_NAME, description);
+		this.#hydrateContext();
 	}
 
 	/**
@@ -21,20 +21,24 @@ class Termost extends Command {
 	 * @returns The Command API
 	 */
 	command(params: { name: string; description: string }) {
-		globalContext.commandRegistry.push(params);
+		this.programContext.commandRegistry.push(params);
 
-		return new Command(params.name, params.description);
+		return new Command(
+			params.name,
+			params.description,
+			this.programContext
+		);
 	}
 
-	#setContext() {
+	#hydrateContext() {
 		const {
-			command = DEFAULT_COMMAND_KEY,
+			command = DEFAULT_COMMAND_NAME,
 			operands,
 			options,
 		} = parseArguments();
 
-		globalContext.currentCommand = command;
-		globalContext.options = options;
-		globalContext.operands = operands;
+		this.programContext.currentCommand = command;
+		this.programContext.options = options;
+		this.programContext.operands = operands;
 	}
 }

@@ -10,12 +10,13 @@ export const createTask = (parameters: TaskParameters): Instruction => {
 	const { key, label, handler } = parameters;
 	const receiver = new Listr();
 
-	return async function execute(context) {
+	return async function execute(commandContext) {
 		let value: unknown;
 
 		receiver.add({
 			title: label,
-			task: async () => (value = await handler(context.values, HELPERS)),
+			task: async () =>
+				(value = await handler(commandContext.values, HELPERS)),
 		});
 
 		await receiver.run();

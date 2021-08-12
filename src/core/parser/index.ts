@@ -1,5 +1,3 @@
-import { Context } from "../../context";
-
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const parseArguments = () => {
 	const parameters = process.argv.slice(2);
@@ -66,9 +64,9 @@ export const parseArguments = () => {
 const SHORT_FLAG_REGEX = /^-(?<name>(?!-).*)$/;
 const LONG_FLAG_REGEX = /^--(?<name>.*?)(?:=(?<value>.+))?$/;
 
-const castValue = (value: string) => {
+const castValue = (value: string): string | boolean | number => {
 	try {
-		return JSON.parse(value) as Context["options"][number];
+		return JSON.parse(value);
 	} catch {
 		return value;
 	}

@@ -7,17 +7,24 @@ import {
 	CommandContext,
 	CreateInstruction,
 	InstructionParameters,
+	ProgramContext,
 } from "../types";
 
 export class FluentInterface {
-	// @note: soft private through protected (ie. type checking only but still accessible runtime side)
+	// @note: soft private through protected access modifier (type checking only but still accessible runtime side)
 	// since JavaScript runtime doesn't handle yet access to private field from inherited classes:
-	protected context: CommandContext;
+	protected programContext: ProgramContext;
+	protected commandContext: CommandContext;
 	protected manager: AsyncQueue;
 
-	constructor(description: string) {
+	constructor(description: string, programContext?: ProgramContext) {
 		this.manager = new AsyncQueue();
-		this.context = {
+		this.programContext = programContext || {
+			commandRegistry: [],
+			operands: [],
+			options: {},
+		};
+		this.commandContext = {
 			values: {},
 			metadata: {
 				description,
@@ -35,7 +42,7 @@ export class FluentInterface {
 			(optionParams) =>
 				createOption({
 					...optionParams,
-					context: this.context,
+					commandContext: this.commandContext,
 				}),
 			parameters
 		);
@@ -58,14 +65,17 @@ export class FluentInterface {
 		this.manager.enqueue(async () => {
 			const { skip } = parameters;
 
-			if (skip?.(this.context.values)) {
+			if (skip?.(this.commandContext.values)) {
 				return;
 			}
 
-			const instructionValue = await instruction(this.context);
+			const instructionValue = await instruction(
+				this.commandContext,
+				this.programContext
+			);
 
 			if (instructionValue && instructionValue.key) {
-				this.context.values[instructionValue.key] =
+				this.commandContext.values[instructionValue.key] =
 					instructionValue.value;
 			}
 		});

@@ -8,8 +8,8 @@ import { format, print } from "./helpers";
 export const createMessage = (parameters: MessageParameters): Instruction => {
 	const { handler } = parameters;
 
-	return async function execute(context) {
-		handler(context.values, HELPERS);
+	return async function execute(commandContext) {
+		handler(commandContext.values, HELPERS);
 
 		return null;
 	};

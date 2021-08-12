@@ -1,3 +1,25 @@
+export type CommandName = symbol | string;
+
+export type CommandContextValues = Record<string, any>;
+
+export type CommandContext = {
+	values: CommandContextValues;
+	metadata: {
+		description: string;
+		options: Record<string, string>;
+	};
+};
+
+export type ProgramContext = {
+	commandRegistry: Array<{
+		name: Exclude<CommandName, symbol>;
+		description: string;
+	}>;
+	currentCommand?: CommandName;
+	operands: Array<string>;
+	options: Record<string, string | boolean | number>;
+};
+
 export type InstructionParameters<
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	ExtraParameters extends Record<string, unknown> = {}
@@ -14,19 +36,10 @@ export type InstructionParameters<
  * Follows the command design pattern
  */
 export type Instruction<Value = CommandContextValues[number]> = (
-	context: CommandContext
+	commandContext: CommandContext,
+	programContext: ProgramContext
 ) => Promise<null | (Pick<InstructionParameters, "key"> & { value: Value })>;
 
 export type CreateInstruction<Parameters extends InstructionParameters> = (
 	parameters: Parameters
 ) => Instruction;
-
-export type CommandContextValues = Record<string, any>;
-
-export type CommandContext = {
-	values: CommandContextValues;
-	metadata: {
-		description: string;
-		options: Record<string, string>;
-	};
-};

@@ -1,14 +1,19 @@
-import { DEFAULT_COMMAND_KEY, globalContext } from "../../context";
+import { DEFAULT_COMMAND_NAME } from "../../constants";
 import { format } from "../message/helpers";
+import { CommandName, ProgramContext } from "../types";
 import { FluentInterface } from "./fluentInterface";
 
 export class Command extends FluentInterface {
-	#name: string | undefined;
+	#name: CommandName;
 
-	constructor(name: string, description: string) {
-		super(description);
-
+	constructor(
+		name: CommandName,
+		description: string,
+		programContext?: ProgramContext
+	) {
+		super(description, programContext);
 		this.#name = name;
+
 		this.option({
 			name: "help",
 			description: "Display the help center",
@@ -19,9 +24,9 @@ export class Command extends FluentInterface {
 
 		setTimeout(() => {
 			// @note: if the user command doesn't match the the command instance name, then do not execute the command
-			if (globalContext.currentCommand === this.#name) {
+			if (this.programContext.currentCommand === this.#name) {
 				// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
-				// It'll allow to make sure that the `globalContext` is correctly filled with all commands
+				// It'll allow to make sure that the `programContext` is correctly filled with all commands
 				// metadata (especially to let the global help option to display all available commands):
 				this.#enable();
 			}
@@ -33,15 +38,11 @@ export class Command extends FluentInterface {
 	 * @returns The disable function to stop tasks and unregister the command on the fly
 	 */
 	async #enable() {
-		const reservedOption = Object.keys(globalContext.options).find(
-			(userOption) => ["help", "version"].includes(userOption)
-		);
-
-		if (reservedOption === "help") {
+		if ("help" in this.programContext.options) {
 			return this.#help();
 		}
 
-		if (reservedOption === "version") {
+		if ("version" in this.programContext.options) {
 			return this.#version();
 		}
 
@@ -49,12 +50,12 @@ export class Command extends FluentInterface {
 	}
 
 	#help() {
-		const { description, options } = this.context.metadata;
+		const { description, options } = this.commandContext.metadata;
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
 		const hasCommands =
-			this.#name === DEFAULT_COMMAND_KEY &&
-			globalContext.commandRegistry.length > 0;
+			this.#name === DEFAULT_COMMAND_NAME &&
+			this.programContext.commandRegistry.length > 0;
 		const print = (...parameters: Parameters<typeof format>) =>
 			console.log(format(...parameters));
 		const printTitle = (message: string) =>
@@ -76,7 +77,9 @@ export class Command extends FluentInterface {
 		printTitle("Usage");
 		print(
 			`${format(
-				`${process.argv0}${hasCommands ? "" : ` ${this.#name}`}`,
+				`${process.argv0}${
+					hasCommands ? "" : ` ${String(this.#name)}`
+				}`,
 				{
 					color: "green",
 				}
@@ -89,7 +92,9 @@ export class Command extends FluentInterface {
 		print(description);
 
 		const padding = [
-			...globalContext.commandRegistry.map((command) => command.name),
+			...this.programContext.commandRegistry.map(
+				(command) => command.name
+			),
 			...optionKeys,
 		].reduce((padding, item) => {
 			return Math.max(padding, item.length);
@@ -98,7 +103,8 @@ export class Command extends FluentInterface {
 		if (hasCommands) {
 			printTitle("Commands");
 
-			for (const { name, description } of globalContext.commandRegistry) {
+			for (const { name, description } of this.programContext
+				.commandRegistry) {
 				printLabelValue(name, description, padding);
 			}
 		}
