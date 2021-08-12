@@ -19,7 +19,6 @@
 	],
 	"scripts": {
 		"prepublishOnly": "yarn lint && yarn test && yarn build",
-		"start": "node -r esbuild-register example/index.ts",
 		"build": "rm -rf dist && tsc",
 		"example": "node -r esbuild-register example/index.ts",
 		"verify": "yarn lint & tsc --noEmit",
