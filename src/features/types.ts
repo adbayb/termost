@@ -15,7 +15,7 @@ export type InstructionParameters<
  */
 export type Instruction<Value = CommandContextValues[number]> = (
 	context: CommandContext
-) => Promise<Value>;
+) => Promise<null | (Pick<InstructionParameters, "key"> & { value: Value })>;
 
 export type CreateInstruction<Parameters extends InstructionParameters> = (
 	parameters: Parameters

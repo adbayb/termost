@@ -29,7 +29,7 @@ export const createQuestion = (parameters: QuestionParameters): Instruction => {
 
 		const data = await receiver.prompt([mappedProperties]);
 
-		return data[key];
+		return { key, value: data[key] };
 	};
 };
 

@@ -10,6 +10,8 @@ export const createMessage = (parameters: MessageParameters): Instruction => {
 
 	return async function execute(context) {
 		handler(context.values, HELPERS);
+
+		return null;
 	};
 };
 

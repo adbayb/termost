@@ -7,7 +7,6 @@ const wait = (delay: number) => {
 const program = termost("Quickly bundle your library");
 
 // **@todo: main program name and version display (automaticly from package metavalues)**
-// @todo: review key vs name + key requirements (such as in question)
 // @todo: clean others todos
 
 program

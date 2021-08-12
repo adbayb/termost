@@ -56,16 +56,17 @@ export class FluentInterface {
 		const instruction = createInstruction(parameters);
 
 		this.manager.enqueue(async () => {
-			const { key, skip } = parameters;
+			const { skip } = parameters;
 
 			if (skip?.(this.context.values)) {
 				return;
 			}
 
-			const value = await instruction(this.context);
+			const instructionValue = await instruction(this.context);
 
-			if (key) {
-				this.context.values[key] = value;
+			if (instructionValue && instructionValue.key) {
+				this.context.values[instructionValue.key] =
+					instructionValue.value;
 			}
 		});
 

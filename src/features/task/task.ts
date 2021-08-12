@@ -7,7 +7,7 @@ import {
 import { exec } from "./helpers";
 
 export const createTask = (parameters: TaskParameters): Instruction => {
-	const { label, handler } = parameters;
+	const { key, label, handler } = parameters;
 	const receiver = new Listr();
 
 	return async function execute(context) {
@@ -20,7 +20,7 @@ export const createTask = (parameters: TaskParameters): Instruction => {
 
 		await receiver.run();
 
-		return value;
+		return { key, value };
 	};
 };
 

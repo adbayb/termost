@@ -4,8 +4,20 @@ import { CommandContext, Instruction, InstructionParameters } from "../types";
 export const createOption = (
 	parameters: InternalOptionParameters
 ): Instruction => {
-	const { name, defaultValue, description, context } = parameters;
+	const {
+		key: keyParameter,
+		name,
+		defaultValue,
+		description,
+		context,
+	} = parameters;
 	const aliases = typeof name === "string" ? [name] : [name.long, name.short];
+	const key =
+		keyParameter ||
+		// @note: we exclude reserved option name from the context output:
+		(!["help", "version", undefined].includes(aliases[0])
+			? aliases[0]
+			: undefined);
 	const metadataKey = aliases
 		.map((alias, index) => "-".repeat(2 - index) + alias)
 		.join(", ");
@@ -23,7 +35,7 @@ export const createOption = (
 			}
 		}
 
-		return value ?? defaultValue;
+		return { key, value: value ?? defaultValue };
 	};
 };
 
