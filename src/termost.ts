@@ -1,5 +1,6 @@
 /* eslint-disable padding-line-between-statements */
 import { DEFAULT_COMMAND_NAME } from "./constants";
+import { getPackageMetadata } from "./core/package";
 import { parseArguments } from "./core/parser";
 import { Command } from "./features/command";
 import { ProgramContext } from "./features/types";
@@ -11,14 +12,25 @@ export function termost(configuration: {
 }): Termost;
 export function termost(description: string): Termost;
 export function termost(args: any): Termost {
+	let description: string;
+	let name: string;
+	let version: string;
 	const {
 		command = DEFAULT_COMMAND_NAME,
 		operands,
 		options,
 	} = parseArguments();
-	const description = isObject(args) ? args.description : args;
-	const name = isObject(args) ? args.name : "termost";
-	const version = isObject(args) ? args.version : "v1.2.0";
+
+	if (isObject(args)) {
+		description = args.description;
+		name = args.name;
+		version = args.version;
+	} else {
+		const packageMetadata = getPackageMetadata();
+		description = args;
+		name = packageMetadata.name;
+		version = packageMetadata.version;
+	}
 
 	const programContext = {
 		commandRegistry: [],

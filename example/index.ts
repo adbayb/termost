@@ -4,75 +4,7 @@ const wait = (delay: number) => {
 	return new Promise((resolve) => setTimeout(resolve, delay));
 };
 
-const program = termost({
-	name: "toto",
-	version: "v6",
-	description: "Quickly bundle your library",
-});
-
-// **@todo: main program name and version display (automaticly from package metavalues)**
-
-program
-	.command({
-		name: "interact",
-		description: "Interactive example",
-	})
-	.question({
-		type: "select:one",
-		key: "question1",
-		label: "What is your single choice?",
-		choices: ["singleOption1", "singleOption2"],
-		defaultValue: "singleOption1",
-	})
-	.question({
-		type: "select:many",
-		key: "question2",
-		label: "What is your multiple choices?",
-		choices: ["multipleOption1", "multipleOption2"],
-		defaultValue: ["multipleOption2"],
-		skip(values) {
-			return values.question1 !== "singleOption2";
-		},
-	})
-	.question({
-		type: "confirm",
-		key: "question3",
-		label: "What is your confirm question?",
-		defaultValue: true,
-	})
-	.question({
-		type: "text",
-		key: "question4",
-		label: "What is your text question?",
-		defaultValue: "bypass next command",
-		skip(values) {
-			return Boolean(values.question3);
-		},
-	})
-	.option({
-		name: "myFlag",
-		description: "Useful CLI flag",
-		defaultValue: 2,
-	})
-	.task({
-		label: "Checking git status",
-		async handler() {
-			await wait(2000);
-
-			return new Set(["plop"]);
-		},
-		skip(values) {
-			return values.question4 === "bypass next command";
-		},
-	})
-	.task({
-		label: "Another long running tasks",
-		async handler() {
-			await wait(1000);
-
-			return "another";
-		},
-	});
+const program = termost("A real world example (bundler CLI)");
 
 program
 	.command({
