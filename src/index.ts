@@ -1,4 +1,3 @@
-import { termost } from "./termost";
+export { termost } from "./termost";
 
-// eslint-disable-next-line import/no-default-export
-export default termost;
+export type { Termost } from "./termost";

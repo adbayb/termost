@@ -44,7 +44,7 @@ export function termost(parameter: any): Termost {
 	return new Termost(description, programContext);
 }
 
-class Termost extends Command {
+export class Termost extends Command {
 	constructor(description: string, programContext: ProgramContext) {
 		super(DEFAULT_COMMAND_NAME, description, programContext);
 	}

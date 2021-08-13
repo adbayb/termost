@@ -1,4 +1,4 @@
-import termost from "../src";
+import { termost } from "../src";
 
 const program = termost("Example to showcase the `task` API");
 
