@@ -5,13 +5,22 @@ import { parseArguments } from "./core/parser";
 import { Command } from "./features/command";
 import { ProgramContext } from "./features/types";
 
-export function termost(configuration: {
-	name: string;
-	description: string;
-	version: string;
-}): Termost;
-export function termost(description: string): Termost;
-export function termost(parameter: any): Termost {
+export function termost(
+	configuration: {
+		name: string;
+		description: string;
+		version: string;
+	},
+	callbacks?: TerminationCallbacks
+): Termost;
+export function termost(
+	description: string,
+	callbacks?: TerminationCallbacks
+): Termost;
+export function termost(
+	parameter: any,
+	callbacks: TerminationCallbacks = {}
+): Termost {
 	let description: string;
 	let name: string;
 	let version: string;
@@ -41,6 +50,8 @@ export function termost(parameter: any): Termost {
 		version,
 	};
 
+	setGracefulListeners(callbacks);
+
 	return new Termost(description, programContext);
 }
 
@@ -68,4 +79,38 @@ export class Termost extends Command {
 
 const isObject = (value: unknown): value is Record<string, any> => {
 	return value !== null && typeof value === "object";
+};
+
+type TerminationCallbacks = Partial<{
+	onShutdown: () => void;
+	onException: (error: Error) => void;
+}>;
+
+const setGracefulListeners = ({
+	onShutdown = () => {},
+	onException = () => {},
+}: TerminationCallbacks) => {
+	// @section: gracefully shutdown our cli:
+	process.on("SIGTERM", () => {
+		onShutdown();
+		process.exit(0);
+	});
+
+	process.on("SIGINT", () => {
+		onShutdown();
+		process.exit(0);
+	});
+
+	process.on("uncaughtException", (error) => {
+		onException(error);
+		process.exit(1);
+	});
+
+	process.on("unhandledRejection", (reason) => {
+		if (reason instanceof Error) {
+			onException(reason);
+		}
+
+		process.exit(1);
+	});
 };

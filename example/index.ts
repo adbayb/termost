@@ -1,11 +1,23 @@
 import { termost } from "../src";
 
-// @todo: setup() helper called inside termost to handle global error listeners?
 // @todo: add function to generate label with values for `question` and `task` api
 // @todo: typing for values `termost<{ ls: string }>()`
 
 const program = termost(
-	"Program description placeholder. Program name and version are retrieved from your `package.json`. You can override this automatic retrieval by using the `termost({ name, description, version })` builder form."
+	"Program description placeholder. Program name and version are retrieved from your `package.json`. You can override this automatic retrieval by using the `termost({ name, description, version })` builder form.",
+	{
+		onShutdown() {
+			console.log(
+				"Catches `SIGINT` and `SIGTERM` OS signals (useful, for example, to release resources before interrupting the process)"
+			);
+		},
+		onException(error) {
+			console.log(
+				"Catches `uncaughtException` and `unhandledRejection` events",
+				error
+			);
+		},
+	}
 );
 
 program
