@@ -1,6 +1,10 @@
 import { AsyncQueue } from "../../core/queue";
 import { MessageParameters, createMessage } from "../message";
-import { OptionParameters, createOption } from "../option";
+import {
+	InternalOptionParameters,
+	OptionParameters,
+	createOption,
+} from "../option";
 import { QuestionParameters, createQuestion } from "../question";
 import { TaskParameters, createTask } from "../task";
 import {
@@ -10,7 +14,7 @@ import {
 	ProgramContext,
 } from "../types";
 
-export class FluentInterface {
+export class FluentInterface<Values> {
 	// @note: soft private through protected access modifier (type checking only but still accessible runtime side)
 	// since JavaScript runtime doesn't handle yet access to private field from inherited classes:
 	protected programContext: ProgramContext;
@@ -29,12 +33,16 @@ export class FluentInterface {
 		};
 	}
 
-	message(parameters: MessageParameters) {
+	message(parameters: MessageParameters<Values>) {
 		return this.#createInstruction(createMessage, parameters);
 	}
 
-	option(parameters: OptionParameters) {
-		return this.#createInstruction(
+	// @note: for option and task, we do not enforce generic constraint through extends keyword
+	// since we need to manage different API behaviors based upon Key being a key of Values or not (ie. non defined key)
+	// By default, `extends` acts also as a default value if the targetted key is not specified
+	// (ie. `Key extends keyof Values` is inferred as `keyof Values` even if key is not explicitly defined consumer side)
+	option<Key>(parameters: OptionParameters<Key, Values>) {
+		return this.#createInstruction<InternalOptionParameters>(
 			(optionParams) =>
 				createOption({
 					...optionParams,
@@ -44,19 +52,21 @@ export class FluentInterface {
 		);
 	}
 
-	question(parameters: QuestionParameters) {
+	question<Key extends keyof Values>(
+		parameters: QuestionParameters<Key, Values>
+	) {
 		return this.#createInstruction(createQuestion, parameters);
 	}
 
-	task(parameters: TaskParameters) {
+	task<Key>(parameters: TaskParameters<Key, Values>) {
 		return this.#createInstruction(createTask, parameters);
 	}
 
-	#createInstruction<Parameters extends InstructionParameters>(
+	#createInstruction<Parameters>(
 		createInstruction: CreateInstruction<Parameters>,
-		parameters: Parameters
+		parameters: InstructionParameters<Values>
 	) {
-		const instruction = createInstruction(parameters);
+		const instruction = createInstruction(parameters as Parameters);
 
 		this.manager.enqueue(async () => {
 			const { skip } = parameters;
@@ -71,7 +81,7 @@ export class FluentInterface {
 			);
 
 			if (instructionValue && instructionValue.key) {
-				this.commandContext.values[instructionValue.key] =
+				this.commandContext.values[instructionValue.key as string] =
 					instructionValue.value;
 			}
 		});

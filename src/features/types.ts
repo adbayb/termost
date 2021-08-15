@@ -1,9 +1,9 @@
 export type CommandName = symbol | string;
 
-export type CommandContextValues = Record<string, any>;
+export type ContextValues = Record<string | number | symbol, any>;
 
 export type CommandContext = {
-	values: CommandContextValues;
+	values: ContextValues;
 	metadata: {
 		description: string;
 		options: Record<string, string>;
@@ -23,25 +23,32 @@ export type ProgramContext = {
 };
 
 export type InstructionParameters<
+	Values,
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	ExtraParameters extends Record<string, unknown> = {}
 > = {
+	skip?: (values: Values) => boolean;
+} & ExtraParameters;
+
+export type InstructionKey<Key> = {
 	/**
 	 * Makes the method output available in the context object.
 	 * By default, if no provided key, the output is not included in the context.
 	 */
-	key?: string;
-	skip?: (values: CommandContextValues) => boolean;
-} & ExtraParameters;
+	key: Key;
+};
 
 /**
  * Follows the command design pattern
  */
-export type Instruction<Value = CommandContextValues[number]> = (
+export type CreateInstruction<
+	Parameters extends InstructionParameters<ContextValues>
+> = (parameters: Parameters) => (
 	commandContext: CommandContext,
 	programContext: ProgramContext
-) => Promise<null | (Pick<InstructionParameters, "key"> & { value: Value })>;
-
-export type CreateInstruction<Parameters extends InstructionParameters> = (
-	parameters: Parameters
-) => Instruction;
+) => Promise<
+	| null
+	| (Partial<InstructionKey<keyof ContextValues | undefined>> & {
+			value: ContextValues[number];
+	  })
+>;

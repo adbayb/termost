@@ -1,6 +1,11 @@
 import { termost } from "../src";
 
-const program = termost("Example to showcase the `option` API");
+type ProgramContext = {
+	optionWithAlias: number;
+	optionWithoutAlias: string;
+};
+
+const program = termost<ProgramContext>("Example to showcase the `option` API");
 
 program
 	.option({
@@ -13,7 +18,7 @@ program
 		key: "optionWithoutAlias",
 		name: "longOption",
 		description: "Useful CLI flag",
-		defaultValue: 1,
+		defaultValue: "1",
 	})
 	.message({
 		handler(values, helpers) {

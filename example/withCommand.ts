@@ -1,6 +1,10 @@
 import { termost } from "../src";
 
-const program = termost("Example to showcase the `command` API");
+type ProgramContext = { size: number };
+
+const program = termost<ProgramContext>(
+	"Example to showcase the `command` API"
+);
 
 program
 	.command({
@@ -24,7 +28,7 @@ program
 	})
 	.message({
 		handler(values, helpers) {
-			const size: number = values.size;
+			const size = values.size;
 
 			helpers.print([
 				"📦 main.js",

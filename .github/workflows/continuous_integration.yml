@@ -32,10 +32,8 @@ jobs:
                   cache: yarn
             - name: Restore dependency cache
               run: yarn
-            - name: Lint
-              run: yarn lint
-            - name: Test
-              run: yarn test
+            - name: Verify (lint, test, types)
+              run: yarn verify
     build:
         timeout-minutes: 5
         needs: check

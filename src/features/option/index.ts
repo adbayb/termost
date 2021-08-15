@@ -1,8 +1,14 @@
-import { CommandContext, Instruction, InstructionParameters } from "../types";
+import {
+	CommandContext,
+	ContextValues,
+	CreateInstruction,
+	InstructionKey,
+	InstructionParameters,
+} from "../types";
 
-export const createOption = (
-	parameters: InternalOptionParameters
-): Instruction => {
+export const createOption: CreateInstruction<InternalOptionParameters> = (
+	parameters
+) => {
 	const {
 		key: keyParameter,
 		name,
@@ -38,12 +44,24 @@ export const createOption = (
 	};
 };
 
-type InternalOptionParameters = OptionParameters & {
+export type InternalOptionParameters = OptionParameters<
+	keyof ContextValues,
+	ContextValues
+> & {
 	commandContext: CommandContext;
 };
 
-export type OptionParameters = InstructionParameters<{
+export type OptionParameters<Key, Values> = InstructionParameters<
+	Values,
+	Key extends keyof Values
+		? InstructionKey<Key> &
+				CommonParameters & {
+					defaultValue?: Values[Key];
+				}
+		: CommonParameters
+>;
+
+type CommonParameters = {
 	name: string | { long: string; short: string };
 	description: string;
-	defaultValue?: string | number | boolean;
-}>;
+};

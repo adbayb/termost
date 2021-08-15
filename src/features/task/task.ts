@@ -1,12 +1,15 @@
 import Listr from "listr";
 import {
-	CommandContextValues,
-	Instruction,
+	ContextValues,
+	CreateInstruction,
+	InstructionKey,
 	InstructionParameters,
 } from "../types";
 import { exec } from "./helpers";
 
-export const createTask = (parameters: TaskParameters): Instruction => {
+export const createTask: CreateInstruction<
+	TaskParameters<keyof ContextValues, ContextValues>
+> = (parameters) => {
 	const { key, label, handler } = parameters;
 	const receiver = new Listr();
 
@@ -29,10 +32,20 @@ const HELPERS = {
 	exec,
 };
 
-export type TaskParameters = InstructionParameters<{
-	label: string;
-	handler: (
-		values: CommandContextValues,
-		helpers: typeof HELPERS
-	) => Promise<unknown>;
-}>;
+export type TaskParameters<Key, Values> = InstructionParameters<
+	Values,
+	Parameters<Key, Values>
+>;
+
+type Parameters<Key, Values> = Key extends keyof Values
+	? Partial<InstructionKey<Key>> & {
+			label: string;
+			handler: (
+				values: Values,
+				helpers: typeof HELPERS
+			) => Promise<Values[Key]>;
+	  }
+	: {
+			label: string;
+			handler: (values: Values, helpers: typeof HELPERS) => void;
+	  };

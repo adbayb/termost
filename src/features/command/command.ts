@@ -3,7 +3,7 @@ import { format } from "../message/helpers";
 import { CommandName, ProgramContext } from "../types";
 import { FluentInterface } from "./fluentInterface";
 
-export class Command extends FluentInterface {
+export class Command<Values> extends FluentInterface<Values> {
 	#name: CommandName;
 
 	constructor(
@@ -17,10 +17,10 @@ export class Command extends FluentInterface {
 		this.option({
 			name: "help",
 			description: "Display the help center",
-		}).option({
+		} as any).option({
 			name: "version",
 			description: "Print the version",
-		});
+		} as any);
 
 		setTimeout(() => {
 			// @note: if the user command doesn't match the the command instance name, then do not execute the command

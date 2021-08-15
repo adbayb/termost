@@ -1,7 +1,7 @@
 import { termost } from "../src";
 
 // @todo: add function to generate label with values for `question` and `task` api
-// @todo: typing for values `termost<{ ls: string }>()`
+// @todo: rename ContextValues to DefaultContext/ContextRecord?
 
 const program = termost(
 	"Program description placeholder. Program name and version are retrieved from your `package.json`. You can override this automatic retrieval by using the `termost({ name, description, version })` builder form.",

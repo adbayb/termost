@@ -3,24 +3,24 @@ import { DEFAULT_COMMAND_NAME } from "./constants";
 import { getPackageMetadata } from "./core/package";
 import { parseArguments } from "./core/parser";
 import { Command } from "./features/command";
-import { ProgramContext } from "./features/types";
+import { ContextValues, ProgramContext } from "./features/types";
 
-export function termost(
+export function termost<Values extends ContextValues>(
 	configuration: {
 		name: string;
 		description: string;
 		version: string;
 	},
 	callbacks?: TerminationCallbacks
-): Termost;
-export function termost(
+): Termost<Values>;
+export function termost<Values extends ContextValues>(
 	description: string,
 	callbacks?: TerminationCallbacks
-): Termost;
-export function termost(
+): Termost<Values>;
+export function termost<Values extends ContextValues>(
 	parameter: any,
 	callbacks: TerminationCallbacks = {}
-): Termost {
+): Termost<Values> {
 	let description: string;
 	let name: string;
 	let version: string;
@@ -52,10 +52,10 @@ export function termost(
 
 	setGracefulListeners(callbacks);
 
-	return new Termost(description, programContext);
+	return new Termost<Values>(description, programContext);
 }
 
-export class Termost extends Command {
+export class Termost<Values> extends Command<Values> {
 	constructor(description: string, programContext: ProgramContext) {
 		super(DEFAULT_COMMAND_NAME, description, programContext);
 	}
@@ -69,7 +69,7 @@ export class Termost extends Command {
 	command(params: { name: string; description: string }) {
 		this.programContext.commandRegistry.push(params);
 
-		return new Command(
+		return new Command<Values>(
 			params.name,
 			params.description,
 			this.programContext

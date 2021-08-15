@@ -1,7 +1,14 @@
 import inquirer from "inquirer";
-import { Instruction, InstructionParameters } from "../types";
+import {
+	ContextValues,
+	CreateInstruction,
+	InstructionKey,
+	InstructionParameters,
+} from "../types";
 
-export const createQuestion = (parameters: QuestionParameters): Instruction => {
+export const createQuestion: CreateInstruction<
+	QuestionParameters<keyof ContextValues, ContextValues>
+> = (parameters) => {
 	const { key, defaultValue } = parameters;
 	const receiver = inquirer;
 
@@ -33,29 +40,31 @@ export const createQuestion = (parameters: QuestionParameters): Instruction => {
 	};
 };
 
-export type QuestionParameters = InstructionParameters<
-	{ key: string } & (
-		| {
-				type: "text";
-				label: string;
-				defaultValue?: string;
-		  }
-		| {
-				type: "confirm";
-				label: string;
-				defaultValue?: boolean;
-		  }
-		| {
-				type: "select:one";
-				label: string;
-				choices: Array<string>;
-				defaultValue?: string;
-		  }
-		| {
-				type: "select:many";
-				label: string;
-				choices: Array<string>;
-				defaultValue?: Array<string>;
-		  }
-	)
+export type QuestionParameters<Key, Values> = InstructionParameters<
+	Values,
+	InstructionKey<Key> &
+		(
+			| {
+					type: "text";
+					label: string;
+					defaultValue?: string;
+			  }
+			| {
+					type: "confirm";
+					label: string;
+					defaultValue?: boolean;
+			  }
+			| {
+					type: "select:one";
+					label: string;
+					choices: Array<string>;
+					defaultValue?: string;
+			  }
+			| {
+					type: "select:many";
+					label: string;
+					choices: Array<string>;
+					defaultValue?: Array<string>;
+			  }
+		)
 >;

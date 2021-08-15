@@ -1,20 +1,24 @@
 import { termost } from "../src";
 
-const program = termost("Example to showcase the `task` API");
+type ProgramContext = {
+	computedFromOtherTaskValues: "big" | "small";
+	execOutput: string;
+	size: number;
+};
+
+const program = termost<ProgramContext>("Example to showcase the `task` API");
 
 program
 	.task({
 		key: "size",
 		label: "Task with forwardable value",
 		async handler() {
-			return 223434;
+			return 45;
 		},
 	})
 	.task({
 		label: "Task with not persisted value",
-		handler() {
-			return Promise.resolve(true);
-		},
+		handler() {},
 	})
 	.task({
 		key: "computedFromOtherTaskValues",
@@ -22,9 +26,9 @@ program
 		handler(values) {
 			if (values.size > 2000) {
 				return Promise.resolve("big");
-			} else {
-				return Promise.resolve("small");
 			}
+
+			return Promise.resolve("small");
 		},
 	})
 	.task({
