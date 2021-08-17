@@ -1,25 +1,14 @@
-export type CommandName = symbol | string;
+export type CommandName = string;
 
-export type ContextValues = Record<string | number | symbol, any>;
+export type DefaultValues = Record<string, any>;
 
-export type CommandContext = {
-	values: ContextValues;
-	metadata: {
-		description: string;
-		options: Record<string, string>;
-	};
-};
-
-export type ProgramContext = {
+export type Context<Values> = {
 	name: string;
 	version: string;
-	commandRegistry: Array<{
-		name: Exclude<CommandName, symbol>;
-		description: string;
-	}>;
-	currentCommand?: CommandName;
-	operands: Array<string>;
+	currentCommand: CommandName;
+	commands: Record<CommandName, string>;
 	options: Record<string, string | boolean | number>;
+	values: Values;
 };
 
 export type InstructionParameters<
@@ -27,7 +16,7 @@ export type InstructionParameters<
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	ExtraParameters extends Record<string, unknown> = {}
 > = {
-	skip?: (values: Values) => boolean;
+	skip?: (context: Context<Values>) => boolean;
 } & ExtraParameters;
 
 export type InstructionKey<Key> = {
@@ -42,15 +31,12 @@ export type InstructionKey<Key> = {
  * Follows the command design pattern
  */
 export type CreateInstruction<
-	Parameters extends InstructionParameters<ContextValues>
-> = (parameters: Parameters) => (
-	commandContext: CommandContext,
-	programContext: ProgramContext
-) => Promise<
+	Parameters extends InstructionParameters<DefaultValues>
+> = (parameters: Parameters) => (context: Context<DefaultValues>) => Promise<
 	| null
-	| (Partial<InstructionKey<keyof ContextValues | undefined>> & {
-			value: ContextValues[number];
+	| (Partial<InstructionKey<keyof DefaultValues | undefined>> & {
+			value: DefaultValues[number];
 	  })
 >;
 
-export type Label<Values> = string | ((values: Values) => string);
+export type Label<Values> = string | ((context: Context<Values>) => string);

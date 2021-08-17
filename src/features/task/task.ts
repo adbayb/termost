@@ -1,7 +1,8 @@
 import Listr from "listr";
 import {
-	ContextValues,
+	Context,
 	CreateInstruction,
+	DefaultValues,
 	InstructionKey,
 	InstructionParameters,
 	Label,
@@ -9,21 +10,17 @@ import {
 import { exec } from "../../core/process";
 
 export const createTask: CreateInstruction<
-	TaskParameters<ContextValues, keyof ContextValues>
+	TaskParameters<DefaultValues, keyof DefaultValues>
 > = (parameters) => {
 	const { key, label, handler } = parameters;
 	const receiver = new Listr();
 
-	return async function execute(commandContext) {
+	return async function execute(context) {
 		let value: unknown;
 
 		receiver.add({
-			title:
-				typeof label === "function"
-					? label(commandContext.values)
-					: label,
-			task: async () =>
-				(value = await handler(commandContext.values, HELPERS)),
+			title: typeof label === "function" ? label(context) : label,
+			task: async () => (value = await handler(context, HELPERS)),
 		});
 
 		await receiver.run();
@@ -45,11 +42,14 @@ type Parameters<Values, Key> = Key extends keyof Values
 	? Partial<InstructionKey<Key>> & {
 			label: Label<Values>;
 			handler: (
-				values: Values,
+				context: Context<Values>,
 				helpers: typeof HELPERS
 			) => Promise<Values[Key]>;
 	  }
 	: {
 			label: Label<Values>;
-			handler: (values: Values, helpers: typeof HELPERS) => void;
+			handler: (
+				context: Context<Values>,
+				helpers: typeof HELPERS
+			) => void;
 	  };

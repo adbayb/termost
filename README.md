@@ -213,7 +213,6 @@ type ProgramContext = {
 	question2: Array<"multipleOption1" | "multipleOption2">;
 	question3: boolean;
 	question4: string;
-	question5: string;
 };
 
 const program = termost<ProgramContext>(
@@ -238,28 +237,21 @@ program
 	.question({
 		type: "confirm",
 		key: "question3",
-		label: "I can skip the next question. Are you sure to skip the next question?",
+		label: "Are you sure to skip this question?",
 		defaultValue: false,
-	})
-	.question({
-		type: "text",
-		key: "question4",
-		label: (values) =>
-			`Are you sure to skip this question? ${values.question4}`,
-		defaultValue: "bypass next command",
-		skip(values) {
-			return Boolean(values.question3);
+		skip(context) {
+			return Boolean(context.values.question3);
 		},
 	})
 	.question({
 		type: "text",
-		key: "question5",
-		label: (values) =>
-			`Dynamic question label generated from a context value: ${values.question1}`,
+		key: "question4",
+		label: (context) =>
+			`Dynamic question label generated from a context value: ${context.values.question1}`,
 	})
 	.message({
-		handler(values, helpers) {
-			helpers.print(JSON.stringify(values, null, 4));
+		handler(context, helpers) {
+			helpers.print(JSON.stringify(context, null, 4));
 		},
 	});
 ```

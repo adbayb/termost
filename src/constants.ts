@@ -1,1 +1,1 @@
-export const DEFAULT_COMMAND_NAME = Symbol("program");
+export const DEFAULT_COMMAND_NAME = Symbol("program") as unknown as string;

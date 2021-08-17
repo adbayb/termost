@@ -9,6 +9,7 @@ exports[`termost should display \`help\` 1`] = `
 Program description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
+  [92mhelp          [39m true
   [92m-h, --help    [39m Display the help center
   [92m-v, --version [39m Print the version
   [92m-f, --flag    [39m A super useful CLI flag"
@@ -27,6 +28,7 @@ Example to showcase the \`command\` API
   [92mwatch         [39m Rebuild your assets on any code change
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
+  [92mhelp          [39m true
   [92m-h, --help    [39m Display the help center
   [92m-v, --version [39m Print the version"
 `;
@@ -34,14 +36,10 @@ Example to showcase the \`command\` API
 exports[`termost should handle \`command\` api 2`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👋 Hello, I'm the \`build\` command[39m"
+[94m   👋 Hello, I'm the build command[39m"
 `;
 
-exports[`termost should handle \`command\` api 3`] = `
-"[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👋 Hello, I'm the \`watch\` command[39m"
-`;
+exports[`termost should handle \`command\` api 3`] = `""`;
 
 exports[`termost should handle \`message\` api 1`] = `
 "[94m[1m[22m[39m
@@ -66,7 +64,18 @@ exports[`termost should handle \`option\` api 1`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   {[39m
-[94m  \\"optionWithAlias\\": 0,[39m
-[94m  \\"optionWithoutAlias\\": \\"defaultValue\\"[39m
+[94m  \\"commands\\": {},[39m
+[94m  \\"name\\": \\"termost\\",[39m
+[94m  \\"options\\": {[39m
+[94m    \\"-h, --help\\": \\"Display the help center\\",[39m
+[94m    \\"-v, --version\\": \\"Print the version\\",[39m
+[94m    \\"-s, --shortOption\\": \\"Useful CLI flag\\",[39m
+[94m    \\"--longOption\\": \\"Useful CLI flag\\"[39m
+[94m  },[39m
+[94m  \\"version\\": \\"0.1.1\\",[39m
+[94m  \\"values\\": {[39m
+[94m    \\"optionWithAlias\\": 0,[39m
+[94m    \\"optionWithoutAlias\\": \\"defaultValue\\"[39m
+[94m  }[39m
 [94m}[39m"
 `;

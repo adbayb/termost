@@ -1,7 +1,5 @@
 import { termost } from "../src";
 
-// @todo: rename ContextValues to Context and add other context values (such as currentCommand)
-
 type ProgramContext = {
 	sharedOutput: string;
 	option: string;
@@ -41,9 +39,9 @@ program
 		},
 	})
 	.message({
-		handler(values, helpers) {
-			helpers.print(`Task value: ${values.sharedOutput}`);
-			helpers.print(`Option value: ${values.option}`, {
+		handler(context, helpers) {
+			helpers.print(`Task value: ${context.values.sharedOutput}`);
+			helpers.print(`Option value: ${context.values.option}`, {
 				type: "warning",
 			});
 		},

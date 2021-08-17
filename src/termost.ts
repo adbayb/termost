@@ -3,9 +3,9 @@ import { DEFAULT_COMMAND_NAME } from "./constants";
 import { getPackageMetadata } from "./core/package";
 import { parseArguments } from "./core/parser";
 import { Command } from "./features/command";
-import { ContextValues, ProgramContext } from "./features/types";
+import { Context, DefaultValues } from "./features/types";
 
-export function termost<Values extends ContextValues>(
+export function termost<Values extends DefaultValues>(
 	configuration: {
 		name: string;
 		description: string;
@@ -13,22 +13,18 @@ export function termost<Values extends ContextValues>(
 	},
 	callbacks?: TerminationCallbacks
 ): Termost<Values>;
-export function termost<Values extends ContextValues>(
+export function termost<Values extends DefaultValues>(
 	description: string,
 	callbacks?: TerminationCallbacks
 ): Termost<Values>;
-export function termost<Values extends ContextValues>(
+export function termost<Values extends DefaultValues>(
 	parameter: any,
 	callbacks: TerminationCallbacks = {}
 ): Termost<Values> {
 	let description: string;
 	let name: string;
 	let version: string;
-	const {
-		command = DEFAULT_COMMAND_NAME,
-		operands,
-		options,
-	} = parseArguments();
+	const { command = DEFAULT_COMMAND_NAME, options } = parseArguments();
 
 	if (isObject(parameter)) {
 		description = parameter.description;
@@ -41,23 +37,23 @@ export function termost<Values extends ContextValues>(
 		version = packageMetadata.version;
 	}
 
-	const programContext = {
-		commandRegistry: [],
+	const context: Context<Values> = {
+		commands: {},
 		currentCommand: command,
 		name,
-		operands,
 		options,
 		version,
+		values: {} as Values,
 	};
 
 	setGracefulListeners(callbacks);
 
-	return new Termost<Values>(description, programContext);
+	return new Termost<Values>(description, context);
 }
 
 export class Termost<Values> extends Command<Values> {
-	constructor(description: string, programContext: ProgramContext) {
-		super(DEFAULT_COMMAND_NAME, description, programContext);
+	constructor(description: string, context: Context<Values>) {
+		super(DEFAULT_COMMAND_NAME, description, context);
 	}
 
 	/**
@@ -67,12 +63,10 @@ export class Termost<Values> extends Command<Values> {
 	 * @returns The Command API
 	 */
 	command(params: { name: string; description: string }) {
-		this.programContext.commandRegistry.push(params);
-
 		return new Command<Values>(
 			params.name,
 			params.description,
-			this.programContext
+			this.context
 		);
 	}
 }

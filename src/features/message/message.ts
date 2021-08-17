@@ -1,17 +1,18 @@
 import {
-	ContextValues,
+	Context,
 	CreateInstruction,
+	DefaultValues,
 	InstructionParameters,
 } from "../types";
 import { format, print } from "./helpers";
 
 export const createMessage: CreateInstruction<
-	MessageParameters<ContextValues>
+	MessageParameters<DefaultValues>
 > = (parameters) => {
 	const { handler } = parameters;
 
-	return async function execute(commandContext) {
-		handler(commandContext.values, HELPERS);
+	return async function execute(context) {
+		handler(context, HELPERS);
 
 		return null;
 	};
@@ -25,6 +26,6 @@ const HELPERS = {
 export type MessageParameters<Values> = InstructionParameters<
 	Values,
 	{
-		handler: (values: Values, helpers: typeof HELPERS) => void;
+		handler: (context: Context<Values>, helpers: typeof HELPERS) => void;
 	}
 >;

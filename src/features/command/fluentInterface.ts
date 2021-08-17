@@ -7,30 +7,17 @@ import {
 } from "../option";
 import { QuestionParameters, createQuestion } from "../question";
 import { TaskParameters, createTask } from "../task";
-import {
-	CommandContext,
-	CreateInstruction,
-	InstructionParameters,
-	ProgramContext,
-} from "../types";
+import { Context, CreateInstruction, InstructionParameters } from "../types";
 
 export class FluentInterface<Values> {
 	// @note: soft private through protected access modifier (type checking only but still accessible runtime side)
 	// since JavaScript runtime doesn't handle yet access to private field from inherited classes:
-	protected programContext: ProgramContext;
-	protected commandContext: CommandContext;
+	protected context: Context<Values>;
 	protected manager: AsyncQueue;
 
-	constructor(description: string, programContext: ProgramContext) {
+	constructor(context: Context<Values>) {
 		this.manager = new AsyncQueue();
-		this.programContext = programContext;
-		this.commandContext = {
-			values: {},
-			metadata: {
-				description,
-				options: {},
-			},
-		};
+		this.context = context;
 	}
 
 	message(parameters: MessageParameters<Values>) {
@@ -46,7 +33,7 @@ export class FluentInterface<Values> {
 			(optionParams) =>
 				createOption({
 					...optionParams,
-					commandContext: this.commandContext,
+					context: this.context,
 				}),
 			parameters
 		);
@@ -71,17 +58,14 @@ export class FluentInterface<Values> {
 		this.manager.enqueue(async () => {
 			const { skip } = parameters;
 
-			if (skip?.(this.commandContext.values)) {
+			if (skip?.(this.context)) {
 				return;
 			}
 
-			const instructionValue = await instruction(
-				this.commandContext,
-				this.programContext
-			);
+			const instructionValue = await instruction(this.context);
 
 			if (instructionValue && instructionValue.key) {
-				this.commandContext.values[instructionValue.key as string] =
+				this.context.values[instructionValue.key as keyof Values] =
 					instructionValue.value;
 			}
 		});

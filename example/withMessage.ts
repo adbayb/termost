@@ -3,7 +3,7 @@ import { termost } from "../src";
 const program = termost("Example to showcase the `message` API");
 
 program.message({
-	handler(values, helpers) {
+	handler(context, helpers) {
 		const content =
 			"A content formatted thanks to the `print` helper presets.";
 

@@ -8,8 +8,10 @@ program
 		description: "Transpile and bundle in production mode",
 	})
 	.message({
-		handler(values, helpers) {
-			helpers.print("👋 Hello, I'm the `build` command");
+		handler(context, helpers) {
+			helpers.print(
+				`👋 Hello, I'm the ${context.currentCommand} command`
+			);
 		},
 	});
 
@@ -19,7 +21,10 @@ program
 		description: "Rebuild your assets on any code change",
 	})
 	.message({
-		handler(values, helpers) {
-			helpers.print("👋 Hello, I'm the `watch` command");
+		handler(context, helpers) {
+			helpers.print(
+				`👋 Hello, I'm the ${context.currentCommand} command`,
+				{ type: "warning" }
+			);
 		},
 	});

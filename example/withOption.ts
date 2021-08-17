@@ -21,7 +21,7 @@ program
 		defaultValue: "defaultValue",
 	})
 	.message({
-		handler(values, helpers) {
-			helpers.print(JSON.stringify(values, null, 2));
+		handler(context, helpers) {
+			helpers.print(JSON.stringify(context, null, 2));
 		},
 	});

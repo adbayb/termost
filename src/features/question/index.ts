@@ -1,19 +1,19 @@
 import inquirer from "inquirer";
 import {
-	ContextValues,
 	CreateInstruction,
+	DefaultValues,
 	InstructionKey,
 	InstructionParameters,
 	Label,
 } from "../types";
 
 export const createQuestion: CreateInstruction<
-	QuestionParameters<ContextValues, keyof ContextValues>
+	QuestionParameters<DefaultValues, keyof DefaultValues>
 > = (parameters) => {
 	const { key, defaultValue, label } = parameters;
 	const receiver = inquirer;
 
-	return async function execute(commandContext) {
+	return async function execute(context) {
 		const mappedProperties: Record<string, unknown> = {
 			name: key,
 			default: defaultValue,
@@ -33,7 +33,7 @@ export const createQuestion: CreateInstruction<
 		}
 
 		mappedProperties.message =
-			typeof label === "function" ? label(commandContext.values) : label;
+			typeof label === "function" ? label(context) : label;
 
 		const data = await receiver.prompt([mappedProperties]);
 

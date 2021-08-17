@@ -1,7 +1,7 @@
 import {
-	CommandContext,
-	ContextValues,
+	Context,
 	CreateInstruction,
+	DefaultValues,
 	InstructionKey,
 	InstructionParameters,
 } from "../types";
@@ -14,7 +14,7 @@ export const createOption: CreateInstruction<InternalOptionParameters> = (
 		name,
 		defaultValue,
 		description,
-		commandContext,
+		context,
 	} = parameters;
 	const aliases = typeof name === "string" ? [name] : [name.short, name.long];
 	const key =
@@ -24,17 +24,20 @@ export const createOption: CreateInstruction<InternalOptionParameters> = (
 			? aliases[0]
 			: undefined);
 	const metadataKey = aliases
-		.map((alias, index) => "-".repeat(index + 1) + alias)
+		.map(
+			(alias, index) =>
+				"-".repeat(aliases.length > 1 ? index + 1 : 2) + alias
+		)
 		.join(", ");
 
-	commandContext.metadata.options[metadataKey] = description;
+	context.options[metadataKey] = description;
 
-	return async function execute(_, programContext) {
+	return async function execute(context) {
 		let value: unknown;
 
 		for (const alias of aliases) {
-			if (alias in programContext.options) {
-				value = programContext.options[alias];
+			if (alias in context.options) {
+				value = context.options[alias];
 
 				break;
 			}
@@ -45,10 +48,10 @@ export const createOption: CreateInstruction<InternalOptionParameters> = (
 };
 
 export type InternalOptionParameters = OptionParameters<
-	ContextValues,
-	keyof ContextValues
+	DefaultValues,
+	keyof DefaultValues
 > & {
-	commandContext: CommandContext;
+	context: Context<DefaultValues>;
 };
 
 export type OptionParameters<Values, Key> = InstructionParameters<

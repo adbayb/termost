@@ -1,6 +1,6 @@
 import { DEFAULT_COMMAND_NAME } from "../../constants";
 import { format } from "../message/helpers";
-import { CommandName, ProgramContext } from "../types";
+import { CommandName, Context } from "../types";
 import { FluentInterface } from "./fluentInterface";
 
 export class Command<Values> extends FluentInterface<Values> {
@@ -9,11 +9,12 @@ export class Command<Values> extends FluentInterface<Values> {
 	constructor(
 		name: CommandName,
 		description: string,
-		programContext: ProgramContext
+		context: Context<Values>
 	) {
-		super(description, programContext);
+		super(context);
 
 		this.#name = name;
+		this.context.commands[name] = description;
 		this.option({
 			name: { long: OPTION_HELP_NAMES[0], short: OPTION_HELP_NAMES[1] },
 			description: "Display the help center",
@@ -27,9 +28,9 @@ export class Command<Values> extends FluentInterface<Values> {
 
 		setTimeout(() => {
 			// @note: if the user command doesn't match the the command instance name, then do not execute the command
-			if (this.programContext.currentCommand === this.#name) {
+			if (this.context.currentCommand === this.#name) {
 				// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
-				// It'll allow to make sure that the `programContext` is correctly filled with all commands
+				// It'll allow to make sure that the `context` is correctly filled with all commands
 				// metadata (especially to let the global help option to display all available commands):
 				this.#enable();
 			}
@@ -42,15 +43,15 @@ export class Command<Values> extends FluentInterface<Values> {
 	 */
 	async #enable() {
 		if (
-			OPTION_HELP_NAMES[0] in this.programContext.options ||
-			OPTION_HELP_NAMES[1] in this.programContext.options
+			OPTION_HELP_NAMES[0] in this.context.options ||
+			OPTION_HELP_NAMES[1] in this.context.options
 		) {
 			return this.#showHelp();
 		}
 
 		if (
-			OPTION_VERSION_NAMES[0] in this.programContext.options ||
-			OPTION_VERSION_NAMES[1] in this.programContext.options
+			OPTION_VERSION_NAMES[0] in this.context.options ||
+			OPTION_VERSION_NAMES[1] in this.context.options
 		) {
 			return this.#showVersion();
 		}
@@ -59,10 +60,16 @@ export class Command<Values> extends FluentInterface<Values> {
 	}
 
 	#showHelp() {
-		const { description, options } = this.commandContext.metadata;
+		const {
+			commands,
+			currentCommand,
+			name: programName,
+			options,
+		} = this.context;
+		const description = this.context.commands[currentCommand];
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
-		const hasCommands = this.programContext.commandRegistry.length > 0;
+		const hasCommands = Object.keys(commands).length > 0;
 		const isRootCommand = this.#name === DEFAULT_COMMAND_NAME;
 
 		const rawPrint = (...parameters: Parameters<typeof format>) =>
@@ -88,7 +95,7 @@ export class Command<Values> extends FluentInterface<Values> {
 		printTitle("Usage");
 		rawPrint(
 			`${format(
-				`${this.programContext.name}${
+				`${programName}${
 					isRootCommand ? "" : ` ${String(this.#name)}`
 				}`,
 				{
@@ -99,24 +106,25 @@ export class Command<Values> extends FluentInterface<Values> {
 			}`
 		);
 
-		printTitle("Description");
-		rawPrint(description);
+		if (description) {
+			printTitle("Description");
+			rawPrint(description);
+		}
 
-		const padding = [
-			...this.programContext.commandRegistry.map(
-				(command) => command.name
-			),
-			...optionKeys,
-		].reduce((padding, item) => {
-			return Math.max(padding, item.length);
-		}, 0);
+		const padding = [...Object.keys(commands), ...optionKeys].reduce(
+			(padding, item) => {
+				return Math.max(padding, item.length);
+			},
+			0
+		);
 
 		if (hasCommands) {
 			printTitle("Commands");
 
-			for (const { name, description } of this.programContext
-				.commandRegistry) {
-				printLabelValue(name, description, padding);
+			for (const name in commands) {
+				const description = commands[name];
+
+				if (description) printLabelValue(name, description, padding);
 			}
 		}
 
@@ -130,7 +138,7 @@ export class Command<Values> extends FluentInterface<Values> {
 	}
 
 	#showVersion() {
-		console.info(this.programContext.version);
+		console.info(this.context.version);
 	}
 }
 
