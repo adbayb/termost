@@ -15,10 +15,13 @@ export class Command<Values> extends FluentInterface<Values> {
 
 		this.#name = name;
 		this.option({
-			name: "help",
+			name: { long: OPTION_HELP_NAMES[0], short: OPTION_HELP_NAMES[1] },
 			description: "Display the help center",
 		} as any).option({
-			name: "version",
+			name: {
+				long: OPTION_VERSION_NAMES[0],
+				short: OPTION_VERSION_NAMES[1],
+			},
 			description: "Print the version",
 		} as any);
 
@@ -38,11 +41,17 @@ export class Command<Values> extends FluentInterface<Values> {
 	 * @returns The disable function to stop tasks and unregister the command on the fly
 	 */
 	async #enable() {
-		if ("help" in this.programContext.options) {
+		if (
+			OPTION_HELP_NAMES[0] in this.programContext.options ||
+			OPTION_HELP_NAMES[1] in this.programContext.options
+		) {
 			return this.#showHelp();
 		}
 
-		if ("version" in this.programContext.options) {
+		if (
+			OPTION_VERSION_NAMES[0] in this.programContext.options ||
+			OPTION_VERSION_NAMES[1] in this.programContext.options
+		) {
 			return this.#showVersion();
 		}
 
@@ -124,3 +133,6 @@ export class Command<Values> extends FluentInterface<Values> {
 		console.info(this.programContext.version);
 	}
 }
+
+const OPTION_HELP_NAMES = ["help", "h"] as const;
+const OPTION_VERSION_NAMES = ["version", "v"] as const;

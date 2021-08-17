@@ -3,7 +3,6 @@ import { termost } from "../src";
 // @todo: add function to generate label with values for `question` and `task` api
 // @todo: rename ContextValues to Context and add other context values (such as currentCommand)
 // @todo: README documentation
-// @todo: add alias for help and version option
 
 const program = termost(
 	"Program description placeholder. Program name and version are retrieved from your `package.json`. You can override this automatic retrieval by using the `termost({ name, description, version })` builder form.",

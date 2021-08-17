@@ -16,7 +16,7 @@ export const createOption: CreateInstruction<InternalOptionParameters> = (
 		description,
 		commandContext,
 	} = parameters;
-	const aliases = typeof name === "string" ? [name] : [name.long, name.short];
+	const aliases = typeof name === "string" ? [name] : [name.short, name.long];
 	const key =
 		keyParameter ||
 		// @note: we exclude reserved option name from the commandContext output:
@@ -24,7 +24,7 @@ export const createOption: CreateInstruction<InternalOptionParameters> = (
 			? aliases[0]
 			: undefined);
 	const metadataKey = aliases
-		.map((alias, index) => "-".repeat(2 - index) + alias)
+		.map((alias, index) => "-".repeat(index + 1) + alias)
 		.join(", ");
 
 	commandContext.metadata.options[metadataKey] = description;
