@@ -39,10 +39,10 @@ program
 		type: "text",
 		key: "question4",
 		label: (context) =>
-			`Dynamic question label generated from a context value: ${context.values.question1}`,
+			`Dynamic question label generated from a contextual value: ${context.values.question1}`,
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(JSON.stringify(context, null, 4));
+			helpers.print(JSON.stringify(context.values, null, 4));
 		},
 	});

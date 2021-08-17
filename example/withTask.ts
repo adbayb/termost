@@ -64,7 +64,7 @@ program
 				`A task with a specified "key" can be retrieved here. Size = ${context.values.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
 			);
 
-			console.info(JSON.stringify(context, null, 2));
+			console.info(JSON.stringify(context.values, null, 2));
 		},
 	});
 

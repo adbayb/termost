@@ -64,18 +64,7 @@ exports[`termost should handle \`option\` api 1`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   {[39m
-[94m  \\"commands\\": {},[39m
-[94m  \\"name\\": \\"termost\\",[39m
-[94m  \\"options\\": {[39m
-[94m    \\"-h, --help\\": \\"Display the help center\\",[39m
-[94m    \\"-v, --version\\": \\"Print the version\\",[39m
-[94m    \\"-s, --shortOption\\": \\"Useful CLI flag\\",[39m
-[94m    \\"--longOption\\": \\"Useful CLI flag\\"[39m
-[94m  },[39m
-[94m  \\"version\\": \\"0.1.1\\",[39m
-[94m  \\"values\\": {[39m
-[94m    \\"optionWithAlias\\": 0,[39m
-[94m    \\"optionWithoutAlias\\": \\"defaultValue\\"[39m
-[94m  }[39m
+[94m  \\"optionWithAlias\\": 0,[39m
+[94m  \\"optionWithoutAlias\\": \\"defaultValue\\"[39m
 [94m}[39m"
 `;

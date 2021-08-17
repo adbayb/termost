@@ -22,6 +22,6 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(JSON.stringify(context, null, 2));
+			helpers.print(JSON.stringify(context.values, null, 2));
 		},
 	});

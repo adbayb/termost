@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
     setup:
         timeout-minutes: 5
-        name: Setup the cache
+        name: Setup cache
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
@@ -20,7 +20,7 @@ jobs:
     check:
         timeout-minutes: 5
         needs: setup
-        name: Check the code
+        name: Verify code
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
@@ -37,10 +37,10 @@ jobs:
     build:
         timeout-minutes: 5
         needs: check
-        name: Build the library
+        name: Build library
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout the code
+            - name: Checkout code
               uses: actions/checkout@v2
             - name: Use Node.js latest
               uses: actions/setup-node@v2
