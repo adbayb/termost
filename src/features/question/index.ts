@@ -41,31 +41,46 @@ export const createQuestion: CreateInstruction<
 	};
 };
 
-export type QuestionParameters<Values, Key> = InstructionParameters<
+export type QuestionParameters<
+	Values,
+	Key extends keyof Values
+> = InstructionParameters<
 	Values,
 	InstructionKey<Key> &
 		(
 			| {
 					type: "text";
 					label: Label<Values>;
-					defaultValue?: string;
+					defaultValue?: Values[Key] extends string
+						? Values[Key]
+						: never;
 			  }
 			| {
 					type: "confirm";
 					label: Label<Values>;
-					defaultValue?: boolean;
+					defaultValue?: Values[Key] extends boolean
+						? Values[Key]
+						: never;
 			  }
 			| {
 					type: "select:one";
 					label: Label<Values>;
-					choices: Array<string>;
-					defaultValue?: string;
+					choices: Values[Key] extends string
+						? Array<Values[Key]>
+						: never;
+					defaultValue?: Values[Key] extends string
+						? Values[Key]
+						: never;
 			  }
 			| {
 					type: "select:many";
 					label: Label<Values>;
-					choices: Array<string>;
-					defaultValue?: Array<string>;
+					choices: Values[Key] extends Array<string>
+						? Values[Key]
+						: never;
+					defaultValue?: Values[Key] extends Array<string>
+						? Values[Key]
+						: never;
 			  }
 		)
 >;

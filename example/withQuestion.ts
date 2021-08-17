@@ -1,8 +1,8 @@
 import { termost } from "../src";
 
 type ProgramContext = {
-	question1: Array<"singleOption1">;
-	question2: Array<"multipleOption1">;
+	question1: "singleOption1" | "singleOption2";
+	question2: Array<"multipleOption1" | "multipleOption2">;
 	question3: boolean;
 	question4: string;
 	question5: string;
