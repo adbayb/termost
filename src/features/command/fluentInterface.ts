@@ -41,7 +41,7 @@ export class FluentInterface<Values> {
 	// since we need to manage different API behaviors based upon Key being a key of Values or not (ie. non defined key)
 	// By default, `extends` acts also as a default value if the targetted key is not specified
 	// (ie. `Key extends keyof Values` is inferred as `keyof Values` even if key is not explicitly defined consumer side)
-	option<Key>(parameters: OptionParameters<Key, Values>) {
+	option<Key>(parameters: OptionParameters<Values, Key>) {
 		return this.#createInstruction<InternalOptionParameters>(
 			(optionParams) =>
 				createOption({
@@ -53,12 +53,12 @@ export class FluentInterface<Values> {
 	}
 
 	question<Key extends keyof Values>(
-		parameters: QuestionParameters<Key, Values>
+		parameters: QuestionParameters<Values, Key>
 	) {
 		return this.#createInstruction(createQuestion, parameters);
 	}
 
-	task<Key>(parameters: TaskParameters<Key, Values>) {
+	task<Key>(parameters: TaskParameters<Values, Key>) {
 		return this.#createInstruction(createTask, parameters);
 	}
 

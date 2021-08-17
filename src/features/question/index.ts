@@ -7,7 +7,7 @@ import {
 } from "../types";
 
 export const createQuestion: CreateInstruction<
-	QuestionParameters<keyof ContextValues, ContextValues>
+	QuestionParameters<ContextValues, keyof ContextValues>
 > = (parameters) => {
 	const { key, defaultValue } = parameters;
 	const receiver = inquirer;
@@ -40,7 +40,7 @@ export const createQuestion: CreateInstruction<
 	};
 };
 
-export type QuestionParameters<Key, Values> = InstructionParameters<
+export type QuestionParameters<Values, Key> = InstructionParameters<
 	Values,
 	InstructionKey<Key> &
 		(

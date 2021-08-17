@@ -45,13 +45,13 @@ export const createOption: CreateInstruction<InternalOptionParameters> = (
 };
 
 export type InternalOptionParameters = OptionParameters<
-	keyof ContextValues,
-	ContextValues
+	ContextValues,
+	keyof ContextValues
 > & {
 	commandContext: CommandContext;
 };
 
-export type OptionParameters<Key, Values> = InstructionParameters<
+export type OptionParameters<Values, Key> = InstructionParameters<
 	Values,
 	Key extends keyof Values
 		? InstructionKey<Key> &

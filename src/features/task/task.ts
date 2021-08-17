@@ -5,10 +5,10 @@ import {
 	InstructionKey,
 	InstructionParameters,
 } from "../types";
-import { exec } from "./helpers";
+import { exec } from "../../core/process";
 
 export const createTask: CreateInstruction<
-	TaskParameters<keyof ContextValues, ContextValues>
+	TaskParameters<ContextValues, keyof ContextValues>
 > = (parameters) => {
 	const { key, label, handler } = parameters;
 	const receiver = new Listr();
@@ -32,12 +32,12 @@ const HELPERS = {
 	exec,
 };
 
-export type TaskParameters<Key, Values> = InstructionParameters<
+export type TaskParameters<Values, Key> = InstructionParameters<
 	Values,
-	Parameters<Key, Values>
+	Parameters<Values, Key>
 >;
 
-type Parameters<Key, Values> = Key extends keyof Values
+type Parameters<Values, Key> = Key extends keyof Values
 	? Partial<InstructionKey<Key>> & {
 			label: string;
 			handler: (

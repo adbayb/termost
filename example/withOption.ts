@@ -18,7 +18,7 @@ program
 		key: "optionWithoutAlias",
 		name: "longOption",
 		description: "Useful CLI flag",
-		defaultValue: "1",
+		defaultValue: "defaultValue",
 	})
 	.message({
 		handler(values, helpers) {

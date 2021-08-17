@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`termost should display \`help\` 1`] = `
+"[93m[1m[4m[24m[22m[39m
+[93m[1m[4mUSAGE:[24m[22m[39m
+[92mtermost[39m [...options]
+[93m[1m[4m[24m[22m[39m
+[93m[1m[4mDESCRIPTION:[24m[22m[39m
+Program description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.
+[93m[1m[4m[24m[22m[39m
+[93m[1m[4mOPTIONS:[24m[22m[39m
+  [92m--help    [39m Display the help center
+  [92m--version [39m Print the version"
+`;
+
+exports[`termost should handle \`command\` api 1`] = `
+"[93m[1m[4m[24m[22m[39m
+[93m[1m[4mUSAGE:[24m[22m[39m
+[92mtermost[39m <command> [...options]
+[93m[1m[4m[24m[22m[39m
+[93m[1m[4mDESCRIPTION:[24m[22m[39m
+Example to showcase the \`command\` API
+[93m[1m[4m[24m[22m[39m
+[93m[1m[4mCOMMANDS:[24m[22m[39m
+  [92mbuild     [39m Transpile and bundle in production mode
+  [92mwatch     [39m Rebuild your assets on any code change
+[93m[1m[4m[24m[22m[39m
+[93m[1m[4mOPTIONS:[24m[22m[39m
+  [92m--help    [39m Display the help center
+  [92m--version [39m Print the version"
+`;
+
+exports[`termost should handle \`command\` api 2`] = `
+"[94m[1m[22m[39m
+[94m[1mℹ️  Information[22m[39m
+[94m   👋 Hello, I'm the \`build\` command[39m"
+`;
+
+exports[`termost should handle \`command\` api 3`] = `
+"[94m[1m[22m[39m
+[94m[1mℹ️  Information[22m[39m
+[94m   👋 Hello, I'm the \`watch\` command[39m"
+`;
+
+exports[`termost should handle \`message\` api 1`] = `
+"[94m[1m[22m[39m
+[94m[1mℹ️  Information[22m[39m
+[94m   A content formatted thanks to the \`print\` helper presets.[39m
+[92m[1m[22m[39m
+[92m[1m✅ Success[22m[39m
+[92m   A content formatted thanks to the \`print\` helper presets.[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  👋 You can also customize the label[22m[39m
+[94m   A content formatted thanks to the \`print\` helper presets.[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  👋 You can also customize the label[22m[39m
+[94m   I support also[39m
+[94m   multilines[39m
+[94m   with array input[39m
+[37m[3m[9m[1m[22m[29m[23m[39m
+[37m[3m[9m[1mYou can also have a total control on the formatting through the \`format\` helper.[22m[29m[23m[39m"
+`;
+
+exports[`termost should handle \`option\` api 1`] = `
+"[94m[1m[22m[39m
+[94m[1mℹ️  Information[22m[39m
+[94m   {[39m
+[94m  \\"optionWithAlias\\": 0,[39m
+[94m  \\"optionWithoutAlias\\": \\"defaultValue\\"[39m
+[94m}[39m"
+`;

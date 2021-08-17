@@ -18,7 +18,9 @@ program
 	})
 	.task({
 		label: "Task with not persisted value",
-		handler() {},
+		handler() {
+			// @note: side-effect only handler
+		},
 	})
 	.task({
 		key: "computedFromOtherTaskValues",

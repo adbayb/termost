@@ -6,5 +6,5 @@ Get the most of your terminal 💻
 
 -   [x] API
 -   [x] Examples
--   [ ] Test
+-   [x] Test
 -   [ ] Documentation
