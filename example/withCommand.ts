@@ -9,7 +9,7 @@ program
 	})
 	.message({
 		handler(values, helpers) {
-			helpers.print(["👋 Hello, I'm the `build` command"]);
+			helpers.print("👋 Hello, I'm the `build` command");
 		},
 	});
 
@@ -20,6 +20,6 @@ program
 	})
 	.message({
 		handler(values, helpers) {
-			helpers.print(["👋 Hello, I'm the `watch` command"]);
+			helpers.print("👋 Hello, I'm the `watch` command");
 		},
 	});

@@ -4,15 +4,16 @@ import {
 	CreateInstruction,
 	InstructionKey,
 	InstructionParameters,
+	Label,
 } from "../types";
 
 export const createQuestion: CreateInstruction<
 	QuestionParameters<ContextValues, keyof ContextValues>
 > = (parameters) => {
-	const { key, defaultValue } = parameters;
+	const { key, defaultValue, label } = parameters;
 	const receiver = inquirer;
 
-	return async function execute() {
+	return async function execute(commandContext) {
 		const mappedProperties: Record<string, unknown> = {
 			name: key,
 			default: defaultValue,
@@ -25,14 +26,14 @@ export const createQuestion: CreateInstruction<
 			mappedProperties["type"] =
 				parameters.type === "select:one" ? "list" : "checkbox";
 			mappedProperties.choices = parameters.choices;
-			mappedProperties.message = parameters.label;
 		} else if (parameters.type === "confirm") {
 			mappedProperties.type = "confirm";
-			mappedProperties.message = parameters.label;
 		} else {
 			mappedProperties.type = "input";
-			mappedProperties.message = parameters.label;
 		}
+
+		mappedProperties.message =
+			typeof label === "function" ? label(commandContext.values) : label;
 
 		const data = await receiver.prompt([mappedProperties]);
 
@@ -46,23 +47,23 @@ export type QuestionParameters<Values, Key> = InstructionParameters<
 		(
 			| {
 					type: "text";
-					label: string;
+					label: Label<Values>;
 					defaultValue?: string;
 			  }
 			| {
 					type: "confirm";
-					label: string;
+					label: Label<Values>;
 					defaultValue?: boolean;
 			  }
 			| {
 					type: "select:one";
-					label: string;
+					label: Label<Values>;
 					choices: Array<string>;
 					defaultValue?: string;
 			  }
 			| {
 					type: "select:many";
-					label: string;
+					label: Label<Values>;
 					choices: Array<string>;
 					defaultValue?: Array<string>;
 			  }

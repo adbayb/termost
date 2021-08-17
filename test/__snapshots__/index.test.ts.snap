@@ -9,8 +9,8 @@ exports[`termost should display \`help\` 1`] = `
 Program description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m--help    [39m Display the help center
-  [92m--version [39m Print the version"
+  [92m-h, --help    [39m Display the help center
+  [92m-v, --version [39m Print the version"
 `;
 
 exports[`termost should handle \`command\` api 1`] = `
@@ -22,12 +22,12 @@ exports[`termost should handle \`command\` api 1`] = `
 Example to showcase the \`command\` API
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mCOMMANDS:[24m[22m[39m
-  [92mbuild     [39m Transpile and bundle in production mode
-  [92mwatch     [39m Rebuild your assets on any code change
+  [92mbuild         [39m Transpile and bundle in production mode
+  [92mwatch         [39m Rebuild your assets on any code change
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m--help    [39m Display the help center
-  [92m--version [39m Print the version"
+  [92m-h, --help    [39m Display the help center
+  [92m-v, --version [39m Print the version"
 `;
 
 exports[`termost should handle \`command\` api 2`] = `

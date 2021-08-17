@@ -4,6 +4,7 @@ import {
 	CreateInstruction,
 	InstructionKey,
 	InstructionParameters,
+	Label,
 } from "../types";
 import { exec } from "../../core/process";
 
@@ -17,7 +18,10 @@ export const createTask: CreateInstruction<
 		let value: unknown;
 
 		receiver.add({
-			title: label,
+			title:
+				typeof label === "function"
+					? label(commandContext.values)
+					: label,
 			task: async () =>
 				(value = await handler(commandContext.values, HELPERS)),
 		});
@@ -39,13 +43,13 @@ export type TaskParameters<Values, Key> = InstructionParameters<
 
 type Parameters<Values, Key> = Key extends keyof Values
 	? Partial<InstructionKey<Key>> & {
-			label: string;
+			label: Label<Values>;
 			handler: (
 				values: Values,
 				helpers: typeof HELPERS
 			) => Promise<Values[Key]>;
 	  }
 	: {
-			label: string;
+			label: Label<Values>;
 			handler: (values: Values, helpers: typeof HELPERS) => void;
 	  };

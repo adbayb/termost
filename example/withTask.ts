@@ -11,13 +11,13 @@ const program = termost<ProgramContext>("Example to showcase the `task` API");
 program
 	.task({
 		key: "size",
-		label: "Task with forwardable value",
+		label: "Task with returned value (persisted)",
 		async handler() {
 			return 45;
 		},
 	})
 	.task({
-		label: "Task with not persisted value",
+		label: "Task with side-effect only (no persisted value)",
 		handler() {
 			// @note: side-effect only handler
 		},
@@ -52,6 +52,11 @@ program
 
 			return !needOptimization;
 		},
+	})
+	.task({
+		label: (values) =>
+			`A task can have a dynamic label generated from context values: ${values.computedFromOtherTaskValues}`,
+		async handler() {},
 	})
 	.message({
 		handler(values, helpers) {

@@ -1,6 +1,5 @@
 import { termost } from "../src";
 
-// @todo: add function to generate label with values for `question` and `task` api
 // @todo: rename ContextValues to Context and add other context values (such as currentCommand)
 // @todo: README documentation
 

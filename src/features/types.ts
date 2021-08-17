@@ -52,3 +52,5 @@ export type CreateInstruction<
 			value: ContextValues[number];
 	  })
 >;
+
+export type Label<Values> = string | ((values: Values) => string);
