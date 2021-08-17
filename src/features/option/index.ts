@@ -36,8 +36,8 @@ export const createOption: CreateInstruction<InternalOptionParameters> = (
 		let value: unknown;
 
 		for (const alias of aliases) {
-			if (alias in context.options) {
-				value = context.options[alias];
+			if (alias in context.args.options) {
+				value = context.args.options[alias];
 
 				break;
 			}

@@ -9,9 +9,7 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(
-				`👋 Hello, I'm the ${context.currentCommand} command`
-			);
+			helpers.print(`👋 Hello, I'm the ${context.args.command} command`);
 		},
 	});
 
@@ -22,9 +20,8 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(
-				`👋 Hello, I'm the ${context.currentCommand} command`,
-				{ type: "warning" }
-			);
+			helpers.print(`👋 Hello, I'm the ${context.args.command} command`, {
+				type: "warning",
+			});
 		},
 	});

@@ -5,9 +5,15 @@ export type DefaultValues = Record<string, any>;
 export type Context<Values> = {
 	name: string;
 	version: string;
-	currentCommand: CommandName;
+	/**
+	 * args object stores all arguments input by the CLI consumer
+	 */
+	args: {
+		command: CommandName;
+		options: Record<string, string | boolean | number>;
+	};
 	commands: Record<CommandName, string>;
-	options: Record<string, string | boolean | number>;
+	options: Record<string, string>;
 	values: Values;
 };
 

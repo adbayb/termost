@@ -27,8 +27,8 @@ export class Command<Values> extends FluentInterface<Values> {
 		} as any);
 
 		setTimeout(() => {
-			// @note: if the user command doesn't match the the command instance name, then do not execute the command
-			if (this.context.currentCommand === this.#name) {
+			// @note: if the user command doesn't match the command instance name, then do not execute the command
+			if (this.context.args.command === this.#name) {
 				// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
 				// It'll allow to make sure that the `context` is correctly filled with all commands
 				// metadata (especially to let the global help option to display all available commands):
@@ -42,16 +42,18 @@ export class Command<Values> extends FluentInterface<Values> {
 	 * @returns The disable function to stop tasks and unregister the command on the fly
 	 */
 	async #enable() {
+		const { options } = this.context.args;
+
 		if (
-			OPTION_HELP_NAMES[0] in this.context.options ||
-			OPTION_HELP_NAMES[1] in this.context.options
+			OPTION_HELP_NAMES[0] in options ||
+			OPTION_HELP_NAMES[1] in options
 		) {
 			return this.#showHelp();
 		}
 
 		if (
-			OPTION_VERSION_NAMES[0] in this.context.options ||
-			OPTION_VERSION_NAMES[1] in this.context.options
+			OPTION_VERSION_NAMES[0] in options ||
+			OPTION_VERSION_NAMES[1] in options
 		) {
 			return this.#showVersion();
 		}
@@ -60,13 +62,8 @@ export class Command<Values> extends FluentInterface<Values> {
 	}
 
 	#showHelp() {
-		const {
-			commands,
-			currentCommand,
-			name: programName,
-			options,
-		} = this.context;
-		const description = this.context.commands[currentCommand];
+		const { args, commands, name: programName, options } = this.context;
+		const description = commands[args.command];
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
 		const hasCommands = Object.keys(commands).length > 0;

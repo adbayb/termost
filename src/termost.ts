@@ -38,12 +38,12 @@ export function termost<Values extends DefaultValues>(
 	}
 
 	const context: Context<Values> = {
+		args: { command, options },
 		commands: {},
-		currentCommand: command,
 		name,
-		options,
-		version,
+		options: {},
 		values: {} as Values,
+		version,
 	};
 
 	setGracefulListeners(callbacks);
