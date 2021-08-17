@@ -55,7 +55,7 @@ program
 	})
 	.task({
 		label: (values) =>
-			`A task can have a dynamic label generated from context values: ${values.computedFromOtherTaskValues}`,
+			`A task can have a dynamic label generated from contextual values: ${values.computedFromOtherTaskValues}`,
 		async handler() {},
 	})
 	.message({

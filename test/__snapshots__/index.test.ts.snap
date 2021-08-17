@@ -10,7 +10,8 @@ Program description placeholder. Program name and version are retrieved from you
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
   [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version"
+  [92m-v, --version [39m Print the version
+  [92m-f, --flag    [39m A super useful CLI flag"
 `;
 
 exports[`termost should handle \`command\` api 1`] = `
