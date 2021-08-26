@@ -17,6 +17,17 @@
 	"files": [
 		"dist"
 	],
+	"keywords": [
+		"cli",
+		"terminal",
+		"args",
+		"argument",
+		"option",
+		"command",
+		"task",
+		"question",
+		"message"
+	],
 	"scripts": {
 		"prepublishOnly": "yarn verify && yarn build",
 		"build": "rm -rf dist && tsc",
