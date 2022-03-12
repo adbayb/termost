@@ -13,33 +13,34 @@ const program = termost<ProgramContext>(
 
 program
 	.question({
-		type: "select:one",
+		type: "select",
 		key: "question1",
 		label: "What is your single choice?",
-		choices: ["singleOption1", "singleOption2"],
-		defaultValue: "singleOption1",
+		options: ["singleOption1", "singleOption2"],
+		defaultValue: "singleOption2",
 	})
 	.question({
-		type: "select:many",
+		type: "multiselect",
 		key: "question2",
 		label: "What is your multiple choices?",
-		choices: ["multipleOption1", "multipleOption2"],
+		options: ["multipleOption1", "multipleOption2"],
 		defaultValue: ["multipleOption2"],
 	})
 	.question({
 		type: "confirm",
 		key: "question3",
-		label: "Are you sure to skip this question?",
+		label: "Are you sure to skip next question?",
 		defaultValue: false,
-		skip(context) {
-			return Boolean(context.values.question3);
-		},
 	})
 	.question({
 		type: "text",
 		key: "question4",
 		label: (context) =>
 			`Dynamic question label generated from a contextual value: ${context.values.question1}`,
+		defaultValue: "Empty input",
+		skip(context) {
+			return Boolean(context.values.question3);
+		},
 	})
 	.message({
 		handler(context, helpers) {

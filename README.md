@@ -13,7 +13,7 @@ Termost allows you build command line tools in a minute thanks to its:
 -   [Fluent](https://en.wikipedia.org/wiki/Fluent_interface) syntax to express your CLI configurations with instructions such as:
     -   [Subcommand](example/withCommand.ts) support
     -   Long and short [option](example/withOption.ts) support
-    -   [Interaction](example/withQuestion.ts) support thanks to its built-in [`inquirer`](https://www.npmjs.com/package/inquirer) wrapper
+    -   [Interaction](example/withQuestion.ts) support thanks to its built-in [`prompts`](https://www.npmjs.com/package/prompts) wrapper
     -   [Tasks](example/withTask.ts) support thanks to its built-in [`Listr`](https://www.npmjs.com/package/listr2) wrapper and `exec` helper
 -   Shareable outputs between instruction
 -   Beautiful CLI message formatting via `message` instruction
@@ -226,37 +226,38 @@ const program = termost<ProgramContext>(
 
 program
 	.question({
-		type: "select:one",
+		type: "select",
 		key: "question1",
 		label: "What is your single choice?",
-		choices: ["singleOption1", "singleOption2"],
-		defaultValue: "singleOption1",
+		options: ["singleOption1", "singleOption2"],
+		defaultValue: "singleOption2",
 	})
 	.question({
-		type: "select:many",
+		type: "multiselect",
 		key: "question2",
 		label: "What is your multiple choices?",
-		choices: ["multipleOption1", "multipleOption2"],
+		options: ["multipleOption1", "multipleOption2"],
 		defaultValue: ["multipleOption2"],
 	})
 	.question({
 		type: "confirm",
 		key: "question3",
-		label: "Are you sure to skip this question?",
+		label: "Are you sure to skip next question?",
 		defaultValue: false,
-		skip(context) {
-			return Boolean(context.values.question3);
-		},
 	})
 	.question({
 		type: "text",
 		key: "question4",
 		label: (context) =>
 			`Dynamic question label generated from a contextual value: ${context.values.question1}`,
+		defaultValue: "Empty input",
+		skip(context) {
+			return Boolean(context.values.question3);
+		},
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(JSON.stringify(context, null, 4));
+			helpers.print(JSON.stringify(context.values, null, 4));
 		},
 	});
 ```

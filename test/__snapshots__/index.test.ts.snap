@@ -28,13 +28,15 @@ Example to showcase the \`command\` API
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
   [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version"
+  [92m-v, --version [39m Print the version
+  [92m--no-check    [39m Shared flag between commands"
 `;
 
 exports[`termost should handle \`command\` api 2`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👋 Hello, I'm the build command[39m"
+[94m   👋 Hello, I'm the build command[39m
+[94mShared flag = undefined[39m"
 `;
 
 exports[`termost should handle \`command\` api 3`] = `""`;

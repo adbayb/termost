@@ -1,4 +1,4 @@
-import inquirer from "inquirer";
+import prompts, { PromptObject, PromptType } from "prompts";
 import {
 	CreateInstruction,
 	DefaultValues,
@@ -10,32 +10,56 @@ import {
 export const createQuestion: CreateInstruction<
 	QuestionParameters<DefaultValues, keyof DefaultValues>
 > = (parameters) => {
-	const { key, defaultValue, label } = parameters;
-	const receiver = inquirer;
+	const { key, defaultValue, label, type } = parameters;
+	const mapTypeToPromptType = (): PromptType => {
+		switch (type) {
+			case "select":
+				return "select";
+			case "multiselect":
+				return "multiselect";
+			case "confirm":
+				return "confirm";
+			case "text":
+				return "text";
+			default:
+				throw new Error(
+					`Unknown \`${type}\` type provided to \`question\``
+				);
+		}
+	};
 
 	return async function execute(context) {
-		const mappedProperties: Record<string, unknown> = {
+		const promptObject: PromptObject = {
+			initial: defaultValue,
+			message: typeof label === "function" ? label(context) : label,
 			name: key,
-			default: defaultValue,
+			type: mapTypeToPromptType(),
 		};
 
-		if (
-			parameters.type === "select:one" ||
-			parameters.type === "select:many"
-		) {
-			mappedProperties["type"] =
-				parameters.type === "select:one" ? "list" : "checkbox";
-			mappedProperties.choices = parameters.choices;
-		} else if (parameters.type === "confirm") {
-			mappedProperties.type = "confirm";
-		} else {
-			mappedProperties.type = "input";
+		if (parameters.type === "select" || parameters.type === "multiselect") {
+			const isMultiSelect = parameters.type === "multiselect";
+			const options = parameters.options as string[];
+			const choices = options.map((option) => ({
+				title: option,
+				value: option,
+				...(isMultiSelect && {
+					selected: defaultValue.includes(option),
+				}),
+			}));
+
+			// @note: initial value is managed differently between select and multiselect,
+			// we need to do some transformation to plug termost API with prompts one...
+			if (isMultiSelect) promptObject.initial = undefined;
+			else {
+				promptObject.initial = options.findIndex(
+					(option) => option === defaultValue
+				);
+			}
+
+			promptObject.choices = choices;
 		}
 
-		mappedProperties.message =
-			typeof label === "function" ? label(context) : label;
-
-		const data = await receiver.prompt([mappedProperties]);
+		const data = await prompts(promptObject);
 
 		return { key, value: data[key] };
 	};
@@ -63,9 +87,9 @@ export type QuestionParameters<
 						: never;
 			  }
 			| {
-					type: "select:one";
+					type: "select";
 					label: Label<Values>;
-					choices: Values[Key] extends string
+					options: Values[Key] extends string
 						? Array<Values[Key]>
 						: never;
 					defaultValue?: Values[Key] extends string
@@ -73,9 +97,9 @@ export type QuestionParameters<
 						: never;
 			  }
 			| {
-					type: "select:many";
+					type: "multiselect";
 					label: Label<Values>;
-					choices: Values[Key] extends Array<string>
+					options: Values[Key] extends Array<string>
 						? Values[Key]
 						: never;
 					defaultValue?: Values[Key] extends Array<string>

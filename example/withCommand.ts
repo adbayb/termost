@@ -1,6 +1,20 @@
 import { termost } from "../src";
 
-const program = termost("Example to showcase the `command` API");
+type ProgramContext = {
+	sharedFlag: boolean;
+};
+
+const program = termost<ProgramContext>(
+	"Example to showcase the `command` API"
+);
+
+// @todo to fix
+program.option({
+	key: "sharedFlag",
+	name: "no-check",
+	description: "Shared flag between commands",
+	defaultValue: true,
+});
 
 program
 	.command({
@@ -9,7 +23,9 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(`👋 Hello, I'm the ${context.args.command} command`);
+			helpers.print(
+				`👋 Hello, I'm the ${context.args.command} command\nShared flag = ${context.values.sharedFlag}`
+			);
 		},
 	});
 
@@ -20,8 +36,11 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(`👋 Hello, I'm the ${context.args.command} command`, {
-				type: "warning",
-			});
+			helpers.print(
+				`👋 Hello, I'm the ${context.args.command} command\nShared flag = ${context.values.sharedFlag}`,
+				{
+					type: "warning",
+				}
+			);
 		},
 	});
