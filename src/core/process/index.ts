@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 
 export const exec = async (command: string, options: ExecOptions = {}) => {
-	const promise = new Promise<string>((resolve, reject) => {
+	return new Promise<string>((resolve, reject) => {
 		let stdout = "";
 		let stderr = "";
 		const [bin, ...args] = command.split(" ") as [string, ...string[]];
@@ -27,18 +27,14 @@ export const exec = async (command: string, options: ExecOptions = {}) => {
 
 		childProcess.on("close", (exitCode) => {
 			if (exitCode !== 0) {
-				reject(stderr.trim());
+				const output = stderr || stdout;
+
+				reject(output.trim());
 			} else {
 				resolve(stdout.trim());
 			}
 		});
 	});
-
-	try {
-		return await promise;
-	} catch (error) {
-		throw new Error(error);
-	}
 };
 
 type ExecOptions = {

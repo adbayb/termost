@@ -6,6 +6,8 @@ describe("process", () => {
 	});
 
 	test("should `exec` given error", async () => {
-		await expect(exec("unavailable_command12345")).rejects.toThrowError();
+		await expect(exec("unavailable_command12345")).rejects.toContain(
+			"command not found"
+		);
 	});
 });
