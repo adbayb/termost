@@ -1,6 +1,6 @@
 import { exec } from "../src/core/process";
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 describe("termost", () => {
 	test("should display `help`", async () => {
