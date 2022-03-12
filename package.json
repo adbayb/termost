@@ -43,7 +43,7 @@
 	"dependencies": {
 		"chalk": "4.1.2",
 		"inquirer": "8.2.0",
-		"listr": "0.14.3"
+		"listr2": "4.0.5"
 	},
 	"devDependencies": {
 		"@adbayb/eslint-config": "0.10.0",
@@ -52,7 +52,6 @@
 		"@semantic-release/git": "10.0.1",
 		"@types/inquirer": "8.2.0",
 		"@types/jest": "27.4.1",
-		"@types/listr": "0.14.4",
 		"esbuild": "0.14.25",
 		"esbuild-jest": "0.5.0",
 		"esbuild-register": "3.3.2",

@@ -1,4 +1,4 @@
-import Listr from "listr";
+import { Listr } from "listr2";
 import {
 	Context,
 	CreateInstruction,
@@ -13,7 +13,7 @@ export const createTask: CreateInstruction<
 	TaskParameters<DefaultValues, keyof DefaultValues>
 > = (parameters) => {
 	const { key, label, handler } = parameters;
-	const receiver = new Listr();
+	const receiver = new Listr([]);
 
 	return async function execute(context) {
 		let value: unknown;

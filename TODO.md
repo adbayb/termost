@@ -1,6 +1,6 @@
-- [ ] Replace listr by listr2
-- [ ] Replace inquirer by enquirer https://github.com/enquirer/enquirer
-- [ ] Update API
+-   [x] Replace listr by listr2
+-   [ ] Replace inquirer by enquirer https://github.com/enquirer/enquirer
+-   [ ] Update API
 
 ```ts
 type ProgramContext = {

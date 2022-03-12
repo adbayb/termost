@@ -14,7 +14,7 @@ Termost allows you build command line tools in a minute thanks to its:
     -   [Subcommand](example/withCommand.ts) support
     -   Long and short [option](example/withOption.ts) support
     -   [Interaction](example/withQuestion.ts) support thanks to its built-in [`inquirer`](https://www.npmjs.com/package/inquirer) wrapper
-    -   [Tasks](example/withTask.ts) support thanks to its built-in [`Listr`](https://www.npmjs.com/package/listr) wrapper and `exec` helper
+    -   [Tasks](example/withTask.ts) support thanks to its built-in [`Listr`](https://www.npmjs.com/package/listr2) wrapper and `exec` helper
 -   Shareable outputs between instruction
 -   Beautiful CLI message formatting via `message` instruction
 -   Auto-generated help and version information
