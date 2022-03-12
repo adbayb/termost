@@ -66,8 +66,8 @@ export class Command<Values> extends FluentInterface<Values> {
 		const description = commands[args.command];
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
-		const hasCommands = Object.keys(commands).length > 0;
 		const isRootCommand = this.#name === DEFAULT_COMMAND_NAME;
+		const hasCommands = isRootCommand && Object.keys(commands).length > 0;
 
 		const rawPrint = (...parameters: Parameters<typeof format>) =>
 			console.log(format(...parameters));
