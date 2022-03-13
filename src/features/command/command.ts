@@ -5,6 +5,7 @@ import { FluentInterface } from "./fluentInterface";
 
 export class Command<Values> extends FluentInterface<Values> {
 	#name: CommandName;
+	#isRootCommand: boolean;
 
 	constructor(
 		name: CommandName,
@@ -14,6 +15,7 @@ export class Command<Values> extends FluentInterface<Values> {
 		super(context);
 
 		this.#name = name;
+		this.#isRootCommand = this.#name === DEFAULT_COMMAND_NAME;
 		this.context.commands[name] = description;
 		this.option({
 			name: { long: OPTION_HELP_NAMES[0], short: OPTION_HELP_NAMES[1] },
@@ -28,7 +30,10 @@ export class Command<Values> extends FluentInterface<Values> {
 
 		setTimeout(() => {
 			// @note: if the user command doesn't match the command instance name, then do not execute the command
-			if (this.context.args.command === this.#name) {
+			if (
+				this.#isRootCommand ||
+				this.context.args.command === this.#name
+			) {
 				// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
 				// It'll allow to make sure that the `context` is correctly filled with all commands
 				// metadata (especially to let the global help option to display all available commands):
@@ -66,8 +71,8 @@ export class Command<Values> extends FluentInterface<Values> {
 		const description = commands[args.command];
 		const optionKeys = Object.keys(options);
 		const hasOption = optionKeys.length > 0;
-		const isRootCommand = this.#name === DEFAULT_COMMAND_NAME;
-		const hasCommands = isRootCommand && Object.keys(commands).length > 0;
+		const hasCommands =
+			this.#isRootCommand && Object.keys(commands).length > 0;
 
 		const rawPrint = (...parameters: Parameters<typeof format>) =>
 			console.log(format(...parameters));
@@ -93,7 +98,7 @@ export class Command<Values> extends FluentInterface<Values> {
 		rawPrint(
 			`${format(
 				`${programName}${
-					isRootCommand ? "" : ` ${String(this.#name)}`
+					this.#isRootCommand ? "" : ` ${String(this.#name)}`
 				}`,
 				{
 					color: "green",

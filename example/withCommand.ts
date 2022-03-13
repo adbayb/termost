@@ -8,7 +8,6 @@ const program = termost<ProgramContext>(
 	"Example to showcase the `command` API"
 );
 
-// @todo to fix
 program.option({
 	key: "sharedFlag",
 	name: "no-check",
@@ -23,9 +22,8 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(
-				`👋 Hello, I'm the ${context.args.command} command\nShared flag = ${context.values.sharedFlag}`
-			);
+			helpers.print(`👋 Hello, I'm the ${context.args.command} command`);
+			helpers.print(`👉 Shared flag = ${context.values.sharedFlag}`);
 		},
 	});
 
@@ -36,11 +34,7 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(
-				`👋 Hello, I'm the ${context.args.command} command\nShared flag = ${context.values.sharedFlag}`,
-				{
-					type: "warning",
-				}
-			);
+			helpers.print(`👋 Hello, I'm the ${context.args.command} command`);
+			helpers.print(`👉 Shared flag = ${context.values.sharedFlag}`);
 		},
 	});
