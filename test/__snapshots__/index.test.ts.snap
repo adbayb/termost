@@ -71,21 +71,6 @@ exports[`termost should handle \`command\` api 5`] = `
 exports[`termost should handle \`command\` api 6`] = `
 "[93m[1m[4m[24m[22m[39m
 [93m[1m[4mUSAGE:[24m[22m[39m
-[92mtermost[39m <command> [...options]
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mDESCRIPTION:[24m[22m[39m
-Transpile and bundle in production mode
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mCOMMANDS:[24m[22m[39m
-  [92mbuild         [39m Transpile and bundle in production mode
-  [92mwatch         [39m Rebuild your assets on any code change
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version
-  [92m--flag        [39m Shared flag between commands
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mUSAGE:[24m[22m[39m
 [92mtermost build[39m [...options]
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mDESCRIPTION:[24m[22m[39m
@@ -99,21 +84,6 @@ Transpile and bundle in production mode
 
 exports[`termost should handle \`command\` api 7`] = `
 "[93m[1m[4m[24m[22m[39m
-[93m[1m[4mUSAGE:[24m[22m[39m
-[92mtermost[39m <command> [...options]
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mDESCRIPTION:[24m[22m[39m
-Rebuild your assets on any code change
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mCOMMANDS:[24m[22m[39m
-  [92mbuild         [39m Transpile and bundle in production mode
-  [92mwatch         [39m Rebuild your assets on any code change
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version
-  [92m--flag        [39m Shared flag between commands
-[93m[1m[4m[24m[22m[39m
 [93m[1m[4mUSAGE:[24m[22m[39m
 [92mtermost watch[39m [...options]
 [93m[1m[4m[24m[22m[39m
