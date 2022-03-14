@@ -3,9 +3,9 @@ name: Continuous Integration
 on: [push, pull_request]
 
 jobs:
-    setup:
+    install:
         timeout-minutes: 5
-        name: Setup cache
+        name: Install
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
@@ -17,10 +17,10 @@ jobs:
                   cache: yarn
             - name: Install
               run: yarn install --frozen-lockfile --prefer-offline
-    check:
+    verify:
         timeout-minutes: 5
-        needs: setup
-        name: Verify code
+        needs: install
+        name: Verify
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
@@ -36,8 +36,8 @@ jobs:
               run: yarn verify
     build:
         timeout-minutes: 5
-        needs: check
-        name: Build library
+        needs: install
+        name: Build
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
