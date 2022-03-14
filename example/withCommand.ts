@@ -10,9 +10,9 @@ const program = termost<ProgramContext>(
 
 program.option({
 	key: "sharedFlag",
-	name: "no-check",
+	name: "flag",
 	description: "Shared flag between commands",
-	defaultValue: true,
+	defaultValue: false,
 });
 
 program

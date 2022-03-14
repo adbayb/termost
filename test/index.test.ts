@@ -21,10 +21,26 @@ describe("termost", () => {
 		const watchOutput = await exec(
 			"node -r esbuild-register example/withCommand.ts watch"
 		);
+		const buildSharedFlagOutput = await exec(
+			"node -r esbuild-register example/withCommand.ts build --flag"
+		);
+		const watchSharedFlagOutput = await exec(
+			"node -r esbuild-register example/withCommand.ts watch --flag"
+		);
+		const buildHelpOutput = await exec(
+			"node -r esbuild-register example/withCommand.ts build --help"
+		);
+		const watchHelpOutput = await exec(
+			"node -r esbuild-register example/withCommand.ts watch --help"
+		);
 
 		expect(helpOutput).toMatchSnapshot();
 		expect(buildOutput).toMatchSnapshot();
 		expect(watchOutput).toMatchSnapshot();
+		expect(buildSharedFlagOutput).toMatchSnapshot();
+		expect(watchSharedFlagOutput).toMatchSnapshot();
+		expect(buildHelpOutput).toMatchSnapshot();
+		expect(watchHelpOutput).toMatchSnapshot();
 	});
 
 	test("should handle `message` api", async () => {
