@@ -1,8 +1,11 @@
 export type CommandName = string;
 
-export type DefaultValues = Record<string, any>;
+export type ObjectLikeConstraint = Record<string, unknown>;
 
-export type Context<Values> = {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type EmptyContext = {};
+
+export type Context<Values extends ObjectLikeConstraint> = {
 	name: string;
 	version: string;
 	/**
@@ -18,9 +21,8 @@ export type Context<Values> = {
 };
 
 export type InstructionParameters<
-	Values,
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	ExtraParameters extends Record<string, unknown> = {}
+	Values extends ObjectLikeConstraint,
+	ExtraParameters extends ObjectLikeConstraint = EmptyContext
 > = {
 	skip?: (context: Context<Values>) => boolean;
 } & ExtraParameters;
@@ -37,12 +39,16 @@ export type InstructionKey<Key> = {
  * Follows the command design pattern
  */
 export type CreateInstruction<
-	Parameters extends InstructionParameters<DefaultValues>
-> = (parameters: Parameters) => (context: Context<DefaultValues>) => Promise<
+	Parameters extends InstructionParameters<ObjectLikeConstraint>
+> = (parameters: Parameters) => (
+	context: Context<ObjectLikeConstraint>
+) => Promise<
 	| null
-	| (Partial<InstructionKey<keyof DefaultValues | undefined>> & {
-			value: DefaultValues[number];
+	| (Partial<InstructionKey<keyof ObjectLikeConstraint | undefined>> & {
+			value: ObjectLikeConstraint[number];
 	  })
 >;
 
-export type Label<Values> = string | ((context: Context<Values>) => string);
+export type Label<Values extends ObjectLikeConstraint> =
+	| string
+	| ((context: Context<Values>) => string);

@@ -1,9 +1,11 @@
 import { DEFAULT_COMMAND_NAME } from "../../constants";
 import { format } from "../message/helpers";
-import { CommandName, Context } from "../types";
+import { CommandName, Context, ObjectLikeConstraint } from "../types";
 import { FluentInterface } from "./fluentInterface";
 
-export class Command<Values> extends FluentInterface<Values> {
+export class Command<
+	Values extends ObjectLikeConstraint
+> extends FluentInterface<Values> {
 	/**
 	 * The command instance name used as unique identifier
 	 */

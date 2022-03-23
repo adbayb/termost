@@ -1,14 +1,14 @@
 import prompts, { PromptObject, PromptType } from "prompts";
 import {
 	CreateInstruction,
-	DefaultValues,
 	InstructionKey,
 	InstructionParameters,
 	Label,
+	ObjectLikeConstraint,
 } from "../types";
 
 export const createQuestion: CreateInstruction<
-	QuestionParameters<DefaultValues, keyof DefaultValues>
+	QuestionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 > = (parameters) => {
 	const { key, defaultValue, label, type } = parameters;
 	const mapTypeToPromptType = (): PromptType => {
@@ -38,12 +38,14 @@ export const createQuestion: CreateInstruction<
 
 		if (parameters.type === "select" || parameters.type === "multiselect") {
 			const isMultiSelect = parameters.type === "multiselect";
-			const options = parameters.options as string[];
+			const options = parameters.options as Array<string>;
 			const choices = options.map((option) => ({
 				title: option,
 				value: option,
 				...(isMultiSelect && {
-					selected: defaultValue.includes(option),
+					selected: ((defaultValue || []) as Array<string>).includes(
+						option
+					),
 				}),
 			}));
 
@@ -66,7 +68,7 @@ export const createQuestion: CreateInstruction<
 };
 
 export type QuestionParameters<
-	Values,
+	Values extends ObjectLikeConstraint,
 	Key extends keyof Values
 > = InstructionParameters<
 	Values,

@@ -7,9 +7,14 @@ import {
 } from "../option";
 import { QuestionParameters, createQuestion } from "../question";
 import { TaskParameters, createTask } from "../task";
-import { Context, CreateInstruction, InstructionParameters } from "../types";
+import {
+	Context,
+	CreateInstruction,
+	InstructionParameters,
+	ObjectLikeConstraint,
+} from "../types";
 
-export class FluentInterface<Values> {
+export class FluentInterface<Values extends ObjectLikeConstraint> {
 	// @note: soft private through protected access modifier (type checking only but still accessible runtime side)
 	// since JavaScript runtime doesn't handle yet access to private field from inherited classes:
 	protected context: Context<Values>;
@@ -66,7 +71,7 @@ export class FluentInterface<Values> {
 
 			if (instructionValue && instructionValue.key) {
 				this.context.values[instructionValue.key as keyof Values] =
-					instructionValue.value;
+					instructionValue.value as Values[keyof Values];
 			}
 		});
 

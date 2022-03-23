@@ -17,7 +17,6 @@ program
 		key: "question1",
 		label: "What is your single choice?",
 		options: ["singleOption1", "singleOption2"],
-		defaultValue: "singleOption2",
 	})
 	.question({
 		type: "multiselect",

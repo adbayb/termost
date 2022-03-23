@@ -1,24 +1,17 @@
-/* eslint-disable padding-line-between-statements */
 import { DEFAULT_COMMAND_NAME } from "./constants";
 import { getPackageMetadata } from "./core/package";
 import { parseArguments } from "./core/parser";
 import { Command } from "./features/command";
-import { Context, DefaultValues } from "./features/types";
+import { Context, EmptyContext, ObjectLikeConstraint } from "./features/types";
 
-export function termost<Values extends DefaultValues>(
-	configuration: {
-		name: string;
-		description: string;
-		version: string;
-	},
-	callbacks?: TerminationCallbacks
-): Termost<Values>;
-export function termost<Values extends DefaultValues>(
-	description: string,
-	callbacks?: TerminationCallbacks
-): Termost<Values>;
-export function termost<Values extends DefaultValues>(
-	parameter: any,
+export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
+	metadata:
+		| string
+		| {
+				name: string;
+				description: string;
+				version: string;
+		  },
 	callbacks: TerminationCallbacks = {}
 ): Termost<Values> {
 	let description: string;
@@ -26,13 +19,14 @@ export function termost<Values extends DefaultValues>(
 	let version: string;
 	const { command = DEFAULT_COMMAND_NAME, options } = parseArguments();
 
-	if (isObject(parameter)) {
-		description = parameter.description;
-		name = parameter.name;
-		version = parameter.version;
+	if (isObject(metadata)) {
+		description = metadata.description;
+		name = metadata.name;
+		version = metadata.version;
 	} else {
 		const packageMetadata = getPackageMetadata();
-		description = parameter;
+
+		description = metadata;
 		name = packageMetadata.name;
 		version = packageMetadata.version;
 	}
@@ -51,7 +45,9 @@ export function termost<Values extends DefaultValues>(
 	return new Termost<Values>(description, context);
 }
 
-export class Termost<Values> extends Command<Values> {
+export class Termost<
+	Values extends ObjectLikeConstraint = EmptyContext
+> extends Command<Values> {
 	constructor(description: string, context: Context<Values>) {
 		super(DEFAULT_COMMAND_NAME, description, context);
 	}
@@ -62,16 +58,19 @@ export class Termost<Values> extends Command<Values> {
 	 * @param description - The CLI command description
 	 * @returns The Command API
 	 */
-	command(params: { name: string; description: string }) {
-		return new Command<Values>(
+	command<CommandValues extends ObjectLikeConstraint = EmptyContext>(params: {
+		name: string;
+		description: string;
+	}) {
+		return new Command<Values & CommandValues>(
 			params.name,
 			params.description,
-			this.context
+			this.context as Context<Values & CommandValues>
 		);
 	}
 }
 
-const isObject = (value: unknown): value is Record<string, any> => {
+const isObject = (value: unknown): value is ObjectLikeConstraint => {
 	return value !== null && typeof value === "object";
 };
 

@@ -1,9 +1,9 @@
 import {
 	Context,
 	CreateInstruction,
-	DefaultValues,
 	InstructionKey,
 	InstructionParameters,
+	ObjectLikeConstraint,
 } from "../types";
 
 export const createOption: CreateInstruction<InternalOptionParameters> = (
@@ -48,13 +48,16 @@ export const createOption: CreateInstruction<InternalOptionParameters> = (
 };
 
 export type InternalOptionParameters = OptionParameters<
-	DefaultValues,
-	keyof DefaultValues
+	ObjectLikeConstraint,
+	keyof ObjectLikeConstraint
 > & {
-	context: Context<DefaultValues>;
+	context: Context<ObjectLikeConstraint>;
 };
 
-export type OptionParameters<Values, Key> = InstructionParameters<
+export type OptionParameters<
+	Values extends ObjectLikeConstraint,
+	Key
+> = InstructionParameters<
 	Values,
 	Key extends keyof Values
 		? InstructionKey<Key> &

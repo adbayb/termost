@@ -4,7 +4,7 @@ export const exec = async (command: string, options: ExecOptions = {}) => {
 	return new Promise<string>((resolve, reject) => {
 		let stdout = "";
 		let stderr = "";
-		const [bin, ...args] = command.split(" ") as [string, ...string[]];
+		const [bin, ...args] = command.split(" ") as [string, ...Array<string>];
 
 		const childProcess = spawn(bin, args, {
 			cwd: options.cwd,

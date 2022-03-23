@@ -1,7 +1,7 @@
 import { termost } from "../src";
 
 type ProgramContext = {
-	sharedFlag: boolean;
+	globalFlag: boolean;
 };
 
 const program = termost<ProgramContext>(
@@ -9,21 +9,35 @@ const program = termost<ProgramContext>(
 );
 
 program.option({
-	key: "sharedFlag",
-	name: "flag",
+	key: "globalFlag",
+	name: "global",
 	description: "Shared flag between commands",
 	defaultValue: false,
 });
 
+type BuildCommandContext = {
+	localFlag: string;
+};
+
 program
-	.command({
+	.command<BuildCommandContext>({
 		name: "build",
 		description: "Transpile and bundle in production mode",
+	})
+	.option({
+		key: "localFlag",
+		name: "local",
+		description: "Local command flag",
+		defaultValue: "local-value",
 	})
 	.message({
 		handler(context, helpers) {
 			helpers.print(`👋 Hello, I'm the ${context.args.command} command`);
-			helpers.print(`👉 Shared flag = ${context.values.sharedFlag}`);
+
+			const { localFlag, globalFlag } = context.values;
+
+			helpers.print(`👉 Shared global flag = ${globalFlag}`);
+			helpers.print(`👉 Local command flag = ${localFlag}`);
 		},
 	});
 
@@ -35,6 +49,9 @@ program
 	.message({
 		handler(context, helpers) {
 			helpers.print(`👋 Hello, I'm the ${context.args.command} command`);
-			helpers.print(`👉 Shared flag = ${context.values.sharedFlag}`);
+
+			const { globalFlag } = context.values;
+
+			helpers.print(`👉 Shared global flag = ${globalFlag}`);
 		},
 	});
