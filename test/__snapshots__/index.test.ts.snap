@@ -60,10 +60,10 @@ exports[`termost should handle \`command\` api 4`] = `
 [94m   👋 Hello, I'm the build command[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👉 Shared global flag = false[39m
+[94m   👉 Shared global flag = true[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👉 Local command flag = local-value[39m"
+[94m   👉 Local command flag = hello[39m"
 `;
 
 exports[`termost should handle \`command\` api 5`] = `
@@ -72,7 +72,7 @@ exports[`termost should handle \`command\` api 5`] = `
 [94m   👋 Hello, I'm the watch command[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👉 Shared global flag = false[39m"
+[94m   👉 Shared global flag = true[39m"
 `;
 
 exports[`termost should handle \`command\` api 6`] = `

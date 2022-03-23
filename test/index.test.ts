@@ -22,10 +22,10 @@ describe("termost", () => {
 			"node -r esbuild-register example/withCommand.ts watch"
 		);
 		const buildSharedFlagOutput = await exec(
-			"node -r esbuild-register example/withCommand.ts build --flag"
+			"node -r esbuild-register example/withCommand.ts build --global --local hello"
 		);
 		const watchSharedFlagOutput = await exec(
-			"node -r esbuild-register example/withCommand.ts watch --flag"
+			"node -r esbuild-register example/withCommand.ts watch --global"
 		);
 		const buildHelpOutput = await exec(
 			"node -r esbuild-register example/withCommand.ts build --help"

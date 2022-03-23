@@ -53,9 +53,11 @@ export const createQuestion: CreateInstruction<
 			// we need to do some transformation to plug termost API with prompts one...
 			if (isMultiSelect) promptObject.initial = undefined;
 			else {
-				promptObject.initial = options.findIndex(
+				const foundIndex = options.findIndex(
 					(option) => option === defaultValue
 				);
+
+				promptObject.initial = foundIndex >= 0 ? foundIndex : undefined;
 			}
 
 			promptObject.choices = choices;
