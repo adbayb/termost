@@ -1,7 +1,7 @@
 import { ROOT_COMMAND_NAME } from "../../constants";
-import { AsyncQueue } from "../../helpers/queue";
+import { createManager, getManager } from "../../helpers/manager";
 import { format } from "../message/helpers";
-import { CommandName, Context, ObjectLikeConstraint } from "../types";
+import { Context, ObjectLikeConstraint } from "../types";
 
 export type CommandParameters = {
 	name: string;
@@ -11,29 +11,25 @@ export type CommandParameters = {
 type InternalCommandParameters<Values extends ObjectLikeConstraint> =
 	CommandParameters & {
 		context: Context<Values>;
-		managers: ManagerCollection;
 	};
-
-type ManagerCollection = Record<CommandName, AsyncQueue>;
 
 export const createCommand = <Values extends ObjectLikeConstraint>({
 	name,
 	description,
 	context,
-	managers,
 }: InternalCommandParameters<Values>) => {
 	const { commands, args } = context;
 	const isRootCommand = name === ROOT_COMMAND_NAME;
 	const isActiveCommand = args.command === name;
 
-	managers[name] = new AsyncQueue();
+	createManager(name);
 	commands[name] = description;
 
 	setTimeout(() => {
 		// @note: By design, the root command instructions are always executed
 		// even with subcommands (to share options, messages...)
 		if (isRootCommand && !isActiveCommand) {
-			managers[ROOT_COMMAND_NAME]!.traverse();
+			getManager(ROOT_COMMAND_NAME).run();
 		}
 
 		// @note: enable the current active command instructions:
@@ -60,7 +56,7 @@ export const createCommand = <Values extends ObjectLikeConstraint>({
 				return showVersion(context);
 			}
 
-			managers[name]!.traverse();
+			getManager(name).run();
 		}
 	}, 0);
 

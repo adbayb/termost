@@ -1,6 +1,7 @@
 import { ROOT_COMMAND_NAME } from "../../constants";
-import { AsyncQueue } from "../../helpers/queue";
+import { getManager } from "../../helpers/manager";
 import {
+	CommandParameters,
 	OPTION_HELP_NAMES,
 	OPTION_VERSION_NAMES,
 	createCommand,
@@ -14,6 +15,7 @@ import {
 import { QuestionParameters, createQuestion } from "../question";
 import { TaskParameters, createTask } from "../task";
 import {
+	CommandName,
 	Context,
 	CreateInstruction,
 	InstructionParameters,
@@ -41,19 +43,11 @@ export type Program<Values extends ObjectLikeConstraint> = {
 	task<Key>(params: TaskParameters<Values, Key>): Program<Values>;
 };
 
-type CommandParameters = {
-	name: string;
-	description: string;
-};
-
 export const createProgram = <Values extends ObjectLikeConstraint>(
 	// @todo: create context internally and add parameters to build context internally (such as command, programName...)
 	context: Context<Values>
 ): Program<Values> => {
-	let currentCommand = ROOT_COMMAND_NAME;
-	const managers = {
-		[ROOT_COMMAND_NAME]: new AsyncQueue(),
-	};
+	let currentCommand: CommandName = ROOT_COMMAND_NAME;
 
 	const createInstruction = <Parameters>(
 		createInstruction: CreateInstruction<Parameters>,
@@ -61,7 +55,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 	) => {
 		const instruction = createInstruction(params as Parameters);
 
-		managers[currentCommand]!.enqueue(async () => {
+		getManager(currentCommand).addInstruction(async () => {
 			const { skip } = params;
 
 			if (skip?.(context)) {
@@ -83,7 +77,6 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 				name,
 				description,
 				context,
-				managers,
 			});
 
 			this.option({
