@@ -1,4 +1,3 @@
-import { ROOT_COMMAND_NAME } from "./constants";
 import { getPackageMetadata } from "./helpers/package";
 import { parseArguments } from "./helpers/parser";
 import { createProgram } from "./features/program";
@@ -17,7 +16,6 @@ export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
 	let description: string;
 	let name: string;
 	let version: string;
-	const { command = ROOT_COMMAND_NAME, options } = parseArguments();
 
 	if (isObject(metadata)) {
 		description = metadata.description;
@@ -31,9 +29,12 @@ export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
 		version = packageMetadata.version;
 	}
 
+	const { command = name, options } = parseArguments();
+
 	const context: Context<Values> = {
 		args: { command, options },
 		commands: {},
+		description,
 		name,
 		options: {},
 		values: {} as Values,
@@ -42,12 +43,7 @@ export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
 
 	setGracefulListeners(callbacks);
 
-	const program = createProgram(context);
-
-	// @note: the root command is created by default
-	program.command({ name: ROOT_COMMAND_NAME, description });
-
-	return program;
+	return createProgram(context);
 }
 
 const isObject = (value: unknown): value is ObjectLikeConstraint => {

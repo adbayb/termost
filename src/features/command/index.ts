@@ -1,4 +1,4 @@
-import { ROOT_COMMAND_NAME } from "../../constants";
+/* eslint-disable sonarjs/cognitive-complexity */
 import { createManager, getManager } from "../../helpers/manager";
 import { format } from "../message/helpers";
 import { Context, ObjectLikeConstraint } from "../types";
@@ -18,8 +18,8 @@ export const createCommand = <Values extends ObjectLikeConstraint>({
 	description,
 	context,
 }: InternalCommandParameters<Values>) => {
-	const { commands, args } = context;
-	const isRootCommand = name === ROOT_COMMAND_NAME;
+	const { commands, args, name: rootCommandName } = context;
+	const isRootCommand = name === rootCommandName;
 	const isActiveCommand = args.command === name;
 
 	createManager(name);
@@ -29,7 +29,7 @@ export const createCommand = <Values extends ObjectLikeConstraint>({
 		// @note: By design, the root command instructions are always executed
 		// even with subcommands (to share options, messages...)
 		if (isRootCommand && !isActiveCommand) {
-			getManager(ROOT_COMMAND_NAME).run();
+			getManager(rootCommandName).run();
 		}
 
 		// @note: enable the current active command instructions:
@@ -84,7 +84,7 @@ const showHelp = <Values extends ObjectLikeConstraint>(
 	const description = commands[args.command];
 	const optionKeys = Object.keys(options);
 	const hasOption = optionKeys.length > 0;
-	const hasCommands = isRootCommand && Object.keys(commands).length > 0;
+	const hasCommands = isRootCommand && Object.keys(commands).length > 1;
 
 	const rawPrint = (...parameters: Parameters<typeof format>) =>
 		console.log(format(...parameters));
@@ -130,6 +130,8 @@ const showHelp = <Values extends ObjectLikeConstraint>(
 		printTitle("Commands");
 
 		for (const name in commands) {
+			if (name === programName) continue;
+
 			const description = commands[name];
 
 			if (description) printLabelValue(name, description, padding);

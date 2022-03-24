@@ -6,7 +6,7 @@ export type ObjectLikeConstraint = Record<string, unknown>;
 export type EmptyContext = {};
 
 export type Context<Values extends ObjectLikeConstraint> = {
-	name: string;
+	name: CommandName;
 	version: string;
 	/**
 	 * args object stores all arguments input by the CLI consumer
@@ -16,6 +16,7 @@ export type Context<Values extends ObjectLikeConstraint> = {
 		options: Record<string, string | boolean | number>;
 	};
 	commands: Record<CommandName, string>;
+	description: string;
 	options: Record<string, string>;
 	values: Values;
 };

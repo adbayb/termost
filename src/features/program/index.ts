@@ -1,4 +1,3 @@
-import { ROOT_COMMAND_NAME } from "../../constants";
 import { getManager } from "../../helpers/manager";
 import {
 	CommandParameters,
@@ -47,7 +46,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 	// @todo: create context internally and add parameters to build context internally (such as command, programName...)
 	context: Context<Values>
 ): Program<Values> => {
-	let currentCommand: CommandName = ROOT_COMMAND_NAME;
+	let currentCommand: CommandName = context.name;
 
 	const createInstruction = <Parameters>(
 		createInstruction: CreateInstruction<Parameters>,
@@ -71,7 +70,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		});
 	};
 
-	return {
+	const program: Program<Values> = {
 		command({ name, description }) {
 			currentCommand = createCommand({
 				name,
@@ -123,4 +122,12 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 			return this;
 		},
 	};
+
+	// @note: the root command is created by default
+	program.command({
+		name: context.name,
+		description: context.description,
+	});
+
+	return program;
 };
