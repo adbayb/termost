@@ -5,7 +5,7 @@ import {
 	InstructionParameters,
 	Label,
 	ObjectLikeConstraint,
-} from "../types";
+} from "../../types";
 
 export const createQuestion: CreateInstruction<
 	QuestionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>

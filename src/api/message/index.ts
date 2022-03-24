@@ -3,7 +3,7 @@ import {
 	CreateInstruction,
 	InstructionParameters,
 	ObjectLikeConstraint,
-} from "../types";
+} from "../../types";
 import { format, print } from "./helpers";
 
 export const createMessage: CreateInstruction<

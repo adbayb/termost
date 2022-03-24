@@ -1,7 +1,7 @@
 import { getPackageMetadata } from "./helpers/package";
 import { parseArguments } from "./helpers/parser";
-import { createProgram } from "./features/program";
-import { Context, EmptyContext, ObjectLikeConstraint } from "./features/types";
+import { createProgram } from "./api/program";
+import { EmptyContext, Metadata, ObjectLikeConstraint } from "./types";
 
 export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
 	metadata:
@@ -31,19 +31,18 @@ export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
 
 	const { command = name, options } = parseArguments();
 
-	const context: Context<Values> = {
+	const context: Metadata = {
 		args: { command, options },
-		commands: {},
+		commands: {}, // @todo: to remove
 		description,
 		name,
-		options: {},
-		values: {} as Values,
+		options: {}, // @todo: to remove
 		version,
 	};
 
 	setGracefulListeners(callbacks);
 
-	return createProgram(context);
+	return createProgram<Values>(context);
 }
 
 const isObject = (value: unknown): value is ObjectLikeConstraint => {
@@ -59,7 +58,6 @@ const setGracefulListeners = ({
 	onShutdown = () => {},
 	onException = () => {},
 }: TerminationCallbacks) => {
-	// @section: gracefully shutdown our cli:
 	process.on("SIGTERM", () => {
 		onShutdown();
 		process.exit(0);

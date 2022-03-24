@@ -6,32 +6,29 @@ import {
 	createCommand,
 } from "../command";
 import { MessageParameters, createMessage } from "../message";
-import {
-	InternalOptionParameters,
-	OptionParameters,
-	createOption,
-} from "../option";
+import { OptionParameters, createOption } from "../option";
 import { QuestionParameters, createQuestion } from "../question";
 import { TaskParameters, createTask } from "../task";
 import {
 	CommandName,
-	Context,
 	CreateInstruction,
+	EmptyContext,
 	InstructionParameters,
+	Metadata,
 	ObjectLikeConstraint,
-} from "../types";
+} from "../../types";
 
 /**
  * The termost fluent interface API
  */
-export type Program<Values extends ObjectLikeConstraint> = {
+export type Program<Values extends ObjectLikeConstraint = EmptyContext> = {
 	/**
 	 * Allows to attach a new sub-command to the program
 	 * @param name - The CLI command name
 	 * @param description - The CLI command description
 	 * @returns The Command API
 	 */
-	command<CommandValues extends ObjectLikeConstraint>(
+	command<CommandValues extends ObjectLikeConstraint = EmptyContext>(
 		params: CommandParameters
 	): Program<Values & CommandValues>;
 	message(params: MessageParameters<Values>): Program<Values>;
@@ -43,9 +40,10 @@ export type Program<Values extends ObjectLikeConstraint> = {
 };
 
 export const createProgram = <Values extends ObjectLikeConstraint>(
-	// @todo: create context internally and add parameters to build context internally (such as command, programName...)
-	context: Context<Values>
+	// @todo: rename context variable to metadata
+	context: Metadata
 ): Program<Values> => {
+	const rootCommand = context.name;
 	let currentCommand: CommandName = context.name;
 
 	const createInstruction = <Parameters>(
@@ -53,19 +51,23 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		params: InstructionParameters<Values>
 	) => {
 		const instruction = createInstruction(params as Parameters);
+		const manager = getManager<Values>(currentCommand);
 
-		getManager(currentCommand).addInstruction(async () => {
+		manager.addInstruction(async () => {
 			const { skip } = params;
+			const context = manager.getContext(rootCommand);
 
 			if (skip?.(context)) {
 				return;
 			}
 
-			const instructionValue = await instruction(context);
+			const output = await instruction(context);
 
-			if (instructionValue && instructionValue.key) {
-				context.values[instructionValue.key as keyof Values] =
-					instructionValue.value as Values[keyof Values];
+			if (output && output.key) {
+				manager.addValue(
+					output.key,
+					output.value as Values[keyof Values]
+				);
 			}
 		});
 	};
@@ -100,14 +102,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 			return this;
 		},
 		option(params) {
-			createInstruction<InternalOptionParameters>(
-				(optionParams) =>
-					createOption({
-						...optionParams,
-						context,
-					}),
-				params
-			);
+			createInstruction(createOption(context), params);
 
 			return this;
 		},

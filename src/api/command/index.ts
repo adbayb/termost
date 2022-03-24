@@ -1,35 +1,34 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { createManager, getManager } from "../../helpers/manager";
 import { format } from "../message/helpers";
-import { Context, ObjectLikeConstraint } from "../types";
+import { Metadata } from "../../types";
 
 export type CommandParameters = {
 	name: string;
 	description: string;
 };
 
-type InternalCommandParameters<Values extends ObjectLikeConstraint> =
-	CommandParameters & {
-		context: Context<Values>;
-	};
+type InternalCommandParameters = CommandParameters & {
+	context: Metadata;
+};
 
-export const createCommand = <Values extends ObjectLikeConstraint>({
+export const createCommand = ({
 	name,
 	description,
 	context,
-}: InternalCommandParameters<Values>) => {
+}: InternalCommandParameters) => {
 	const { commands, args, name: rootCommandName } = context;
 	const isRootCommand = name === rootCommandName;
 	const isActiveCommand = args.command === name;
+	const manager = createManager(name);
 
-	createManager(name);
 	commands[name] = description;
 
 	setTimeout(() => {
 		// @note: By design, the root command instructions are always executed
 		// even with subcommands (to share options, messages...)
 		if (isRootCommand && !isActiveCommand) {
-			getManager(rootCommandName).run();
+			getManager(rootCommandName).enable();
 		}
 
 		// @note: enable the current active command instructions:
@@ -56,7 +55,7 @@ export const createCommand = <Values extends ObjectLikeConstraint>({
 				return showVersion(context);
 			}
 
-			getManager(name).run();
+			manager.enable();
 		}
 	}, 0);
 
@@ -67,14 +66,12 @@ export const OPTION_HELP_NAMES = ["help", "h"] as const;
 
 export const OPTION_VERSION_NAMES = ["version", "v"] as const;
 
-const showVersion = <Values extends ObjectLikeConstraint>(
-	context: Context<Values>
-) => {
+const showVersion = (context: Metadata) => {
 	console.info(context.version);
 };
 
-const showHelp = <Values extends ObjectLikeConstraint>(
-	context: Context<Values>,
+const showHelp = (
+	context: Metadata,
 	{
 		currentCommand,
 		isRootCommand,

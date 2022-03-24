@@ -1,7 +1,9 @@
-import { CommandName } from "../../features/types";
+import { CommandName, Context, ObjectLikeConstraint } from "../../types";
 import { createQueue } from "./queue";
 
-export const getManager = (commandName: CommandName): Manager => {
+export const getManager = <Values extends ObjectLikeConstraint>(
+	commandName: CommandName
+): Manager<Values> => {
 	const manager = managerCollection[commandName];
 
 	if (!manager) {
@@ -10,21 +12,26 @@ export const getManager = (commandName: CommandName): Manager => {
 		);
 	}
 
-	return manager;
+	return manager as Manager<Values>;
 };
 
-export const createManager = (commandName: CommandName): Manager => {
+export const createManager = <Values extends ObjectLikeConstraint>(
+	commandName: CommandName
+): Manager<Values> => {
 	const instructions = createQueue<Instruction>();
+	const context = {
+		command: commandName,
+		values: {},
+	} as Context<Values>;
 
-	const manager: Manager = {
-		// addValue,
-		// addOption,
-		// getValue,
-		// getOption,
+	const manager: Manager<Values> = {
+		addValue(key, value) {
+			context.values[key] = value;
+		},
 		addInstruction(instruction) {
 			instructions.enqueue(instruction);
 		},
-		async run() {
+		async enable() {
 			while (!instructions.isEmpty()) {
 				const task = instructions.dequeue();
 
@@ -32,6 +39,21 @@ export const createManager = (commandName: CommandName): Manager => {
 					await task();
 				}
 			}
+		},
+		getContext(rootCommandName: CommandName) {
+			// @note: By design, global values are accessible to subcommands
+			// Consequently, root command values are merged with the current command ones:
+			if (commandName !== rootCommandName) {
+				const rootManager = getManager(rootCommandName);
+				const globalContext = rootManager.getContext(rootCommandName);
+
+				context.values = {
+					...globalContext.values,
+					...context.values,
+				};
+			}
+
+			return context;
 		},
 	};
 
@@ -42,9 +64,17 @@ export const createManager = (commandName: CommandName): Manager => {
 
 type Instruction = () => Promise<void>;
 
-type Manager = {
+type Manager<Values extends ObjectLikeConstraint> = {
+	addValue<Key extends keyof Values>(key: Key, value: Values[Key]): void;
 	addInstruction(instruction: Instruction): void;
-	run(): Promise<void>;
+	/**
+	 * Iterate over stored instructions and execute them
+	 */
+	enable(): Promise<void>;
+	getContext(rootCommandName: CommandName): Context<Values>;
 };
 
-const managerCollection: Record<CommandName, Manager> = {};
+const managerCollection: Record<
+	CommandName,
+	Manager<ObjectLikeConstraint>
+> = {};

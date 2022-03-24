@@ -1,5 +1,5 @@
 import { exec } from "./helpers/process";
-import { format, print } from "./features/message/helpers";
+import { format, print } from "./api/message/helpers";
 
 export const helpers = {
 	exec,
@@ -9,4 +9,4 @@ export const helpers = {
 
 export { termost } from "./termost";
 
-export type { Program } from "./features/program";
+export type { Program } from "./api/program";

@@ -6,7 +6,7 @@ import {
 	InstructionParameters,
 	Label,
 	ObjectLikeConstraint,
-} from "../types";
+} from "../../types";
 import { exec } from "../../helpers/process";
 
 export const createTask: CreateInstruction<

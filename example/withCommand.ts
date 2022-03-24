@@ -32,7 +32,7 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(`👋 Hello, I'm the ${context.args.command} command`);
+			helpers.print(`👋 Hello, I'm the ${context.command} command`);
 
 			const { localFlag, globalFlag } = context.values;
 
@@ -48,7 +48,7 @@ program
 	})
 	.message({
 		handler(context, helpers) {
-			helpers.print(`👋 Hello, I'm the ${context.args.command} command`);
+			helpers.print(`👋 Hello, I'm the ${context.command} command`);
 
 			const { globalFlag } = context.values;
 

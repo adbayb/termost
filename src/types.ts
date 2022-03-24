@@ -5,7 +5,7 @@ export type ObjectLikeConstraint = Record<string, unknown>;
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type EmptyContext = {};
 
-export type Context<Values extends ObjectLikeConstraint> = {
+export type Metadata = {
 	name: CommandName;
 	version: string;
 	/**
@@ -17,7 +17,11 @@ export type Context<Values extends ObjectLikeConstraint> = {
 	};
 	commands: Record<CommandName, string>;
 	description: string;
-	options: Record<string, string>;
+	options: Record<string, string>; // @todo: remove
+};
+
+export type Context<Values extends ObjectLikeConstraint> = {
+	command: CommandName;
 	values: Values;
 };
 
@@ -41,9 +45,9 @@ export type InstructionKey<Key> = {
  */
 export type CreateInstruction<
 	Parameters extends InstructionParameters<ObjectLikeConstraint>
-> = (parameters: Parameters) => (
-	context: Context<ObjectLikeConstraint>
-) => Promise<
+> = (parameters: Parameters) => Instruction;
+
+type Instruction = (context: Context<ObjectLikeConstraint>) => Promise<
 	| null
 	| (Partial<InstructionKey<keyof ObjectLikeConstraint | undefined>> & {
 			value: ObjectLikeConstraint[number];
