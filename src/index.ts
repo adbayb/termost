@@ -9,4 +9,4 @@ export const helpers = {
 
 export { termost } from "./termost";
 
-export type { Termost } from "./termost";
+export type { Program } from "./features/program";

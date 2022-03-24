@@ -1,7 +1,7 @@
-import { DEFAULT_COMMAND_NAME } from "./constants";
+import { ROOT_COMMAND_NAME } from "./constants";
 import { getPackageMetadata } from "./core/package";
 import { parseArguments } from "./core/parser";
-import { Command } from "./features/command";
+import { createProgram } from "./features/program";
 import { Context, EmptyContext, ObjectLikeConstraint } from "./features/types";
 
 export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
@@ -13,11 +13,11 @@ export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
 				version: string;
 		  },
 	callbacks: TerminationCallbacks = {}
-): Termost<Values> {
+) {
 	let description: string;
 	let name: string;
 	let version: string;
-	const { command = DEFAULT_COMMAND_NAME, options } = parseArguments();
+	const { command = ROOT_COMMAND_NAME, options } = parseArguments();
 
 	if (isObject(metadata)) {
 		description = metadata.description;
@@ -42,32 +42,12 @@ export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
 
 	setGracefulListeners(callbacks);
 
-	return new Termost<Values>(description, context);
-}
+	const program = createProgram(context);
 
-export class Termost<
-	Values extends ObjectLikeConstraint = EmptyContext
-> extends Command<Values> {
-	constructor(description: string, context: Context<Values>) {
-		super(DEFAULT_COMMAND_NAME, description, context);
-	}
+	// @note: the root command is created by default
+	program.command({ name: ROOT_COMMAND_NAME, description });
 
-	/**
-	 * Allows to attach a new sub-command to the program
-	 * @param name - The CLI command name
-	 * @param description - The CLI command description
-	 * @returns The Command API
-	 */
-	command<CommandValues extends ObjectLikeConstraint = EmptyContext>(params: {
-		name: string;
-		description: string;
-	}) {
-		return new Command<Values & CommandValues>(
-			params.name,
-			params.description,
-			this.context as Context<Values & CommandValues>
-		);
-	}
+	return program;
 }
 
 const isObject = (value: unknown): value is ObjectLikeConstraint => {
