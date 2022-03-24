@@ -1,6 +1,6 @@
 import { ROOT_COMMAND_NAME } from "./constants";
-import { getPackageMetadata } from "./core/package";
-import { parseArguments } from "./core/parser";
+import { getPackageMetadata } from "./helpers/package";
+import { parseArguments } from "./helpers/parser";
 import { createProgram } from "./features/program";
 import { Context, EmptyContext, ObjectLikeConstraint } from "./features/types";
 

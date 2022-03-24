@@ -1,4 +1,4 @@
-import { exec } from "./core/process";
+import { exec } from "./helpers/process";
 import { format, print } from "./features/message/helpers";
 
 export const helpers = {

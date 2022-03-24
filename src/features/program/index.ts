@@ -1,5 +1,5 @@
 import { ROOT_COMMAND_NAME } from "../../constants";
-import { AsyncQueue } from "../../core/queue";
+import { AsyncQueue } from "../../helpers/queue";
 import {
 	OPTION_HELP_NAMES,
 	OPTION_VERSION_NAMES,

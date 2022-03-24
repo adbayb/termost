@@ -7,7 +7,7 @@ import {
 	Label,
 	ObjectLikeConstraint,
 } from "../types";
-import { exec } from "../../core/process";
+import { exec } from "../../helpers/process";
 
 export const createTask: CreateInstruction<
 	TaskParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>

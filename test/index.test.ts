@@ -1,4 +1,4 @@
-import { exec } from "../src/core/process";
+import { exec } from "../src/helpers/process";
 
 jest.setTimeout(20000);
 
