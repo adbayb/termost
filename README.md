@@ -8,13 +8,13 @@
 
 ## ✨ Features
 
-Termost allows you build command line tools in a minute thanks to its:
+Termost allows building command line tools in a minute thanks to its:
 
 -   [Fluent](https://en.wikipedia.org/wiki/Fluent_interface) syntax to express your CLI configurations with instructions such as:
     -   [Subcommand](example/withCommand.ts) support
     -   Long and short [option](example/withOption.ts) support
-    -   [Interaction](example/withQuestion.ts) support thanks to its built-in [`prompts`](https://www.npmjs.com/package/prompts) wrapper
-    -   [Tasks](example/withTask.ts) support thanks to its built-in [`Listr`](https://www.npmjs.com/package/listr2) wrapper and `exec` helper
+    -   [Interaction](example/withQuestion.ts) support
+    -   [Task](example/withTask.ts) support
 -   Shareable outputs between instruction
 -   Beautiful CLI message formatting via `message` instruction
 -   Auto-generated help and version information
@@ -33,7 +33,7 @@ npm install termost
 yarn add termost
 ```
 
-Once you're done, you can start consuming it in your executable file (binary):
+Once you're done, you can play with the API:
 
 ```ts
 #!/usr/bin/env node
@@ -355,6 +355,15 @@ const wait = (delay: number) => {
 ## 🤩 Built with Termost
 
 -   [Quickbundle](https://github.com/adbayb/quickbundle) The zero-configuration bundler powered by ESBuild
+
+<br>
+
+## 💙 Acknowledgements
+
+This project is built upon solid open source foundations. We'd like to thank:
+
+-   [`prompts`](https://www.npmjs.com/package/prompts) for managing `question` internals
+-   [`listr2`](https://www.npmjs.com/package/listr2) for managing `task` internals
 
 <br>
 
