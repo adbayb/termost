@@ -4,7 +4,6 @@ import {
 	InstructionParameters,
 	ObjectLikeConstraint,
 } from "../../types";
-import { format, print } from "./helpers";
 
 export const createMessage: CreateInstruction<
 	MessageParameters<ObjectLikeConstraint>
@@ -12,24 +11,16 @@ export const createMessage: CreateInstruction<
 	const { handler } = parameters;
 
 	return async function execute(context) {
-		handler(context, HELPERS);
+		handler(context);
 
 		return null;
 	};
-};
-
-const HELPERS = {
-	format,
-	print,
 };
 
 export type MessageParameters<Values extends ObjectLikeConstraint> =
 	InstructionParameters<
 		Values,
 		{
-			handler: (
-				context: Context<Values>,
-				helpers: typeof HELPERS
-			) => void;
+			handler: (context: Context<Values>) => void;
 		}
 	>;

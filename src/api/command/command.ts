@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { format } from "../message/helpers";
+import { format } from "../../helpers/stdout";
 import { ObjectLikeConstraint, ProgramMetadata } from "../../types";
 import {
 	CommandController,

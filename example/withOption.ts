@@ -1,4 +1,4 @@
-import { termost } from "../src";
+import { helpers, termost } from "../src";
 
 type ProgramContext = {
 	optionWithAlias: number;
@@ -21,7 +21,7 @@ program
 		defaultValue: "defaultValue",
 	})
 	.message({
-		handler(context, helpers) {
+		handler(context) {
 			helpers.print(JSON.stringify(context.values, null, 2));
 		},
 	});

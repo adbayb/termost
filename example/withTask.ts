@@ -1,4 +1,4 @@
-import { termost } from "../src";
+import { helpers, termost } from "../src";
 
 type ProgramContext = {
 	computedFromOtherTaskValues: "big" | "small";
@@ -37,7 +37,7 @@ program
 	.task({
 		key: "execOutput",
 		label: "Or even execute external commands thanks to its provided helpers",
-		handler(_, helpers) {
+		handler() {
 			return helpers.exec("echo 'Hello from shell'");
 		},
 	})
@@ -60,7 +60,7 @@ program
 		async handler() {},
 	})
 	.message({
-		handler(context, helpers) {
+		handler(context) {
 			helpers.print(
 				`A task with a specified "key" can be retrieved here. Size = ${context.values.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
 			);

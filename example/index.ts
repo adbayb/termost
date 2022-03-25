@@ -1,4 +1,4 @@
-import { termost } from "../src";
+import { helpers, termost } from "../src";
 
 type ProgramContext = {
 	sharedOutput: string;
@@ -32,14 +32,14 @@ program
 	.task({
 		key: "sharedOutput",
 		label: "Retrieves files",
-		async handler(_, helpers) {
+		async handler() {
 			return await helpers.exec('echo "Hello from task"', {
 				cwd: process.cwd(),
 			});
 		},
 	})
 	.message({
-		handler(context, helpers) {
+		handler(context) {
 			helpers.print(`Task value: ${context.values.sharedOutput}`);
 			helpers.print(`Option value: ${context.values.option}`, {
 				type: "warning",

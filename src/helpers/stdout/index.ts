@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import { MessageType } from "./types";
 
 /**
  * A helper to format an arbitrary text as a print input
@@ -115,6 +114,8 @@ const chalkByModifier = {
 	underline: "underline",
 	strikethrough: "strikethrough",
 } as const;
+
+type MessageType = "success" | "error" | "warning" | "information";
 
 type Color =
 	| "red"

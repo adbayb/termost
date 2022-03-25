@@ -7,7 +7,6 @@ import {
 	Label,
 	ObjectLikeConstraint,
 } from "../../types";
-import { exec } from "../../helpers/process";
 
 export const createTask: CreateInstruction<
 	TaskParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
@@ -27,17 +26,13 @@ export const createTask: CreateInstruction<
 
 		receiver.add({
 			title: typeof label === "function" ? label(context) : label,
-			task: async () => (value = await handler(context, HELPERS)),
+			task: async () => (value = await handler(context)),
 		});
 
 		await receiver.run();
 
 		return { key, value };
 	};
-};
-
-const HELPERS = {
-	exec,
 };
 
 export type TaskParameters<
@@ -51,15 +46,9 @@ type Parameters<
 > = Key extends keyof Values
 	? Partial<InstructionKey<Key>> & {
 			label: Label<Values>;
-			handler: (
-				context: Context<Values>,
-				helpers: typeof HELPERS
-			) => Promise<Values[Key]>;
+			handler: (context: Context<Values>) => Promise<Values[Key]>;
 	  }
 	: {
 			label: Label<Values>;
-			handler: (
-				context: Context<Values>,
-				helpers: typeof HELPERS
-			) => void;
+			handler: (context: Context<Values>) => void;
 	  };

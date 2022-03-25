@@ -1,4 +1,4 @@
-import { parseArguments } from ".";
+import { getArguments } from ".";
 
 // termost watch operand1 --help --option1 value1 --option2=value2 -al lastValue operand2 -t short -b
 process.argv = [
@@ -18,20 +18,17 @@ process.argv = [
 	"-b",
 ];
 
-describe("parseArguments", () => {
+describe("getArguments", () => {
 	test("should parse command name", () => {
-		expect(parseArguments().command).toBe(process.argv[2]);
+		expect(getArguments().command).toBe(process.argv[2]);
 	});
 
 	test("should parse operands", () => {
-		expect(parseArguments().operands).toStrictEqual([
-			"operand1",
-			"operand2",
-		]);
+		expect(getArguments().operands).toStrictEqual(["operand1", "operand2"]);
 	});
 
 	test("should parse options", () => {
-		expect(parseArguments().options).toStrictEqual({
+		expect(getArguments().options).toStrictEqual({
 			a: true,
 			b: true,
 			help: true,
@@ -51,7 +48,7 @@ describe("parseArguments", () => {
 			"watch",
 		];
 
-		expect(parseArguments()).toStrictEqual({
+		expect(getArguments()).toStrictEqual({
 			command: "watch",
 			operands: [],
 			options: {
@@ -67,7 +64,7 @@ describe("parseArguments", () => {
 			"lastValue",
 		];
 
-		expect(parseArguments()).toStrictEqual({
+		expect(getArguments()).toStrictEqual({
 			command: "lastValue",
 			operands: [],
 			options: {
@@ -85,7 +82,7 @@ describe("parseArguments", () => {
 			"lastValue",
 		];
 
-		expect(parseArguments()).toStrictEqual({
+		expect(getArguments()).toStrictEqual({
 			command: "watch",
 			operands: [],
 			options: {

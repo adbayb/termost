@@ -1,9 +1,9 @@
-import { termost } from "../src";
+import { helpers, termost } from "../src";
 
 const program = termost("Example to showcase the `message` API");
 
 program.message({
-	handler(context, helpers) {
+	handler() {
 		const content =
 			"A content formatted thanks to the `print` helper presets.";
 

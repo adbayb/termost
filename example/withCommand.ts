@@ -1,4 +1,4 @@
-import { termost } from "../src";
+import { helpers, termost } from "../src";
 
 type ProgramContext = {
 	globalFlag: boolean;
@@ -31,7 +31,7 @@ program
 		defaultValue: "local-value",
 	})
 	.message({
-		handler(context, helpers) {
+		handler(context) {
 			helpers.print(`👋 Hello, I'm the ${context.command} command`);
 
 			const { localFlag, globalFlag } = context.values;
@@ -48,7 +48,7 @@ program
 		description: "Rebuild your assets on any code change",
 	})
 	.message({
-		handler(context, helpers) {
+		handler(context) {
 			helpers.print(`👋 Hello, I'm the ${context.command} command`);
 
 			const { globalFlag } = context.values;

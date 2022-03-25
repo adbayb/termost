@@ -1,5 +1,5 @@
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export const parseArguments = () => {
+export const getArguments = () => {
 	const parameters = process.argv.slice(2);
 	let command: string | undefined;
 	const operands: Array<string> = [];
