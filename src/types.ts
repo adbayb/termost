@@ -6,14 +6,20 @@ export type ObjectLikeConstraint = Record<string, any>;
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type EmptyObject = {};
 
+/**
+ * Raw CLI arguments parsed from user inputs
+ */
+export type ArgumentValues = {
+	command: CommandName;
+	options: Record<string, string | boolean | number>;
+	operands: Array<string>;
+};
+
 export type ProgramMetadata = {
-	name: CommandName;
+	name: string;
 	version: string;
 	description: string;
-	userInputs: {
-		command: CommandName;
-		options: Record<string, string | boolean | number>;
-	};
+	argv: ArgumentValues;
 };
 
 export type Context<Values extends ObjectLikeConstraint> = {
@@ -25,7 +31,7 @@ export type InstructionParameters<
 	Values extends ObjectLikeConstraint,
 	ExtraParameters extends ObjectLikeConstraint = EmptyObject
 > = {
-	skip?: (context: Context<Values>) => boolean;
+	skip?: (context: Context<Values>, argv: ArgumentValues) => boolean;
 } & ExtraParameters;
 
 export type InstructionKey<Key> = {
@@ -43,7 +49,10 @@ export type CreateInstruction<
 	Parameters extends InstructionParameters<ObjectLikeConstraint>
 > = (parameters: Parameters) => Instruction;
 
-type Instruction = (context: Context<ObjectLikeConstraint>) => Promise<
+type Instruction = (
+	context: Context<ObjectLikeConstraint>,
+	argv: ArgumentValues
+) => Promise<
 	| null
 	| (Partial<InstructionKey<keyof ObjectLikeConstraint | undefined>> & {
 			value: ObjectLikeConstraint[number];
@@ -52,4 +61,4 @@ type Instruction = (context: Context<ObjectLikeConstraint>) => Promise<
 
 export type Label<Values extends ObjectLikeConstraint> =
 	| string
-	| ((context: Context<Values>) => string);
+	| ((context: Context<Values>, argv: ArgumentValues) => string);

@@ -15,10 +15,10 @@ export type CommandParameters = {
 
 export const createCommand = <Values extends ObjectLikeConstraint>(
 	{ name, description }: CommandParameters,
-	{ userInputs, name: rootCommandName, version }: ProgramMetadata
+	{ argv, name: rootCommandName, version }: ProgramMetadata
 ) => {
 	const isRootCommand = name === rootCommandName;
-	const isActiveCommand = userInputs.command === name;
+	const isActiveCommand = argv.command === name;
 	const controller = createCommandController<Values>(name, description);
 	const rootController = getCommandController(rootCommandName);
 
@@ -34,7 +34,7 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 			// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
 			// It'll allow to make sure that the `metadata` is correctly filled with all commands
 			// metadata (especially to let the global help option to display all available commands):
-			const optionKeys = Object.keys(userInputs.options);
+			const optionKeys = Object.keys(argv.options);
 
 			if (
 				optionKeys.includes(OPTION_HELP_NAMES[0]) ||

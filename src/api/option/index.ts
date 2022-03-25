@@ -10,7 +10,7 @@ import {
 export const createOption =
 	(
 		commandController: CommandController,
-		{ userInputs }: ProgramMetadata
+		{ argv }: ProgramMetadata
 	): CreateInstruction<
 		OptionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 	> =>
@@ -31,8 +31,8 @@ export const createOption =
 			let value: unknown;
 
 			for (const alias of aliases) {
-				if (alias in userInputs.options) {
-					value = userInputs.options[alias];
+				if (alias in argv.options) {
+					value = argv.options[alias];
 
 					break;
 				}

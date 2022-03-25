@@ -31,14 +31,15 @@ program
 		defaultValue: "local-value",
 	})
 	.message({
-		handler(context) {
-			helpers.print(`👋 Hello, I'm the ${context.command} command`);
+		handler(context, argv) {
+			helpers.print(`👋 Hello, I'm the ${argv.command} command`);
 
 			const { localFlag, globalFlag } = context.values;
 
 			helpers.print(`👉 Shared global flag = ${globalFlag}`);
 			helpers.print(`👉 Local command flag = ${localFlag}`);
 			helpers.print(`👉 Context value = ${JSON.stringify(context)}`);
+			helpers.print(`👉 Argv value = ${JSON.stringify(argv)}`);
 		},
 	});
 
@@ -48,12 +49,13 @@ program
 		description: "Rebuild your assets on any code change",
 	})
 	.message({
-		handler(context) {
-			helpers.print(`👋 Hello, I'm the ${context.command} command`);
+		handler(context, argv) {
+			helpers.print(`👋 Hello, I'm the ${argv.command} command`);
 
 			const { globalFlag } = context.values;
 
 			helpers.print(`👉 Shared global flag = ${globalFlag}`);
 			helpers.print(`👉 Context value = ${JSON.stringify(context)}`);
+			helpers.print(`👉 Argv value = ${JSON.stringify(argv)}`);
 		},
 	});

@@ -28,10 +28,10 @@ export const createQuestion: CreateInstruction<
 		}
 	};
 
-	return async function execute(context) {
+	return async function execute(context, argv) {
 		const promptObject: PromptObject = {
 			initial: defaultValue,
-			message: typeof label === "function" ? label(context) : label,
+			message: typeof label === "function" ? label(context, argv) : label,
 			name: key,
 			type: mapTypeToPromptType(),
 		};

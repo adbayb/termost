@@ -1,5 +1,6 @@
 import { Listr } from "listr2";
 import {
+	ArgumentValues,
 	Context,
 	CreateInstruction,
 	InstructionKey,
@@ -21,12 +22,12 @@ export const createTask: CreateInstruction<
 		},
 	});
 
-	return async function execute(context) {
+	return async function execute(context, argv) {
 		let value: unknown;
 
 		receiver.add({
-			title: typeof label === "function" ? label(context) : label,
-			task: async () => (value = await handler(context)),
+			title: typeof label === "function" ? label(context, argv) : label,
+			task: async () => (value = await handler(context, argv)),
 		});
 
 		await receiver.run();
@@ -46,9 +47,12 @@ type Parameters<
 > = Key extends keyof Values
 	? Partial<InstructionKey<Key>> & {
 			label: Label<Values>;
-			handler: (context: Context<Values>) => Promise<Values[Key]>;
+			handler: (
+				context: Context<Values>,
+				argv: ArgumentValues
+			) => Promise<Values[Key]>;
 	  }
 	: {
 			label: Label<Values>;
-			handler: (context: Context<Values>) => void;
+			handler: (context: Context<Values>, argv: ArgumentValues) => void;
 	  };

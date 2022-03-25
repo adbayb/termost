@@ -1,4 +1,5 @@
 import {
+	ArgumentValues,
 	Context,
 	CreateInstruction,
 	InstructionParameters,
@@ -10,8 +11,8 @@ export const createMessage: CreateInstruction<
 > = (parameters) => {
 	const { handler } = parameters;
 
-	return async function execute(context) {
-		handler(context);
+	return async function execute(context, argv) {
+		handler(context, argv);
 
 		return null;
 	};
@@ -21,6 +22,6 @@ export type MessageParameters<Values extends ObjectLikeConstraint> =
 	InstructionParameters<
 		Values,
 		{
-			handler: (context: Context<Values>) => void;
+			handler: (context: Context<Values>, argv: ArgumentValues) => void;
 		}
 	>;

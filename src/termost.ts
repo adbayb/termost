@@ -65,12 +65,12 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 		version = packageMetadata.version;
 	}
 
-	const { command = name, options } = getArguments();
+	const { command = name, options, operands } = getArguments();
 
 	setGracefulListeners(callbacks);
 
 	return createProgram<Values>({
-		userInputs: { command, options },
+		argv: { command, options, operands },
 		description,
 		name,
 		version,
@@ -80,7 +80,7 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 export const createProgram = <Values extends ObjectLikeConstraint>(
 	metadata: ProgramMetadata
 ): Termost<Values> => {
-	const { name, description } = metadata;
+	const { argv, name, description } = metadata;
 	const rootCommandName: CommandName = name;
 	let currentCommandName: CommandName = rootCommandName;
 
@@ -95,9 +95,9 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 			const { skip } = params;
 			const context = controller.getContext(rootCommandName);
 
-			if (skip?.(context)) return;
+			if (skip?.(context, argv)) return;
 
-			const output = await instruction(context);
+			const output = await instruction(context, argv);
 
 			if (!output || !output.key) return;
 
@@ -151,10 +151,6 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 	return program;
 };
 
-const isObject = (value: unknown): value is ObjectLikeConstraint => {
-	return value !== null && typeof value === "object";
-};
-
 type TerminationCallbacks = Partial<{
 	onShutdown: () => void;
 	onException: (error: Error) => void;
@@ -186,4 +182,8 @@ const setGracefulListeners = ({
 
 		process.exit(1);
 	});
+};
+
+const isObject = (value: unknown): value is ObjectLikeConstraint => {
+	return value !== null && typeof value === "object";
 };
