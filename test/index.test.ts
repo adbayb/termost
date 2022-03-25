@@ -4,11 +4,15 @@ jest.setTimeout(20000);
 
 describe("termost", () => {
 	test("should display `help`", async () => {
-		const output = await exec(
+		const longFlagOutput = await exec(
 			"node -r esbuild-register example/index.ts --help"
 		);
+		const shortFlagOutput = await exec(
+			"node -r esbuild-register example/index.ts -h"
+		);
 
-		expect(output).toMatchSnapshot();
+		expect(longFlagOutput).toMatchSnapshot();
+		expect(shortFlagOutput).toMatchSnapshot();
 	});
 
 	test("should handle `command` api", async () => {
@@ -54,6 +58,14 @@ describe("termost", () => {
 	test("should handle `option` api", async () => {
 		const output = await exec(
 			"node -r esbuild-register example/withOption.ts"
+		);
+
+		expect(output).toMatchSnapshot();
+	});
+
+	test("should handle `task` api", async () => {
+		const output = await exec(
+			"node -r esbuild-register example/withTask.ts"
 		);
 
 		expect(output).toMatchSnapshot();

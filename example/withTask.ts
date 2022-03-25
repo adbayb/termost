@@ -18,7 +18,8 @@ program
 	})
 	.task({
 		label: "Task with side-effect only (no persisted value)",
-		handler() {
+		async handler() {
+			await wait(500);
 			// @note: side-effect only handler
 		},
 	})
@@ -36,8 +37,8 @@ program
 	.task({
 		key: "execOutput",
 		label: "Or even execute external commands thanks to its provided helpers",
-		handler(context, helpers) {
-			return helpers.exec("ls -al");
+		handler(_, helpers) {
+			return helpers.exec("echo 'Hello from shell'");
 		},
 	})
 	.task({

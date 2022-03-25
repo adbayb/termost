@@ -14,6 +14,20 @@ Program description placeholder. Program name and version are retrieved from you
   [92m-f, --flag    [39m A super useful CLI flag"
 `;
 
+exports[`termost should display \`help\` 2`] = `
+"[93m[1m[4m[24m[22m[39m
+[93m[1m[4mUSAGE:[24m[22m[39m
+[92mtermost[39m [...options]
+[93m[1m[4m[24m[22m[39m
+[93m[1m[4mDESCRIPTION:[24m[22m[39m
+Program description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.
+[93m[1m[4m[24m[22m[39m
+[93m[1m[4mOPTIONS:[24m[22m[39m
+  [92m-h, --help    [39m Display the help center
+  [92m-v, --version [39m Print the version
+  [92m-f, --flag    [39m A super useful CLI flag"
+`;
+
 exports[`termost should handle \`command\` api 1`] = `
 "[93m[1m[4m[24m[22m[39m
 [93m[1m[4mUSAGE:[24m[22m[39m
@@ -141,4 +155,25 @@ exports[`termost should handle \`option\` api 1`] = `
 [94m  \\"optionWithAlias\\": 0,[39m
 [94m  \\"optionWithoutAlias\\": \\"defaultValue\\"[39m
 [94m}[39m"
+`;
+
+exports[`termost should handle \`task\` api 1`] = `
+"[STARTED] Task with returned value (persisted)
+[SUCCESS] Task with returned value (persisted)
+[STARTED] Task with side-effect only (no persisted value)
+[SUCCESS] Task with side-effect only (no persisted value)
+[STARTED] Task can also access other persisted task values
+[SUCCESS] Task can also access other persisted task values
+[STARTED] Or even execute external commands thanks to its provided helpers
+[SUCCESS] Or even execute external commands thanks to its provided helpers
+[STARTED] A task can have a dynamic label generated from contextual values: small
+[SUCCESS] A task can have a dynamic label generated from contextual values: small
+[94m[1m[22m[39m
+[94m[1mℹ️  Information[22m[39m
+[94m   A task with a specified \\"key\\" can be retrieved here. Size = 45. If no \\"key\\" was specified the task returned value cannot be persisted across program instructions.[39m
+{
+  \\"size\\": 45,
+  \\"computedFromOtherTaskValues\\": \\"small\\",
+  \\"execOutput\\": \\"Hello from shell\\"
+}"
 `;
