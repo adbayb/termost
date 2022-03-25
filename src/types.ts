@@ -1,6 +1,7 @@
 export type CommandName = string;
 
-export type ObjectLikeConstraint = Record<string, unknown>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ObjectLikeConstraint = Record<string, any>;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type EmptyObject = {};
