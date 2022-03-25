@@ -38,6 +38,7 @@ program
 
 			helpers.print(`👉 Shared global flag = ${globalFlag}`);
 			helpers.print(`👉 Local command flag = ${localFlag}`);
+			helpers.print(`👉 Context value = ${JSON.stringify(context)}`);
 		},
 	});
 
@@ -53,5 +54,6 @@ program
 			const { globalFlag } = context.values;
 
 			helpers.print(`👉 Shared global flag = ${globalFlag}`);
+			helpers.print(`👉 Context value = ${JSON.stringify(context)}`);
 		},
 	});
