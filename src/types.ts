@@ -22,10 +22,7 @@ export type ProgramMetadata = {
 	argv: ArgumentValues;
 };
 
-export type Context<Values extends ObjectLikeConstraint> = {
-	command: CommandName;
-	values: Values;
-};
+export type Context<Values extends ObjectLikeConstraint> = Values;
 
 export type InstructionParameters<
 	Values extends ObjectLikeConstraint,

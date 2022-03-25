@@ -27,7 +27,7 @@ program
 		key: "computedFromOtherTaskValues",
 		label: "Task can also access other persisted task values",
 		handler(context) {
-			if (context.values.size > 2000) {
+			if (context.size > 2000) {
 				return Promise.resolve("big");
 			}
 
@@ -49,23 +49,23 @@ program
 			return Promise.resolve("Super long task");
 		},
 		skip(context) {
-			const needOptimization = context.values.size > 2000;
+			const needOptimization = context.size > 2000;
 
 			return !needOptimization;
 		},
 	})
 	.task({
 		label: (context) =>
-			`A task can have a dynamic label generated from contextual values: ${context.values.computedFromOtherTaskValues}`,
+			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
 		async handler() {},
 	})
 	.message({
 		handler(context) {
 			helpers.print(
-				`A task with a specified "key" can be retrieved here. Size = ${context.values.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
+				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
 			);
 
-			console.info(JSON.stringify(context.values, null, 2));
+			console.info(JSON.stringify(context, null, 2));
 		},
 	});
 

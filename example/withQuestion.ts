@@ -36,14 +36,16 @@ program
 		type: "text",
 		key: "question4",
 		label: (context) =>
-			`Dynamic question label generated from a contextual value: ${context.values.question1}`,
+			`Dynamic question label generated from a contextual value: ${context.question1}`,
 		defaultValue: "Empty input",
-		skip(context) {
-			return Boolean(context.values.question3);
+		skip(context, argv) {
+			console.log(argv);
+
+			return Boolean(context.question3);
 		},
 	})
 	.message({
 		handler(context) {
-			helpers.print(JSON.stringify(context.values, null, 4));
+			helpers.print(JSON.stringify(context, null, 4));
 		},
 	});

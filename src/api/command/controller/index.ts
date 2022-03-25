@@ -39,10 +39,7 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 	description: CommandMetadata["description"]
 ) => {
 	const instructions = createQueue<Instruction>();
-	const context = {
-		command: name,
-		values: {},
-	} as Context<Values>;
+	let context = {} as Context<Values>;
 	const metadata: CommandMetadata = {
 		description,
 		options: {
@@ -56,7 +53,7 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 			metadata.options[key] = description;
 		},
 		addValue(key, value) {
-			context.values[key] = value;
+			context[key] = value;
 		},
 		addInstruction(instruction) {
 			instructions.enqueue(instruction);
@@ -78,9 +75,9 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 				const globalContext =
 					rootController.getContext(rootCommandName);
 
-				context.values = {
-					...globalContext.values,
-					...context.values,
+				context = {
+					...globalContext,
+					...context,
 				};
 			}
 

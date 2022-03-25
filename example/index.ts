@@ -40,8 +40,8 @@ program
 	})
 	.message({
 		handler(context) {
-			helpers.print(`Task value: ${context.values.sharedOutput}`);
-			helpers.print(`Option value: ${context.values.option}`, {
+			helpers.print(`Task value: ${context.sharedOutput}`);
+			helpers.print(`Option value: ${context.option}`, {
 				type: "warning",
 			});
 		},

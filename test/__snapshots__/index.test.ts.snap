@@ -58,7 +58,7 @@ exports[`termost should handle \`command\` api 2`] = `
 [94m   👉 Local command flag = local-value[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👉 Context value = {\\"command\\":\\"build\\",\\"values\\":{\\"globalFlag\\":false,\\"localFlag\\":\\"local-value\\"}}[39m
+[94m   👉 Context value = {\\"globalFlag\\":false,\\"localFlag\\":\\"local-value\\"}[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   👉 Argv value = {\\"command\\":\\"build\\",\\"options\\":{},\\"operands\\":[]}[39m"
@@ -73,7 +73,7 @@ exports[`termost should handle \`command\` api 3`] = `
 [94m   👉 Shared global flag = false[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👉 Context value = {\\"command\\":\\"watch\\",\\"values\\":{\\"globalFlag\\":false}}[39m
+[94m   👉 Context value = {\\"globalFlag\\":false}[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   👉 Argv value = {\\"command\\":\\"watch\\",\\"options\\":{},\\"operands\\":[]}[39m"
@@ -91,7 +91,7 @@ exports[`termost should handle \`command\` api 4`] = `
 [94m   👉 Local command flag = hello[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👉 Context value = {\\"command\\":\\"build\\",\\"values\\":{\\"globalFlag\\":true,\\"localFlag\\":\\"hello\\"}}[39m
+[94m   👉 Context value = {\\"globalFlag\\":true,\\"localFlag\\":\\"hello\\"}[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   👉 Argv value = {\\"command\\":\\"build\\",\\"options\\":{\\"global\\":true,\\"local\\":\\"hello\\"},\\"operands\\":[]}[39m"
@@ -106,7 +106,7 @@ exports[`termost should handle \`command\` api 5`] = `
 [94m   👉 Shared global flag = true[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
-[94m   👉 Context value = {\\"command\\":\\"watch\\",\\"values\\":{\\"globalFlag\\":true}}[39m
+[94m   👉 Context value = {\\"globalFlag\\":true}[39m
 [94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   👉 Argv value = {\\"command\\":\\"watch\\",\\"options\\":{\\"global\\":true},\\"operands\\":[]}[39m"

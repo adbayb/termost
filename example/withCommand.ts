@@ -32,10 +32,9 @@ program
 	})
 	.message({
 		handler(context, argv) {
+			const { localFlag, globalFlag } = context;
+
 			helpers.print(`👋 Hello, I'm the ${argv.command} command`);
-
-			const { localFlag, globalFlag } = context.values;
-
 			helpers.print(`👉 Shared global flag = ${globalFlag}`);
 			helpers.print(`👉 Local command flag = ${localFlag}`);
 			helpers.print(`👉 Context value = ${JSON.stringify(context)}`);
@@ -50,10 +49,9 @@ program
 	})
 	.message({
 		handler(context, argv) {
+			const { globalFlag } = context;
+
 			helpers.print(`👋 Hello, I'm the ${argv.command} command`);
-
-			const { globalFlag } = context.values;
-
 			helpers.print(`👉 Shared global flag = ${globalFlag}`);
 			helpers.print(`👉 Context value = ${JSON.stringify(context)}`);
 			helpers.print(`👉 Argv value = ${JSON.stringify(argv)}`);
