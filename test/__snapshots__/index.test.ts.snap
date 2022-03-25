@@ -29,8 +29,7 @@ Example to showcase the \`command\` API
 [93m[1m[4mOPTIONS:[24m[22m[39m
   [92m-h, --help    [39m Display the help center
   [92m-v, --version [39m Print the version
-  [92m--global      [39m Shared flag between commands
-  [92m--local       [39m Local command flag"
+  [92m--global      [39m Shared flag between commands"
 `;
 
 exports[`termost should handle \`command\` api 2`] = `
@@ -101,8 +100,7 @@ Rebuild your assets on any code change
 [93m[1m[4mOPTIONS:[24m[22m[39m
   [92m-h, --help    [39m Display the help center
   [92m-v, --version [39m Print the version
-  [92m--global      [39m Shared flag between commands
-  [92m--local       [39m Local command flag"
+  [92m--global      [39m Shared flag between commands"
 `;
 
 exports[`termost should handle \`message\` api 1`] = `

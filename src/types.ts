@@ -3,7 +3,7 @@ export type CommandName = string;
 export type ObjectLikeConstraint = Record<string, unknown>;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type EmptyContext = {};
+export type EmptyObject = {};
 
 export type Metadata = {
 	name: CommandName;
@@ -15,9 +15,7 @@ export type Metadata = {
 		command: CommandName;
 		options: Record<string, string | boolean | number>;
 	};
-	commands: Record<CommandName, string>;
 	description: string;
-	options: Record<string, string>; // @todo: remove
 };
 
 export type Context<Values extends ObjectLikeConstraint> = {
@@ -27,7 +25,7 @@ export type Context<Values extends ObjectLikeConstraint> = {
 
 export type InstructionParameters<
 	Values extends ObjectLikeConstraint,
-	ExtraParameters extends ObjectLikeConstraint = EmptyContext
+	ExtraParameters extends ObjectLikeConstraint = EmptyObject
 > = {
 	skip?: (context: Context<Values>) => boolean;
 } & ExtraParameters;

@@ -1,9 +1,9 @@
 import { getPackageMetadata } from "./helpers/package";
 import { parseArguments } from "./helpers/parser";
 import { createProgram } from "./api/program";
-import { EmptyContext, Metadata, ObjectLikeConstraint } from "./types";
+import { EmptyObject, Metadata, ObjectLikeConstraint } from "./types";
 
-export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
+export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 	metadata:
 		| string
 		| {
@@ -33,10 +33,8 @@ export function termost<Values extends ObjectLikeConstraint = EmptyContext>(
 
 	const context: Metadata = {
 		args: { command, options },
-		commands: {}, // @todo: to remove
 		description,
 		name,
-		options: {}, // @todo: to remove
 		version,
 	};
 

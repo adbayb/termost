@@ -1,3 +1,4 @@
+import { CommandController } from "../command";
 import {
 	CreateInstruction,
 	InstructionKey,
@@ -8,6 +9,7 @@ import {
 
 export const createOption =
 	(
+		controller: CommandController,
 		metadata: Metadata
 	): CreateInstruction<
 		OptionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
@@ -23,7 +25,7 @@ export const createOption =
 			)
 			.join(", ");
 
-		metadata.options[metadataKey] = description;
+		controller.addOptionDescription(metadataKey, description);
 
 		return async function execute() {
 			let value: unknown;
