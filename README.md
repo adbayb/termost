@@ -38,12 +38,14 @@ Once you're done, you can play with the API:
 ```ts
 #!/usr/bin/env node
 
-import { termost } from "termost";
+import { termost, helpers } from "termost";
 
-const program = termost<{
+type ProgramContext = {
 	sharedOutput: string;
 	option: string;
-}>("My super program description");
+};
+
+const program = termost<ProgramContext>("My super program description");
 
 program
 	.option({
@@ -55,16 +57,16 @@ program
 	.task({
 		key: "sharedOutput",
 		label: "Retrieves files",
-		async handler(_, helpers) {
+		async handler() {
 			return await helpers.exec('echo "Hello from task"', {
 				cwd: process.cwd(),
 			});
 		},
 	})
 	.message({
-		handler(context, helpers) {
-			helpers.print(`Task value: ${context.values.sharedOutput}`);
-			helpers.print(`Option value: ${context.values.option}`, {
+		handler(context) {
+			helpers.print(`Task value: ${context.sharedOutput}`);
+			helpers.print(`Option value: ${context.option}`, {
 				type: "warning",
 			});
 		},
@@ -88,7 +90,7 @@ Here's an API overview:
 ```ts
 #!/usr/bin/env node
 
-import { termost } from "termost";
+import { termost, helpers } from "termost";
 
 const program = termost("Example to showcase the `command` API");
 
@@ -98,10 +100,8 @@ program
 		description: "Transpile and bundle in production mode",
 	})
 	.message({
-		handler(context, helpers) {
-			helpers.print(
-				`👋 Hello, I'm the ${context.currentCommand} command`
-			);
+		handler(context, argv) {
+			helpers.print(`👋 Hello, I'm the ${argv.command} command`);
 		},
 	});
 
@@ -111,11 +111,10 @@ program
 		description: "Rebuild your assets on any code change",
 	})
 	.message({
-		handler(context, helpers) {
-			helpers.print(
-				`👋 Hello, I'm the ${context.currentCommand} command`,
-				{ type: "warning" }
-			);
+		handler(context, argv) {
+			helpers.print(`👋 Hello, I'm the ${argv.command} command`, {
+				type: "warning",
+			});
 		},
 	});
 ```
@@ -130,7 +129,7 @@ program
 ```ts
 #!/usr/bin/env node
 
-import { termost } from "termost";
+import { termost, helpers } from "termost";
 
 type ProgramContext = {
 	optionWithAlias: number;
@@ -153,7 +152,7 @@ program
 		defaultValue: "defaultValue",
 	})
 	.message({
-		handler(context, helpers) {
+		handler(context) {
 			helpers.print(JSON.stringify(context, null, 2));
 		},
 	});
@@ -169,12 +168,12 @@ program
 ```ts
 #!/usr/bin/env node
 
-import { termost } from "termost";
+import { termost, helpers } from "termost";
 
 const program = termost("Example to showcase the `message` API");
 
 program.message({
-	handler(context, helpers) {
+	handler(context) {
 		const content =
 			"A content formatted thanks to the `print` helper presets.";
 
@@ -213,6 +212,8 @@ program.message({
 ```ts
 #!/usr/bin/env node
 
+import { termost, helpers } from "termost";
+
 type ProgramContext = {
 	question1: "singleOption1" | "singleOption2";
 	question2: Array<"multipleOption1" | "multipleOption2">;
@@ -249,15 +250,15 @@ program
 		type: "text",
 		key: "question4",
 		label: (context) =>
-			`Dynamic question label generated from a contextual value: ${context.values.question1}`,
+			`Dynamic question label generated from a contextual value: ${context.question1}`,
 		defaultValue: "Empty input",
 		skip(context) {
-			return Boolean(context.values.question3);
+			return Boolean(context.question3);
 		},
 	})
 	.message({
-		handler(context, helpers) {
-			helpers.print(JSON.stringify(context.values, null, 4));
+		handler(context) {
+			helpers.print(JSON.stringify(context, null, 4));
 		},
 	});
 ```
@@ -272,7 +273,7 @@ program
 ```ts
 #!/usr/bin/env node
 
-import { termost } from "termost";
+import { termost, helpers } from "termost";
 
 type ProgramContext = {
 	computedFromOtherTaskValues: "big" | "small";
@@ -300,7 +301,7 @@ program
 		key: "computedFromOtherTaskValues",
 		label: "Task can also access other persisted task context",
 		handler(context) {
-			if (context.values.size > 2000) {
+			if (context.size > 2000) {
 				return Promise.resolve("big");
 			}
 
@@ -310,7 +311,7 @@ program
 	.task({
 		key: "execOutput",
 		label: "Or even execute external commands thanks to its provided helpers",
-		handler(context, helpers) {
+		handler(context) {
 			return helpers.exec("ls -al");
 		},
 	})
@@ -322,20 +323,20 @@ program
 			return Promise.resolve("Super long task");
 		},
 		skip(context) {
-			const needOptimization = context.values.size > 2000;
+			const needOptimization = context.size > 2000;
 
 			return !needOptimization;
 		},
 	})
 	.task({
 		label: (context) =>
-			`A task can have a dynamic label generated from contextual values: ${context.values.computedFromOtherTaskValues}`,
+			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
 		async handler() {},
 	})
 	.message({
-		handler(context, helpers) {
+		handler(context) {
 			helpers.print(
-				`A task with a specified "key" can be retrieved here. Size = ${context.values.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
+				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
 			);
 
 			console.info(JSON.stringify(context, null, 2));
