@@ -1,7 +1,7 @@
 import { getPackageMetadata } from "./helpers/package";
 import { parseArguments } from "./helpers/parser";
 import { createProgram } from "./api/program";
-import { EmptyObject, Metadata, ObjectLikeConstraint } from "./types";
+import { EmptyObject, ObjectLikeConstraint } from "./types";
 
 export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 	metadata:
@@ -31,16 +31,14 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 
 	const { command = name, options } = parseArguments();
 
-	const context: Metadata = {
-		args: { command, options },
+	setGracefulListeners(callbacks);
+
+	return createProgram<Values>({
+		userInputs: { command, options },
 		description,
 		name,
 		version,
-	};
-
-	setGracefulListeners(callbacks);
-
-	return createProgram<Values>(context);
+	});
 }
 
 const isObject = (value: unknown): value is ObjectLikeConstraint => {

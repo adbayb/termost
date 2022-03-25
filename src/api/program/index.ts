@@ -12,8 +12,8 @@ import {
 	CreateInstruction,
 	EmptyObject,
 	InstructionParameters,
-	Metadata,
 	ObjectLikeConstraint,
+	ProgramMetadata,
 } from "../../types";
 
 /**
@@ -38,10 +38,11 @@ export type Program<Values extends ObjectLikeConstraint = EmptyObject> = {
 };
 
 export const createProgram = <Values extends ObjectLikeConstraint>(
-	metadata: Metadata
+	metadata: ProgramMetadata
 ): Program<Values> => {
-	const rootCommandName = metadata.name;
-	let currentCommandName: CommandName = metadata.name;
+	const { name, description } = metadata;
+	const rootCommandName: CommandName = name;
+	let currentCommandName: CommandName = rootCommandName;
 
 	const createInstruction = <Parameters>(
 		createInstruction: CreateInstruction<Parameters>,
@@ -54,30 +55,24 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 			const { skip } = params;
 			const context = controller.getContext(rootCommandName);
 
-			if (skip?.(context)) {
-				return;
-			}
+			if (skip?.(context)) return;
 
 			const output = await instruction(context);
 
-			if (output && output.key) {
-				controller.addValue(
-					output.key,
-					output.value as Values[keyof Values]
-				);
-			}
+			if (!output || !output.key) return;
+
+			controller.addValue(
+				output.key,
+				output.value as Values[keyof Values]
+			);
 		});
 	};
 
 	const program: Program<Values> = {
-		command({ name, description }) {
-			currentCommandName = createCommand({
-				name,
-				description,
-				metadata,
-			});
+		command<CommandValues>(params: CommandParameters) {
+			currentCommandName = createCommand(params, metadata);
 
-			return this as Program<any>;
+			return this as Program<CommandValues & Values>;
 		},
 		message(params) {
 			createInstruction(createMessage, params);
@@ -109,8 +104,8 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 
 	// @note: the root command is created by default
 	program.command({
-		name: metadata.name,
-		description: metadata.description,
+		name,
+		description,
 	});
 
 	return program;

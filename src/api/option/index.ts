@@ -3,14 +3,14 @@ import {
 	CreateInstruction,
 	InstructionKey,
 	InstructionParameters,
-	Metadata,
 	ObjectLikeConstraint,
+	ProgramMetadata,
 } from "../../types";
 
 export const createOption =
 	(
-		controller: CommandController,
-		metadata: Metadata
+		commandController: CommandController,
+		{ userInputs }: ProgramMetadata
 	): CreateInstruction<
 		OptionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 	> =>
@@ -25,14 +25,14 @@ export const createOption =
 			)
 			.join(", ");
 
-		controller.addOptionDescription(metadataKey, description);
+		commandController.addOptionDescription(metadataKey, description);
 
 		return async function execute() {
 			let value: unknown;
 
 			for (const alias of aliases) {
-				if (alias in metadata.args.options) {
-					value = metadata.args.options[alias];
+				if (alias in userInputs.options) {
+					value = userInputs.options[alias];
 
 					break;
 				}

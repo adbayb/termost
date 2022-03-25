@@ -13,7 +13,7 @@ export type CommandController<
 	addOptionDescription(key: string, description: string): void;
 	addInstruction(instruction: Instruction): void;
 	/**
-	 * Iterate over stored instructions and execute them
+	 * Enables a command by iterating over instructions and executing them
 	 */
 	enable(): Promise<void>;
 	getContext(rootCommandName: CommandName): Context<Values>;

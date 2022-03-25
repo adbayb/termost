@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { format } from "../message/helpers";
-import { Metadata } from "../../types";
+import { ObjectLikeConstraint, ProgramMetadata } from "../../types";
 import {
 	CommandController,
 	createCommandController,
@@ -13,19 +13,13 @@ export type CommandParameters = {
 	description: string;
 };
 
-type InternalCommandParameters = CommandParameters & {
-	metadata: Metadata;
-};
-
-export const createCommand = ({
-	name,
-	description,
-	metadata,
-}: InternalCommandParameters) => {
-	const { args, name: rootCommandName } = metadata;
+export const createCommand = <Values extends ObjectLikeConstraint>(
+	{ name, description }: CommandParameters,
+	{ userInputs, name: rootCommandName, version }: ProgramMetadata
+) => {
 	const isRootCommand = name === rootCommandName;
-	const isActiveCommand = args.command === name;
-	const controller = createCommandController(name, description);
+	const isActiveCommand = userInputs.command === name;
+	const controller = createCommandController<Values>(name, description);
 	const rootController = getCommandController(rootCommandName);
 
 	setTimeout(() => {
@@ -40,17 +34,17 @@ export const createCommand = ({
 			// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
 			// It'll allow to make sure that the `metadata` is correctly filled with all commands
 			// metadata (especially to let the global help option to display all available commands):
-			const { options } = args;
-			const optionKeys = Object.keys(options);
+			const optionKeys = Object.keys(userInputs.options);
 
 			if (
 				optionKeys.includes(OPTION_HELP_NAMES[0]) ||
 				optionKeys.includes(OPTION_HELP_NAMES[1])
 			) {
-				return showHelp(metadata, {
+				return showHelp({
+					controller,
 					currentCommandName: name,
 					isRootCommand,
-					controller,
+					rootCommandName,
 				});
 			}
 
@@ -58,7 +52,7 @@ export const createCommand = ({
 				optionKeys.includes(OPTION_VERSION_NAMES[0]) ||
 				optionKeys.includes(OPTION_VERSION_NAMES[1])
 			) {
-				return showVersion(metadata);
+				return console.info(version);
 			}
 
 			controller.enable();
@@ -71,25 +65,18 @@ export const createCommand = ({
 const OPTION_HELP_NAMES = ["help", "h"] as const;
 const OPTION_VERSION_NAMES = ["version", "v"] as const;
 
-const showVersion = (metadata: Metadata) => {
-	console.info(metadata.version);
-};
-
-const showHelp = (
-	metadata: Metadata,
-	{
-		currentCommandName,
-		isRootCommand,
-		controller,
-	}: {
-		currentCommandName: string;
-		isRootCommand: boolean;
-		controller: CommandController;
-	}
-) => {
-	const { name: programName } = metadata;
-	const commandMetadata = controller.getMetadata(programName);
-	// const rootCommandMetadata = controller.getMetadata();
+const showHelp = ({
+	rootCommandName,
+	currentCommandName,
+	isRootCommand,
+	controller,
+}: {
+	rootCommandName: string;
+	currentCommandName: string;
+	isRootCommand: boolean;
+	controller: CommandController;
+}) => {
+	const commandMetadata = controller.getMetadata(rootCommandName);
 	const { options, description } = commandMetadata;
 	const commands = getCommandDescriptionCollection();
 	const optionKeys = Object.keys(commandMetadata.options);
@@ -100,7 +87,7 @@ const showHelp = (
 	printTitle("Usage");
 	print(
 		`${format(
-			`${programName}${
+			`${rootCommandName}${
 				isRootCommand ? "" : ` ${String(currentCommandName)}`
 			}`,
 			{
@@ -124,7 +111,7 @@ const showHelp = (
 		printTitle("Commands");
 
 		for (const name of commandKeys) {
-			if (name === programName) continue;
+			if (name === rootCommandName) continue;
 
 			const description = commands[name];
 
