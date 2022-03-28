@@ -49,7 +49,7 @@ describe("termost", () => {
 
 	test("should handle `message` api", async () => {
 		const output = await exec(
-			"node -r esbuild-register example/withMessage.ts"
+			"node -r esbuild-register example/withOutput.ts"
 		);
 
 		expect(output).toMatchSnapshot();

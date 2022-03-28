@@ -157,7 +157,16 @@ exports[`termost should handle \`message\` api 1`] = `
 [94m   multilines[39m
 [94m   with array input[39m
 [37m[3m[9m[1m[22m[29m[23m[39m
-[37m[3m[9m[1mYou can also have a total control on the formatting through the \`format\` helper.[22m[29m[23m[39m"
+[37m[3m[9m[1mYou can also have a total control on the formatting through the \`format\` helper.[22m[29m[23m[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  Information[22m[39m
+[94m   A shareable value can also be displayed: Hello from previous output[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  Information[22m[39m
+[94m   I can also run asynchronous operations... Operation is starting...[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  Information[22m[39m
+[94m   Operation is finished[39m"
 `;
 
 exports[`termost should handle \`option\` api 1`] = `
