@@ -1,50 +1,48 @@
 import { helpers, termost } from "../src";
 
 type ProgramContext = {
-	question1: "singleOption1" | "singleOption2";
-	question2: Array<"multipleOption1" | "multipleOption2">;
-	question3: boolean;
-	question4: string;
+	input1: "singleOption1" | "singleOption2";
+	input2: Array<"multipleOption1" | "multipleOption2">;
+	input3: boolean;
+	input4: string;
 };
 
-const program = termost<ProgramContext>(
-	"Example to showcase the `question` API"
-);
+const program = termost<ProgramContext>("Example to showcase the `input` API");
 
 program
-	.question({
+	.input({
 		type: "select",
-		key: "question1",
+		key: "input1",
 		label: "What is your single choice?",
 		options: ["singleOption1", "singleOption2"],
 		defaultValue: "singleOption2",
 	})
-	.question({
+	.input({
 		type: "multiselect",
-		key: "question2",
+		key: "input2",
 		label: "What is your multiple choices?",
 		options: ["multipleOption1", "multipleOption2"],
 		defaultValue: ["multipleOption2"],
 	})
-	.question({
+	.input({
 		type: "confirm",
-		key: "question3",
-		label: "Are you sure to skip next question?",
+		key: "input3",
+		label: "Are you sure to skip next input?",
 		defaultValue: false,
 	})
-	.question({
+	.input({
 		type: "text",
-		key: "question4",
+		key: "input4",
 		label: (context) =>
-			`Dynamic question label generated from a contextual value: ${context.question1}`,
+			`Dynamic input label generated from a contextual value: ${context.input1}`,
 		defaultValue: "Empty input",
 		skip(context, argv) {
 			console.log(argv);
 
-			return Boolean(context.question3);
+			return Boolean(context.input3);
 		},
 	})
-	.message({
+	.output({
 		handler(context) {
 			helpers.print(JSON.stringify(context, null, 4));
 		},

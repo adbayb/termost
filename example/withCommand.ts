@@ -30,7 +30,7 @@ program
 		description: "Local command flag",
 		defaultValue: "local-value",
 	})
-	.message({
+	.output({
 		handler(context, argv) {
 			const { localFlag, globalFlag } = context;
 
@@ -47,7 +47,7 @@ program
 		name: "watch",
 		description: "Rebuild your assets on any code change",
 	})
-	.message({
+	.output({
 		handler(context, argv) {
 			const { globalFlag } = context;
 

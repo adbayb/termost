@@ -38,7 +38,7 @@ program
 			});
 		},
 	})
-	.message({
+	.output({
 		handler(context) {
 			helpers.print(`Task value: ${context.sharedOutput}`);
 			helpers.print(`Option value: ${context.option}`, {

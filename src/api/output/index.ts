@@ -6,8 +6,8 @@ import {
 	ObjectLikeConstraint,
 } from "../../types";
 
-export const createMessage: CreateInstruction<
-	MessageParameters<ObjectLikeConstraint>
+export const createOutput: CreateInstruction<
+	OutputParameters<ObjectLikeConstraint>
 > = (parameters) => {
 	const { handler } = parameters;
 
@@ -18,7 +18,7 @@ export const createMessage: CreateInstruction<
 	};
 };
 
-export type MessageParameters<Values extends ObjectLikeConstraint> =
+export type OutputParameters<Values extends ObjectLikeConstraint> =
 	InstructionParameters<
 		Values,
 		{

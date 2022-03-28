@@ -59,7 +59,7 @@ program
 			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
 		async handler() {},
 	})
-	.message({
+	.output({
 		handler(context) {
 			helpers.print(
 				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`

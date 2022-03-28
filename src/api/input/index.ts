@@ -7,8 +7,8 @@ import {
 	ObjectLikeConstraint,
 } from "../../types";
 
-export const createQuestion: CreateInstruction<
-	QuestionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
+export const createInput: CreateInstruction<
+	InputParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 > = (parameters) => {
 	const { key, defaultValue, label, type } = parameters;
 	const mapTypeToPromptType = (): PromptType => {
@@ -23,7 +23,7 @@ export const createQuestion: CreateInstruction<
 				return "text";
 			default:
 				throw new Error(
-					`Unknown \`${type}\` type provided to \`question\``
+					`Unknown \`${type}\` type provided to \`input\``
 				);
 		}
 	};
@@ -69,7 +69,7 @@ export const createQuestion: CreateInstruction<
 	};
 };
 
-export type QuestionParameters<
+export type InputParameters<
 	Values extends ObjectLikeConstraint,
 	Key extends keyof Values
 > = InstructionParameters<
