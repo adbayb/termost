@@ -1,7 +1,7 @@
 import chalk from "chalk";
 
 /**
- * A helper to format an arbitrary text as a print input
+ * A helper to format an arbitrary text as a message input
  * @param message The text to display
  * @param options The configuration object to control the formatting properties
  * @returns The formatted text
@@ -50,7 +50,7 @@ export const format = (
  * @param message The text to display. Use an array if you need to display a message in several lines
  * @param options The configuration object to define the display type and/or override the default label
  */
-export const print = (
+export const message = (
 	message: string | Array<string>,
 	{ label, type = "information" }: { type?: MessageType; label?: string } = {}
 ) => {

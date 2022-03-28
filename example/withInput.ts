@@ -44,6 +44,6 @@ program
 	})
 	.output({
 		handler(context) {
-			helpers.print(JSON.stringify(context, null, 4));
+			helpers.message(JSON.stringify(context, null, 4));
 		},
 	});

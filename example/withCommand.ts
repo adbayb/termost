@@ -34,11 +34,11 @@ program
 		handler(context, argv) {
 			const { localFlag, globalFlag } = context;
 
-			helpers.print(`👋 Hello, I'm the ${argv.command} command`);
-			helpers.print(`👉 Shared global flag = ${globalFlag}`);
-			helpers.print(`👉 Local command flag = ${localFlag}`);
-			helpers.print(`👉 Context value = ${JSON.stringify(context)}`);
-			helpers.print(`👉 Argv value = ${JSON.stringify(argv)}`);
+			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
+			helpers.message(`👉 Shared global flag = ${globalFlag}`);
+			helpers.message(`👉 Local command flag = ${localFlag}`);
+			helpers.message(`👉 Context value = ${JSON.stringify(context)}`);
+			helpers.message(`👉 Argv value = ${JSON.stringify(argv)}`);
 		},
 	});
 
@@ -51,9 +51,9 @@ program
 		handler(context, argv) {
 			const { globalFlag } = context;
 
-			helpers.print(`👋 Hello, I'm the ${argv.command} command`);
-			helpers.print(`👉 Shared global flag = ${globalFlag}`);
-			helpers.print(`👉 Context value = ${JSON.stringify(context)}`);
-			helpers.print(`👉 Argv value = ${JSON.stringify(argv)}`);
+			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
+			helpers.message(`👉 Shared global flag = ${globalFlag}`);
+			helpers.message(`👉 Context value = ${JSON.stringify(context)}`);
+			helpers.message(`👉 Argv value = ${JSON.stringify(argv)}`);
 		},
 	});

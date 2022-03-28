@@ -30,7 +30,6 @@ program
 		defaultValue: "Default value",
 	})
 	.task({
-		key: "sharedOutput",
 		label: "Retrieves files",
 		async handler() {
 			return await helpers.exec('echo "Hello from task"', {
@@ -40,8 +39,8 @@ program
 	})
 	.output({
 		handler(context) {
-			helpers.print(`Task value: ${context.sharedOutput}`);
-			helpers.print(`Option value: ${context.option}`, {
+			helpers.message(`Task value: ${context.sharedOutput}`);
+			helpers.message(`Option value: ${context.option}`, {
 				type: "warning",
 			});
 		},

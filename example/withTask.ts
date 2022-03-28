@@ -61,7 +61,7 @@ program
 	})
 	.output({
 		handler(context) {
-			helpers.print(
+			helpers.message(
 				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
 			);
 

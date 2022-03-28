@@ -14,15 +14,15 @@ program
 			const content =
 				"A content formatted thanks to the `print` helper presets.";
 
-			helpers.print(content);
-			helpers.print(content, { type: "warning" });
-			helpers.print(content, { type: "error" });
-			helpers.print(content, { type: "success" });
-			helpers.print(content, {
+			helpers.message(content);
+			helpers.message(content, { type: "warning" });
+			helpers.message(content, { type: "error" });
+			helpers.message(content, { type: "success" });
+			helpers.message(content, {
 				type: "information",
 				label: "👋 You can also customize the label",
 			});
-			helpers.print(
+			helpers.message(
 				["I support also", "multilines", "with array input"],
 				{
 					type: "information",
@@ -48,20 +48,20 @@ program
 	})
 	.output({
 		handler(context) {
-			helpers.print(
+			helpers.message(
 				`A shareable value can also be displayed: ${context.output}`
 			);
 		},
 	})
 	.output({
 		async handler() {
-			helpers.print(
+			helpers.message(
 				"I can also run asynchronous operations... Operation is starting..."
 			);
 
 			await wait(2000);
 
-			helpers.print("Operation is finished");
+			helpers.message("Operation is finished");
 		},
 	});
 

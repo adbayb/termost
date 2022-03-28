@@ -65,8 +65,8 @@ program
 	})
 	.output({
 		handler(context) {
-			helpers.print(`Task value: ${context.sharedOutput}`);
-			helpers.print(`Option value: ${context.option}`, {
+			helpers.message(`Task value: ${context.sharedOutput}`);
+			helpers.message(`Option value: ${context.option}`, {
 				type: "warning",
 			});
 		},
@@ -104,7 +104,7 @@ program
 	})
 	.output({
 		handler(context, argv) {
-			helpers.print(`👋 Hello, I'm the ${argv.command} command`);
+			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
 		},
 	});
 
@@ -115,7 +115,7 @@ program
 	})
 	.output({
 		handler(context, argv) {
-			helpers.print(`👋 Hello, I'm the ${argv.command} command`, {
+			helpers.message(`👋 Hello, I'm the ${argv.command} command`, {
 				type: "warning",
 			});
 		},
@@ -179,7 +179,7 @@ program
 	})
 	.output({
 		handler(context) {
-			helpers.print(JSON.stringify(context, null, 4));
+			helpers.message(JSON.stringify(context, null, 4));
 		},
 	});
 ```
@@ -221,7 +221,7 @@ program
 	})
 	.output({
 		handler(context) {
-			helpers.print(JSON.stringify(context, null, 2));
+			helpers.message(JSON.stringify(context, null, 2));
 		},
 	});
 ```
@@ -247,15 +247,15 @@ program.output({
 		const content =
 			"A content formatted thanks to the `print` helper presets.";
 
-		helpers.print(content);
-		helpers.print(content, { type: "warning" });
-		helpers.print(content, { type: "error" });
-		helpers.print(content, { type: "success" });
-		helpers.print(content, {
+		helpers.message(content);
+		helpers.message(content, { type: "warning" });
+		helpers.message(content, { type: "error" });
+		helpers.message(content, { type: "success" });
+		helpers.message(content, {
 			type: "information",
 			label: "👋 You can also customize the label",
 		});
-		helpers.print(["I support also", "multilines", "with array input"], {
+		helpers.message(["I support also", "multilines", "with array input"], {
 			type: "information",
 			label: "👋 You can also customize the label",
 		});
@@ -346,7 +346,7 @@ program
 	})
 	.output({
 		handler(context) {
-			helpers.print(
+			helpers.message(
 				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
 			);
 
