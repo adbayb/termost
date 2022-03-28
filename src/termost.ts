@@ -33,7 +33,9 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	input<Key extends keyof Values>(
 		params: InputParameters<Values, Key>
 	): Termost<Values>;
-	option<Key>(params: OptionParameters<Values, Key>): Termost<Values>;
+	option<Key extends keyof Values>(
+		params: OptionParameters<Values, Key>
+	): Termost<Values>;
 	task<Key>(params: TaskParameters<Values, Key>): Termost<Values>;
 };
 

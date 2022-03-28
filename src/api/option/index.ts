@@ -44,18 +44,12 @@ export const createOption =
 
 export type OptionParameters<
 	Values extends ObjectLikeConstraint,
-	Key
+	Key extends keyof Values
 > = InstructionParameters<
 	Values,
-	Key extends keyof Values
-		? InstructionKey<Key> &
-				CommonParameters & {
-					defaultValue?: Values[Key];
-				}
-		: CommonParameters
+	InstructionKey<Key> & {
+		name: string | { long: string; short: string };
+		description: string;
+		defaultValue?: Values[Key];
+	}
 >;
-
-type CommonParameters = {
-	name: string | { long: string; short: string };
-	description: string;
-};
