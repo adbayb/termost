@@ -20,7 +20,7 @@ program
 		description: "Useful CLI flag",
 		defaultValue: "defaultValue",
 	})
-	.output({
+	.task({
 		handler(context) {
 			helpers.message(JSON.stringify(context, null, 2));
 		},

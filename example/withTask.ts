@@ -59,10 +59,49 @@ program
 			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
 		async handler() {},
 	})
-	.output({
+	.task({
 		handler(context) {
 			helpers.message(
-				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
+				`If you don't specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).`,
+				{ label: "Label & console output" }
+			);
+
+			helpers.message(
+				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`,
+				{ label: "Context management" }
+			);
+		},
+	})
+	.task({
+		handler(context) {
+			const content =
+				"The `message` helpers can be used to display task content in a nice way";
+
+			helpers.message(content, {
+				label: "Output formatting",
+			});
+			helpers.message(content, { type: "warning" });
+			helpers.message(content, { type: "error" });
+			helpers.message(content, { type: "success" });
+			helpers.message(content, {
+				type: "information",
+				label: "👋 You can also customize the label",
+			});
+			helpers.message(
+				["I support also", "multilines", "with array input"],
+				{
+					type: "information",
+					label: "👋 You can also customize the label",
+				}
+			);
+			console.log(
+				helpers.format(
+					"\nYou can also have a total control on the formatting through the `format` helper.",
+					{
+						color: "white",
+						modifier: ["italic", "strikethrough", "bold"],
+					}
+				)
 			);
 
 			console.info(JSON.stringify(context, null, 2));

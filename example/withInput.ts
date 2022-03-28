@@ -42,7 +42,7 @@ program
 			return Boolean(context.input3);
 		},
 	})
-	.output({
+	.task({
 		handler(context) {
 			helpers.message(JSON.stringify(context, null, 4));
 		},

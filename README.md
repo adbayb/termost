@@ -13,7 +13,7 @@ Termost allows building command line tools in a minute thanks to its:
 -   [Fluent](https://en.wikipedia.org/wiki/Fluent_interface) syntax to express your CLI configurations with instructions such as:
     -   [Subcommand](example/withCommand.ts) support
     -   Long and short [option](example/withOption.ts) support
-    -   [Interaction](example/withInput.ts) support
+    -   [Prompt](example/withInput.ts) support
     -   [Task](example/withTask.ts) support
 -   Shareable output between instructions
 -   Auto-generated help and version metadata
@@ -63,7 +63,7 @@ program
 			});
 		},
 	})
-	.output({
+	.task({
 		handler(context) {
 			helpers.message(`Task value: ${context.sharedOutput}`);
 			helpers.message(`Option value: ${context.option}`, {
@@ -102,7 +102,7 @@ program
 		name: "build",
 		description: "Transpile and bundle in production mode",
 	})
-	.output({
+	.task({
 		handler(context, argv) {
 			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
 		},
@@ -113,7 +113,7 @@ program
 		name: "watch",
 		description: "Rebuild your assets on any code change",
 	})
-	.output({
+	.task({
 		handler(context, argv) {
 			helpers.message(`👋 Hello, I'm the ${argv.command} command`, {
 				type: "warning",
@@ -177,7 +177,7 @@ program
 			return Boolean(context.input3);
 		},
 	})
-	.output({
+	.task({
 		handler(context) {
 			helpers.message(JSON.stringify(context, null, 4));
 		},
@@ -219,7 +219,7 @@ program
 		description: "Useful CLI flag",
 		defaultValue: "defaultValue",
 	})
-	.output({
+	.task({
 		handler(context) {
 			helpers.message(JSON.stringify(context, null, 2));
 		},
@@ -230,61 +230,19 @@ program
 </details>
 
 <details>
-<summary><b>output({ handler, skip })</b></summary>
-<p>
-
-The `output` executes any kind of operation without being hidden by a loader (in contrast to `task` API).
-
-```ts
-#!/usr/bin/env node
-
-import { termost, helpers } from "termost";
-
-const program = termost("Example to showcase the `output` API");
-
-program.output({
-	handler(context) {
-		const content =
-			"A content formatted thanks to the `print` helper presets.";
-
-		helpers.message(content);
-		helpers.message(content, { type: "warning" });
-		helpers.message(content, { type: "error" });
-		helpers.message(content, { type: "success" });
-		helpers.message(content, {
-			type: "information",
-			label: "👋 You can also customize the label",
-		});
-		helpers.message(["I support also", "multilines", "with array input"], {
-			type: "information",
-			label: "👋 You can also customize the label",
-		});
-		console.log(
-			helpers.format(
-				"\nYou can also have a total control on the formatting through the `format` helper.",
-				{
-					color: "white",
-					modifier: ["italic", "strikethrough", "bold"],
-				}
-			)
-		);
-	},
-});
-```
-
-</p>
-</details>
-
-<details>
 <summary><b>task({ key, label, handler, skip })</b></summary>
 <p>
 
-The `task` runs an asynchronous operation in an opinionated way (with a loader and a formatted successfull/unsuccessful output).
+The `task` executes a handler (either a synchronous or an asynchronous one).  
+The output can be either:
+
+-   Displayed gradually if no `label` is provided
+-   Displayed until the promise is fullfilled if a `label` property is specified (in the meantime, a spinner with the label is showcased)
 
 ```ts
 #!/usr/bin/env node
 
-import { termost, helpers } from "termost";
+import { helpers, termost } from "../src";
 
 type ProgramContext = {
 	computedFromOtherTaskValues: "big" | "small";
@@ -304,13 +262,14 @@ program
 	})
 	.task({
 		label: "Task with side-effect only (no persisted value)",
-		handler() {
+		async handler() {
+			await wait(500);
 			// @note: side-effect only handler
 		},
 	})
 	.task({
 		key: "computedFromOtherTaskValues",
-		label: "Task can also access other persisted task context",
+		label: "Task can also access other persisted task values",
 		handler(context) {
 			if (context.size > 2000) {
 				return Promise.resolve("big");
@@ -322,8 +281,8 @@ program
 	.task({
 		key: "execOutput",
 		label: "Or even execute external commands thanks to its provided helpers",
-		handler(context) {
-			return helpers.exec("ls -al");
+		handler() {
+			return helpers.exec("echo 'Hello from shell'");
 		},
 	})
 	.task({
@@ -344,10 +303,49 @@ program
 			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
 		async handler() {},
 	})
-	.output({
+	.task({
 		handler(context) {
 			helpers.message(
-				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`
+				`If you don't specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).`,
+				{ label: "Label & console output" }
+			);
+
+			helpers.message(
+				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`,
+				{ label: "Context management" }
+			);
+		},
+	})
+	.task({
+		handler(context) {
+			const content =
+				"The `message` helpers can be used to display task content in a nice way";
+
+			helpers.message(content, {
+				label: "Output formatting",
+			});
+			helpers.message(content, { type: "warning" });
+			helpers.message(content, { type: "error" });
+			helpers.message(content, { type: "success" });
+			helpers.message(content, {
+				type: "information",
+				label: "👋 You can also customize the label",
+			});
+			helpers.message(
+				["I support also", "multilines", "with array input"],
+				{
+					type: "information",
+					label: "👋 You can also customize the label",
+				}
+			);
+			console.log(
+				helpers.format(
+					"\nYou can also have a total control on the formatting through the `format` helper.",
+					{
+						color: "white",
+						modifier: ["italic", "strikethrough", "bold"],
+					}
+				)
 			);
 
 			console.info(JSON.stringify(context, null, 2));

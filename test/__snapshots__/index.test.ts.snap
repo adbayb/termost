@@ -141,34 +141,6 @@ Rebuild your assets on any code change
   [92m--global      [39m Shared flag between commands"
 `;
 
-exports[`termost should handle \`message\` api 1`] = `
-"[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   A content formatted thanks to the \`print\` helper presets.[39m
-[92m[1m[22m[39m
-[92m[1m✅ Success[22m[39m
-[92m   A content formatted thanks to the \`print\` helper presets.[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  👋 You can also customize the label[22m[39m
-[94m   A content formatted thanks to the \`print\` helper presets.[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  👋 You can also customize the label[22m[39m
-[94m   I support also[39m
-[94m   multilines[39m
-[94m   with array input[39m
-[37m[3m[9m[1m[22m[29m[23m[39m
-[37m[3m[9m[1mYou can also have a total control on the formatting through the \`format\` helper.[22m[29m[23m[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   A shareable value can also be displayed: Hello from previous output[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   I can also run asynchronous operations... Operation is starting...[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   Operation is finished[39m"
-`;
-
 exports[`termost should handle \`option\` api 1`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
@@ -190,8 +162,27 @@ exports[`termost should handle \`task\` api 1`] = `
 [STARTED] A task can have a dynamic label generated from contextual values: small
 [SUCCESS] A task can have a dynamic label generated from contextual values: small
 [94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
+[94m[1mℹ️  Label & console output[22m[39m
+[94m   If you don't specify a label, the handler is executed in \\"live mode\\" (the output is not hidden by the label and is displayed gradually).[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  Context management[22m[39m
 [94m   A task with a specified \\"key\\" can be retrieved here. Size = 45. If no \\"key\\" was specified the task returned value cannot be persisted across program instructions.[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  Output formatting[22m[39m
+[94m   The \`message\` helpers can be used to display task content in a nice way[39m
+[92m[1m[22m[39m
+[92m[1m✅ Success[22m[39m
+[92m   The \`message\` helpers can be used to display task content in a nice way[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  👋 You can also customize the label[22m[39m
+[94m   The \`message\` helpers can be used to display task content in a nice way[39m
+[94m[1m[22m[39m
+[94m[1mℹ️  👋 You can also customize the label[22m[39m
+[94m   I support also[39m
+[94m   multilines[39m
+[94m   with array input[39m
+[37m[3m[9m[1m[22m[29m[23m[39m
+[37m[3m[9m[1mYou can also have a total control on the formatting through the \`format\` helper.[22m[29m[23m[39m
 {
   \\"size\\": 45,
   \\"computedFromOtherTaskValues\\": \\"small\\",

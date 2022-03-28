@@ -14,7 +14,6 @@ import {
 	getCommandController,
 } from "./api/command";
 import { InputParameters, createInput } from "./api/input";
-import { OutputParameters, createOutput } from "./api/output";
 import { OptionParameters, createOption } from "./api/option";
 import { TaskParameters, createTask } from "./api/task";
 
@@ -35,7 +34,6 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 		params: InputParameters<Values, Key>
 	): Termost<Values>;
 	option<Key>(params: OptionParameters<Values, Key>): Termost<Values>;
-	output<Key>(params: OutputParameters<Values, Key>): Termost<Values>;
 	task<Key>(params: TaskParameters<Values, Key>): Termost<Values>;
 };
 
@@ -127,11 +125,6 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 				),
 				params
 			);
-
-			return this;
-		},
-		output(params) {
-			createInstruction(createOutput, params);
 
 			return this;
 		},

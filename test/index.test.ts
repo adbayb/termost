@@ -47,14 +47,6 @@ describe("termost", () => {
 		expect(watchHelpOutput).toMatchSnapshot();
 	});
 
-	test("should handle `message` api", async () => {
-		const output = await exec(
-			"node -r esbuild-register example/withOutput.ts"
-		);
-
-		expect(output).toMatchSnapshot();
-	});
-
 	test("should handle `option` api", async () => {
 		const output = await exec(
 			"node -r esbuild-register example/withOption.ts"
