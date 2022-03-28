@@ -1,6 +1,9 @@
 import { spawn } from "child_process";
 
-export const exec = async (command: string, options: ExecOptions = {}) => {
+export const exec = async (
+	command: string,
+	options: ExecOptions = { hasLiveOutput: false }
+) => {
 	return new Promise<string>((resolve, reject) => {
 		let stdout = "";
 		let stderr = "";
@@ -9,7 +12,7 @@ export const exec = async (command: string, options: ExecOptions = {}) => {
 		const childProcess = spawn(bin, args, {
 			cwd: options.cwd,
 			shell: true,
-			stdio: "pipe",
+			stdio: options.hasLiveOutput ? "inherit" : "pipe",
 			env: {
 				...process.env,
 				// @note: make sure to force color display for spawned processes
@@ -17,13 +20,15 @@ export const exec = async (command: string, options: ExecOptions = {}) => {
 			},
 		});
 
-		childProcess.stdout.on("data", (chunk) => {
-			stdout += chunk;
-		});
+		childProcess.stdout &&
+			childProcess.stdout.on("data", (chunk) => {
+				stdout += chunk;
+			});
 
-		childProcess.stderr.on("data", (chunk) => {
-			stderr += chunk;
-		});
+		childProcess.stderr &&
+			childProcess.stderr.on("data", (chunk) => {
+				stderr += chunk;
+			});
 
 		childProcess.on("close", (exitCode) => {
 			if (exitCode !== 0) {
@@ -39,4 +44,5 @@ export const exec = async (command: string, options: ExecOptions = {}) => {
 
 type ExecOptions = {
 	cwd?: string;
+	hasLiveOutput?: boolean;
 };
