@@ -13,7 +13,7 @@ export const createOutput: CreateInstruction<
 	const { handler, key } = parameters;
 
 	return async function execute(context, argv) {
-		const value = handler(context, argv);
+		const value = await handler(context, argv);
 
 		return { key, value };
 	};
@@ -29,7 +29,7 @@ export type OutputParameters<
 				handler: (
 					context: Context<Values>,
 					argv: ArgumentValues
-				) => Promise<Values[Key]>;
+				) => Promise<Values[Key]> | Values[Key];
 		  }
 		: {
 				handler: (
