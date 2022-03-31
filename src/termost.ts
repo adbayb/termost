@@ -41,7 +41,7 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 };
 
 export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
-	metadata: string | PackageMetadata,
+	metadata: string | Partial<PackageMetadata>,
 	callbacks: TerminationCallbacks = {}
 ) {
 	const paramsMetadata: Partial<PackageMetadata> = isObject(metadata)
