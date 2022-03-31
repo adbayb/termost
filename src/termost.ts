@@ -6,6 +6,7 @@ import {
 	EmptyObject,
 	InstructionParameters,
 	ObjectLikeConstraint,
+	PackageMetadata,
 	ProgramMetadata,
 } from "./types";
 import {
@@ -40,40 +41,23 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 };
 
 export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
-	metadata:
-		| string
-		| {
-				name: string;
-				description: string;
-				version: string;
-		  },
+	metadata: string | PackageMetadata,
 	callbacks: TerminationCallbacks = {}
 ) {
-	let description: string;
-	let name: string;
-	let version: string;
-
-	if (isObject(metadata)) {
-		description = metadata.description;
-		name = metadata.name;
-		version = metadata.version;
-	} else {
-		const packageMetadata = getPackageMetadata();
-
-		description = metadata;
-		name = packageMetadata.name;
-		version = packageMetadata.version;
-	}
-
-	const { command = name, options, operands } = getArguments();
+	const paramsMetadata: Partial<PackageMetadata> = isObject(metadata)
+		? metadata
+		: { description: metadata };
+	const packageMetadata = getPackageMetadata();
+	const programName = paramsMetadata.name || packageMetadata.name;
+	const { command = programName, options, operands } = getArguments();
 
 	setGracefulListeners(callbacks);
 
 	return createProgram<Values>({
 		argv: { command, options, operands },
-		description,
-		name,
-		version,
+		description: paramsMetadata.description || packageMetadata.description,
+		name: programName,
+		version: paramsMetadata.version || packageMetadata.version,
 	});
 }
 

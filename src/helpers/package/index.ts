@@ -1,9 +1,8 @@
 import fs from "fs";
 import path from "path";
+import { PackageMetadata } from "../../types";
 
-export const findNearestPackageJson = (
-	pathname: string
-): Record<"name" | "version", string> => {
+export const findNearestPackageJson = (pathname: string): PackageMetadata => {
 	const packagePathname = path.resolve(pathname, "package.json");
 
 	if (isFileExists(packagePathname)) {

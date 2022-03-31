@@ -15,10 +15,13 @@ export type ArgumentValues = {
 	operands: Array<string>;
 };
 
-export type ProgramMetadata = {
+export type PackageMetadata = {
 	name: string;
 	version: string;
 	description: string;
+};
+
+export type ProgramMetadata = PackageMetadata & {
 	argv: ArgumentValues;
 };
 
