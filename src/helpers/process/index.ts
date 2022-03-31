@@ -32,7 +32,7 @@ export const exec = async (
 
 		childProcess.on("close", (exitCode) => {
 			if (exitCode !== 0) {
-				const output = stderr || stdout;
+				const output = `${stderr}${stdout}`;
 
 				reject(output.trim());
 			} else {
