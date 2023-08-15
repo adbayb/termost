@@ -27,8 +27,10 @@ Termost allows building command line tools in a minute thanks to its:
 Install the library:
 
 ```bash
-# NPM
+# Npm
 npm install termost
+# Pnpm
+pnpm add termost
 # Yarn
 yarn add termost
 ```

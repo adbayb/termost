@@ -1,52 +1,52 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`termost should display \`help\` 1`] = `
+exports[`termost > should display \`help\` 1`] = `
 "[93m[1m[4m[24m[22m[39m
 [93m[1m[4mUSAGE:[24m[22m[39m
-[92mtermost[39m [...options]
+[92m@examples/default[39m [...options]
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mDESCRIPTION:[24m[22m[39m
 Program description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version
-  [92m-f, --flag    [39m A super useful CLI flag"
+  [92m-h, --help        [39m Display the help center
+  [92m-v, --version     [39m Print the version
+  [92m-f, --flag        [39m A super useful CLI flag"
 `;
 
-exports[`termost should display \`help\` 2`] = `
+exports[`termost > should display \`help\` 2`] = `
 "[93m[1m[4m[24m[22m[39m
 [93m[1m[4mUSAGE:[24m[22m[39m
-[92mtermost[39m [...options]
+[92m@examples/default[39m [...options]
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mDESCRIPTION:[24m[22m[39m
 Program description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version
-  [92m-f, --flag    [39m A super useful CLI flag"
+  [92m-h, --help        [39m Display the help center
+  [92m-v, --version     [39m Print the version
+  [92m-f, --flag        [39m A super useful CLI flag"
 `;
 
-exports[`termost should handle \`command\` api 1`] = `
+exports[`termost > should handle \`command\` api 1`] = `
 "[93m[1m[4m[24m[22m[39m
 [93m[1m[4mUSAGE:[24m[22m[39m
-[92mtermost[39m <command> [...options]
+[92m@examples/command[39m <command> [...options]
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mDESCRIPTION:[24m[22m[39m
 Example to showcase the \`command\` API
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mCOMMANDS:[24m[22m[39m
-  [92mbuild         [39m Transpile and bundle in production mode
-  [92mwatch         [39m Rebuild your assets on any code change
+  [92mbuild             [39m Transpile and bundle in production mode
+  [92mwatch             [39m Rebuild your assets on any code change
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version
-  [92m--global      [39m Shared flag between commands"
+  [92m-h, --help        [39m Display the help center
+  [92m-v, --version     [39m Print the version
+  [92m--global          [39m Shared flag between commands"
 `;
 
-exports[`termost should handle \`command\` api 2`] = `
+exports[`termost > should handle \`command\` api 2`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   👋 Hello, I'm the build command[39m
@@ -64,7 +64,7 @@ exports[`termost should handle \`command\` api 2`] = `
 [94m   👉 Argv value = {\\"command\\":\\"build\\",\\"options\\":{},\\"operands\\":[]}[39m"
 `;
 
-exports[`termost should handle \`command\` api 3`] = `
+exports[`termost > should handle \`command\` api 3`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   👋 Hello, I'm the watch command[39m
@@ -79,7 +79,7 @@ exports[`termost should handle \`command\` api 3`] = `
 [94m   👉 Argv value = {\\"command\\":\\"watch\\",\\"options\\":{},\\"operands\\":[]}[39m"
 `;
 
-exports[`termost should handle \`command\` api 4`] = `
+exports[`termost > should handle \`command\` api 4`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   👋 Hello, I'm the build command[39m
@@ -97,7 +97,7 @@ exports[`termost should handle \`command\` api 4`] = `
 [94m   👉 Argv value = {\\"command\\":\\"build\\",\\"options\\":{\\"global\\":true,\\"local\\":\\"hello\\"},\\"operands\\":[]}[39m"
 `;
 
-exports[`termost should handle \`command\` api 5`] = `
+exports[`termost > should handle \`command\` api 5`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   👋 Hello, I'm the watch command[39m
@@ -112,36 +112,36 @@ exports[`termost should handle \`command\` api 5`] = `
 [94m   👉 Argv value = {\\"command\\":\\"watch\\",\\"options\\":{\\"global\\":true},\\"operands\\":[]}[39m"
 `;
 
-exports[`termost should handle \`command\` api 6`] = `
+exports[`termost > should handle \`command\` api 6`] = `
 "[93m[1m[4m[24m[22m[39m
 [93m[1m[4mUSAGE:[24m[22m[39m
-[92mtermost build[39m [...options]
+[92m@examples/command build[39m [...options]
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mDESCRIPTION:[24m[22m[39m
 Transpile and bundle in production mode
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version
-  [92m--global      [39m Shared flag between commands
-  [92m--local       [39m Local command flag"
+  [92m-h, --help        [39m Display the help center
+  [92m-v, --version     [39m Print the version
+  [92m--global          [39m Shared flag between commands
+  [92m--local           [39m Local command flag"
 `;
 
-exports[`termost should handle \`command\` api 7`] = `
+exports[`termost > should handle \`command\` api 7`] = `
 "[93m[1m[4m[24m[22m[39m
 [93m[1m[4mUSAGE:[24m[22m[39m
-[92mtermost watch[39m [...options]
+[92m@examples/command watch[39m [...options]
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mDESCRIPTION:[24m[22m[39m
 Rebuild your assets on any code change
 [93m[1m[4m[24m[22m[39m
 [93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help    [39m Display the help center
-  [92m-v, --version [39m Print the version
-  [92m--global      [39m Shared flag between commands"
+  [92m-h, --help        [39m Display the help center
+  [92m-v, --version     [39m Print the version
+  [92m--global          [39m Shared flag between commands"
 `;
 
-exports[`termost should handle \`option\` api 1`] = `
+exports[`termost > should handle \`option\` api 1`] = `
 "[94m[1m[22m[39m
 [94m[1mℹ️  Information[22m[39m
 [94m   {[39m
@@ -150,7 +150,7 @@ exports[`termost should handle \`option\` api 1`] = `
 [94m}[39m"
 `;
 
-exports[`termost should handle \`task\` api 1`] = `
+exports[`termost > should handle \`task\` api 1`] = `
 "[STARTED] Task with returned value (persisted)
 [SUCCESS] Task with returned value (persisted)
 [STARTED] Task with side-effect only (no persisted value)

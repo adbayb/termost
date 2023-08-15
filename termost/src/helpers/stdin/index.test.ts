@@ -1,3 +1,5 @@
+import { describe, expect, test } from "vitest";
+
 import { getArguments } from ".";
 
 // termost watch operand1 --help --option1 value1 --option2=value2 -al lastValue operand2 -t short -b
