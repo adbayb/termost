@@ -1,0 +1,65 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		":automergeRequireAllStatusChecks",
+		":dependencyDashboard",
+		":enableVulnerabilityAlerts",
+		":maintainLockFilesMonthly",
+		":prConcurrentLimit10",
+		":rebaseStalePrs",
+		":semanticCommits",
+		":semanticPrefixFixDepsChoreOthers",
+		":semanticCommitScopeDisabled",
+		":separateMultipleMajorReleases",
+		"schedule:automergeMonthly",
+		"workarounds:typesNodeVersioning"
+	],
+	"labels": ["dependencies"],
+	"timezone": "Europe/Paris",
+	"packageRules": [
+		{
+			"matchPackagePatterns": ["*"],
+			"rangeStrategy": "auto"
+		},
+		{
+			"matchDepTypes": ["devDependencies"],
+			"rangeStrategy": "pin"
+		},
+		{
+			"matchDepTypes": ["dependencies"],
+			"rangeStrategy": "bump"
+		},
+		{
+			"description": "Synchronize CircleCI Docker image version with the Node.js one",
+			"matchPackageNames": ["cimg/node"],
+			"versioning": "node"
+		},
+		{
+			"groupName": "package dependencies",
+			"matchManagers": ["npm"],
+			"matchDepTypes": [
+				"dependencies",
+				"devDependencies",
+				"optionalDependencies",
+				"peerDependencies"
+			]
+		},
+		{
+			"groupName": "infrastructure dependencies",
+			"matchManagers": [
+				"circleci",
+				"github-actions",
+				"dockerfile",
+				"terraform",
+				"terraform-version",
+				"docker-compose",
+				"kubernetes"
+			]
+		},
+		{
+			"groupName": "engine dependencies",
+			"matchPackagePatterns": ["node", "pnpm"]
+		}
+	],
+	"ignoreDeps": []
+}

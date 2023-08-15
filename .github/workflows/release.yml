@@ -1,39 +1,43 @@
 name: Release
 
-on: workflow_dispatch
+on:
+    push:
+        branches:
+            - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-    setup:
-        timeout-minutes: 5
-        name: Setup cache
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Use Node.js latest
-              uses: actions/setup-node@v2
-              with:
-                  node-version: lts/*
-                  cache: yarn
-            - name: Install
-              run: yarn install --frozen-lockfile --prefer-offline
     release:
         timeout-minutes: 5
-        needs: setup
-        name: Release
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Use Node.js latest
-              uses: actions/setup-node@v2
+            - uses: actions/checkout@v3
+            - uses: pnpm/action-setup@v2
+            - name: Get node version
+              run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+              id: node
+            - name: Setup node ${{ steps.node.outputs.version }}
+              uses: actions/setup-node@v3
               with:
-                  node-version: lts/*
-                  cache: yarn
-            - name: Restore dependency cache
-              run: yarn
-            - name: Release
-              run: yarn semantic-release
+                  node-version: ${{ steps.node.outputs.version }}
+                  cache: pnpm
+            - name: Setup .npmrc
+              run: |
+                  cat << EOF > "$HOME/.npmrc"
+                    //registry.npmjs.org/:_authToken=$NPM_TOKEN
+                  EOF
+              env:
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+            - name: Create release pull request
+              uses: changesets/action@v1
+              with:
+                  commit: "chore: release package(s)"
+                  title: "chore: release package(s)"
+                  version: pnpm release:version
+                  publish: pnpm release:publish
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

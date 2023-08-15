@@ -1,0 +1,8 @@
+{
+	"recommendations": [
+		"dbaeumer.vscode-eslint",
+		"unifiedjs.vscode-mdx",
+		"yoavbls.pretty-ts-errors",
+		"znck.grammarly"
+	]
+}

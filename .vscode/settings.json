@@ -1,0 +1,27 @@
+{
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"markdown",
+		"mdx",
+		"astro"
+	],
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"workbench.editor.labelFormat": "short",
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"grammarly.selectors": [
+		{
+			"language": "mdx",
+			"scheme": "file"
+		},
+		{
+			"language": "md",
+			"scheme": "file"
+		}
+	]
+}

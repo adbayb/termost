@@ -9,31 +9,39 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v2
-            - name: Use Node.js latest
-              uses: actions/setup-node@v2
+              uses: actions/checkout@v3
+            - uses: pnpm/action-setup@v2
+            - name: Get node version
+              run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+              id: node
+            - name: Setup node ${{ steps.node.outputs.version }}
+              uses: actions/setup-node@v3
               with:
-                  node-version: lts/*
-                  cache: yarn
-            - name: Install
-              run: yarn install --frozen-lockfile --prefer-offline
-    verify:
+                  node-version: ${{ steps.node.outputs.version }}
+                  cache: pnpm
+            - name: Install dependencies
+              run: pnpm install
+    check:
         timeout-minutes: 5
         needs: install
-        name: Verify
+        name: Check
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v2
-            - name: Use Node.js latest
-              uses: actions/setup-node@v2
+              uses: actions/checkout@v3
+            - uses: pnpm/action-setup@v2
+            - name: Get node version
+              run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+              id: node
+            - name: Setup node ${{ steps.node.outputs.version }}
+              uses: actions/setup-node@v3
               with:
-                  node-version: lts/*
-                  cache: yarn
-            - name: Restore dependency cache
-              run: yarn
-            - name: Verify (lint, test, types)
-              run: yarn verify
+                  node-version: ${{ steps.node.outputs.version }}
+                  cache: pnpm
+            - name: Install dependencies
+              run: pnpm install
+            - name: Check (lint, test, types)
+              run: pnpm check
     build:
         timeout-minutes: 5
         needs: install
@@ -41,13 +49,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Use Node.js latest
-              uses: actions/setup-node@v2
+              uses: actions/checkout@v3
+            - uses: pnpm/action-setup@v2
+            - name: Get node version
+              run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+              id: node
+            - name: Setup node ${{ steps.node.outputs.version }}
+              uses: actions/setup-node@v3
               with:
-                  node-version: lts/*
-                  cache: yarn
-            - name: Restore dependency cache
-              run: yarn
+                  node-version: ${{ steps.node.outputs.version }}
+                  cache: pnpm
+            - name: Install dependencies
+              run: pnpm install
             - name: Build
-              run: yarn build
+              run: pnpm build

@@ -1,144 +1,48 @@
 {
-	"name": "termost",
-	"version": "0.9.0",
-	"description": "Get the most of your terminal",
-	"author": {
-		"name": "Ayoub Adib",
-		"email": "adbayb@gmail.com",
-		"url": "https://twitter.com/adbayb"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:adbayb/termost.git"
-	},
-	"license": "MIT",
-	"source": "src/index.ts",
-	"main": "dist/index.js",
-	"files": [
-		"dist"
-	],
-	"keywords": [
-		"cli",
-		"terminal",
-		"args",
-		"argument",
-		"option",
-		"command",
-		"task",
-		"question",
-		"message"
-	],
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
 	"scripts": {
-		"prepublishOnly": "yarn verify && yarn build",
-		"clean": "rm -rf dist",
-		"build": "yarn clean && tsc",
-		"watch": "yarn clean && tsc -w",
-		"example": "node -r esbuild-register example/index.ts",
-		"verify": "yarn lint & yarn types && yarn test",
-		"fix": "yarn lint --fix",
-		"lint": "eslint . --ignore-path .gitignore",
-		"types": "tsc --noEmit",
-		"format": "prettier . --ignore-path .gitignore --ignore-path .prettierignore --write",
-		"test": "jest",
-		"release": "semantic-release"
+		"prepare": "stack install && pnpm build",
+		"clean": "stack clean",
+		"check": "stack check",
+		"fix": "stack fix",
+		"start": "turbo run start",
+		"build": "turbo run build",
+		"watch": "turbo run watch",
+		"release:log": "pnpm changeset",
+		"release:version": "pnpm changeset version && pnpm install --no-frozen-lockfile",
+		"release:publish": "pnpm build && pnpm changeset publish"
 	},
-	"dependencies": {
-		"chalk": "4.1.2",
-		"listr2": "4.0.5",
-		"prompts": "2.4.2"
-	},
-	"devDependencies": {
-		"@adbayb/eslint-config": "0.10.0",
-		"@adbayb/prettier-config": "0.10.0",
-		"@adbayb/ts-config": "0.10.0",
-		"@semantic-release/git": "10.0.1",
-		"@types/jest": "27.4.1",
-		"@types/prompts": "2.0.14",
-		"esbuild": "0.14.27",
-		"esbuild-jest": "0.5.0",
-		"esbuild-register": "3.3.2",
-		"eslint": "8.11.0",
-		"husky": "4.3.8",
-		"jest": "27.5.1",
-		"lint-staged": "12.3.7",
-		"prettier": "2.6.1",
-		"semantic-release": "19.0.2",
-		"typescript": "4.6.2"
+	"packageManager": "pnpm@8.6.12",
+	"engines": {
+		"node": ">=18.0.0",
+		"pnpm": ">=8.0.0",
+		"npm": "please-use-pnpm",
+		"yarn": "please-use-pnpm"
 	},
 	"prettier": "@adbayb/prettier-config",
 	"eslintConfig": {
 		"extends": "@adbayb"
 	},
-	"jest": {
-		"transform": {
-			"^.+\\.tsx?$": "esbuild-jest"
-		}
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"lint-staged": {
-		"**/*.{js,jsx,ts,tsx}": [
-			"yarn fix",
-			"yarn test --bail --findRelatedTests"
-		],
-		"**/*.{json,md,mdx,html,css}": [
-			"yarn format"
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
 		]
 	},
-	"release": {
-		"branches": [
-			"main"
-		],
-		"ci": false,
-		"plugins": [
-			[
-				"@semantic-release/commit-analyzer",
-				{
-					"releaseRules": [
-						{
-							"breaking": true,
-							"release": "major"
-						},
-						{
-							"revert": true,
-							"release": "patch"
-						},
-						{
-							"type": "feat",
-							"release": "minor"
-						},
-						{
-							"type": "fix",
-							"release": "patch"
-						},
-						{
-							"type": "perf",
-							"release": "patch"
-						},
-						{
-							"type": "refactor",
-							"release": "patch"
-						},
-						{
-							"type": "chore",
-							"scope": "deps",
-							"release": "patch"
-						}
-					]
-				}
-			],
-			"@semantic-release/release-notes-generator",
-			"@semantic-release/npm",
-			[
-				"@semantic-release/git",
-				{
-					"message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
-				}
-			],
-			"@semantic-release/github"
-		]
+	"devDependencies": {
+		"@adbayb/eslint-config": "1.0.0",
+		"@adbayb/prettier-config": "1.0.0",
+		"@adbayb/stack": "1.4.0",
+		"@adbayb/ts-config": "1.0.0",
+		"@changesets/changelog-github": "0.4.8",
+		"@changesets/cli": "2.26.2",
+		"@commitlint/cli": "17.7.1",
+		"@commitlint/config-conventional": "17.7.0",
+		"@types/jest": "29.5.3",
+		"eslint": "8.47.0",
+		"prettier": "3.0.1",
+		"turbo": "1.10.12",
+		"typescript": "5.1.6"
 	}
 }

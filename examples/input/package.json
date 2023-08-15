@@ -1,0 +1,14 @@
+{
+	"private": true,
+	"name": "@examples/input",
+	"version": "0.0.0",
+	"scripts": {
+		"start": "node -r esbuild-register ./src/index.ts"
+	},
+	"dependencies": {
+		"termost": "^0.9.0"
+	},
+	"devDependencies": {
+		"esbuild-register": "3.4.2"
+	}
+}

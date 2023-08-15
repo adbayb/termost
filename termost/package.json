@@ -1,0 +1,63 @@
+{
+	"name": "termost",
+	"description": "Get the most of your terminal",
+	"version": "0.9.0",
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"bin",
+		"dist"
+	],
+	"bin": "./bin/index.cjs",
+	"sideEffects": false,
+	"platform": "node",
+	"source": "./src/index.ts",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"require": "./dist/index.cjs",
+			"import": "./dist/index.mjs",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"keywords": [
+		"cli",
+		"terminal",
+		"args",
+		"argument",
+		"option",
+		"command",
+		"task",
+		"question",
+		"message"
+	],
+	"license": "MIT",
+	"author": "Ayoub Adib <adbayb@gmail.com> (https://twitter.com/adbayb)",
+	"bugs": "https://github.com/adbayb/termost/issues",
+	"homepage": "https://github.com/adbayb/termost/tree/main/termost#readme",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:adbayb/termost.git",
+		"directory": "termost"
+	},
+	"scripts": {
+		"prepublishOnly": "pnpm build",
+		"start": "pnpm watch",
+		"build": "quickbundle build",
+		"watch": "quickbundle watch"
+	},
+	"dependencies": {
+		"chalk": "^4.1.2",
+		"listr2": "^4.0.5",
+		"prompts": "^2.4.2"
+	},
+	"devDependencies": {
+		"@types/node": "18.17.5",
+		"@types/prompts": "2.4.4",
+		"quickbundle": "1.2.0",
+		"typescript": "5.1.6"
+	}
+}

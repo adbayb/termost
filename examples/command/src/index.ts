@@ -1,0 +1,59 @@
+import { helpers, termost } from "termost";
+
+type ProgramContext = {
+	globalFlag: boolean;
+};
+
+const program = termost<ProgramContext>(
+	"Example to showcase the `command` API",
+);
+
+program.option({
+	key: "globalFlag",
+	name: "global",
+	description: "Shared flag between commands",
+	defaultValue: false,
+});
+
+interface BuildCommandContext {
+	localFlag: string;
+}
+
+program
+	.command<BuildCommandContext>({
+		name: "build",
+		description: "Transpile and bundle in production mode",
+	})
+	.option({
+		key: "localFlag",
+		name: "local",
+		description: "Local command flag",
+		defaultValue: "local-value",
+	})
+	.task({
+		handler(context, argv) {
+			const { localFlag, globalFlag } = context;
+
+			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
+			helpers.message(`👉 Shared global flag = ${globalFlag}`);
+			helpers.message(`👉 Local command flag = ${localFlag}`);
+			helpers.message(`👉 Context value = ${JSON.stringify(context)}`);
+			helpers.message(`👉 Argv value = ${JSON.stringify(argv)}`);
+		},
+	});
+
+program
+	.command({
+		name: "watch",
+		description: "Rebuild your assets on any code change",
+	})
+	.task({
+		handler(context, argv) {
+			const { globalFlag } = context;
+
+			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
+			helpers.message(`👉 Shared global flag = ${globalFlag}`);
+			helpers.message(`👉 Context value = ${JSON.stringify(context)}`);
+			helpers.message(`👉 Argv value = ${JSON.stringify(argv)}`);
+		},
+	});
