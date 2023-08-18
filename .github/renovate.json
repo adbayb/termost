@@ -1,21 +1,26 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": [
+		":automergeAll",
+		":automergePr",
 		":automergeRequireAllStatusChecks",
-		":dependencyDashboard",
 		":enableVulnerabilityAlerts",
+		":label(dependencies)",
 		":maintainLockFilesMonthly",
 		":prConcurrentLimit10",
 		":rebaseStalePrs",
 		":semanticCommits",
-		":semanticPrefixFixDepsChoreOthers",
 		":semanticCommitScopeDisabled",
-		":separateMultipleMajorReleases",
-		"schedule:automergeMonthly",
-		"workarounds:typesNodeVersioning"
+		":semanticPrefixFixDepsChoreOthers",
+		":timezone(Europe/Paris)",
+		"npm:unpublishSafe",
+		"replacements:all",
+		"schedule:monthly",
+		"workarounds:all"
 	],
-	"labels": ["dependencies"],
-	"timezone": "Europe/Paris",
+	"commitBodyTable": true,
+	"platformAutomerge": false,
+	"ignoreDeps": [],
 	"packageRules": [
 		{
 			"matchPackagePatterns": ["*"],
@@ -60,6 +65,5 @@
 			"groupName": "engine dependencies",
 			"matchPackagePatterns": ["node", "pnpm"]
 		}
-	],
-	"ignoreDeps": []
+	]
 }
