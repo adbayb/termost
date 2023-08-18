@@ -9,6 +9,7 @@
 		"termost": "^0.9.0"
 	},
 	"devDependencies": {
+		"@types/node": "18.17.5",
 		"esbuild-register": "3.4.2"
 	}
 }

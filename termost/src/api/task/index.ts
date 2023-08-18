@@ -63,9 +63,12 @@ type Parameters<
 			handler: (
 				context: Context<Values>,
 				argv: ArgumentValues,
-			) => Promise<Values[Key]> | Values[Key];
+			) => Values[Key] | Promise<Values[Key]>;
 	  }
 	: {
 			label?: Label<Values>;
-			handler: (context: Context<Values>, argv: ArgumentValues) => void;
+			handler: (
+				context: Context<Values>,
+				argv: ArgumentValues,
+			) => void | Promise<void>;
 	  };

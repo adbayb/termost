@@ -19,8 +19,8 @@ program
 	.task({
 		label: "Task with side-effect only (no persisted value)",
 		async handler() {
-			await wait(500);
 			// @note: side-effect only handler
+			await wait(500);
 		},
 	})
 	.task({
@@ -45,8 +45,6 @@ program
 		label: "A task can be skipped as well",
 		async handler() {
 			await wait(2000);
-
-			return Promise.resolve("Super long task");
 		},
 		skip(context) {
 			const needOptimization = context.size > 2000;

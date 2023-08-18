@@ -31,8 +31,8 @@ program
 	})
 	.task({
 		label: "Retrieves files",
-		handler() {
-			return helpers.exec('echo "Hello from task"', {
+		async handler() {
+			await helpers.exec('echo "Hello from task"', {
 				cwd: process.cwd(),
 			});
 		},
