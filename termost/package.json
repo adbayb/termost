@@ -50,8 +50,8 @@
 		"watch": "quickbundle watch"
 	},
 	"dependencies": {
-		"chalk": "^4.1.2",
-		"listr2": "^4.0.5",
+		"chalk": "^5.3.0",
+		"listr2": "^5.0.8",
 		"prompts": "^2.4.2"
 	},
 	"devDependencies": {
