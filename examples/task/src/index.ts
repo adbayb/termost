@@ -28,10 +28,10 @@ program
 		label: "Task can also access other persisted task values",
 		handler(context) {
 			if (context.size > 2000) {
-				return Promise.resolve("big");
+				return Promise.resolve("big" as const);
 			}
 
-			return Promise.resolve("small");
+			return Promise.resolve("small" as const);
 		},
 	})
 	.task({
@@ -55,7 +55,7 @@ program
 	.task({
 		label: (context) =>
 			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
-		async handler() {},
+		handler() {},
 	})
 	.task({
 		handler(context) {

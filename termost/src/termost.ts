@@ -37,7 +37,9 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	option<Key extends keyof Values>(
 		params: OptionParameters<Values, Key>,
 	): Termost<Values>;
-	task<Key>(params: TaskParameters<Values, Key>): Termost<Values>;
+	task<Key extends keyof Values | undefined = undefined>(
+		params: TaskParameters<Values, Key>,
+	): Termost<Values>;
 };
 
 export function termost<Values extends ObjectLikeConstraint = EmptyObject>(

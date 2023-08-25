@@ -51,24 +51,16 @@ export const createTask: CreateInstruction<
 
 export type TaskParameters<
 	Values extends ObjectLikeConstraint,
-	Key,
-> = InstructionParameters<Values, Parameters<Values, Key>>;
-
-type Parameters<
-	Values extends ObjectLikeConstraint,
-	Key,
-> = Key extends keyof Values
-	? InstructionKey<Key> & {
-			label?: Label<Values>;
-			handler: (
-				context: Context<Values>,
-				argv: ArgumentValues,
-			) => Values[Key] | Promise<Values[Key]>;
-	  }
-	: {
-			label?: Label<Values>;
-			handler: (
-				context: Context<Values>,
-				argv: ArgumentValues,
-			) => void | Promise<void>;
-	  };
+	Key extends keyof Values | undefined = undefined,
+> = InstructionParameters<
+	Values,
+	Partial<InstructionKey<Key>> & {
+		label?: Label<Values>;
+		handler: (
+			context: Context<Values>,
+			argv: ArgumentValues,
+		) => Key extends keyof Values
+			? Values[Key] | Promise<Values[Key]>
+			: void | Promise<void>;
+	}
+>;
