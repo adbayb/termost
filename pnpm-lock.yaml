@@ -30,7 +30,7 @@ importers:
   examples/command:
     dependencies:
       termost:
-        specifier: ^0.9.0
+        specifier: ^0.10.0
         version: link:../../termost
     devDependencies:
       esbuild-register:
@@ -40,7 +40,7 @@ importers:
   examples/default:
     dependencies:
       termost:
-        specifier: ^0.9.0
+        specifier: ^0.10.0
         version: link:../../termost
     devDependencies:
       '@types/node':
@@ -53,7 +53,7 @@ importers:
   examples/input:
     dependencies:
       termost:
-        specifier: ^0.9.0
+        specifier: ^0.10.0
         version: link:../../termost
     devDependencies:
       esbuild-register:
@@ -63,7 +63,7 @@ importers:
   examples/option:
     dependencies:
       termost:
-        specifier: ^0.9.0
+        specifier: ^0.10.0
         version: link:../../termost
     devDependencies:
       esbuild-register:
@@ -73,7 +73,7 @@ importers:
   examples/task:
     dependencies:
       termost:
-        specifier: ^0.9.0
+        specifier: ^0.10.0
         version: link:../../termost
     devDependencies:
       esbuild-register:
