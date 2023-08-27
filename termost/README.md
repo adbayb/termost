@@ -11,10 +11,10 @@
 Termost allows building command line tools in a minute thanks to its:
 
 -   [Fluent](https://en.wikipedia.org/wiki/Fluent_interface) syntax to express your CLI configurations with instructions such as:
-    -   [Subcommand](example/withCommand.ts) support
-    -   Long and short [option](example/withOption.ts) support
-    -   [Prompt](example/withInput.ts) support
-    -   [Task](example/withTask.ts) support
+    -   [Subcommand](examples/command/src/index.ts) support
+    -   Long and short [option](examples/option/src/index.ts) support
+    -   [Prompt](examples/input/src/index.ts) support
+    -   [Task](examples/task/src/index.ts) support
 -   Shareable output between instructions
 -   Auto-generated help and version metadata
 -   TypeScript support to foster a type-safe API
