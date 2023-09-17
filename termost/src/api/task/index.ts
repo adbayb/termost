@@ -39,6 +39,7 @@ export const createTask: CreateInstruction<
 							? label(context, argv)
 							: label,
 				}),
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 				task: async () => (value = await handler(context, argv)),
 			});
 
@@ -60,7 +61,7 @@ export type TaskParameters<
 			context: Context<Values>,
 			argv: ArgumentValues,
 		) => Key extends keyof Values
-			? Values[Key] | Promise<Values[Key]>
-			: void | Promise<void>;
+			? Promise<Values[Key]> | Values[Key]
+			: Promise<void> | void;
 	}
 >;

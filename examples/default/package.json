@@ -10,6 +10,6 @@
 	},
 	"devDependencies": {
 		"@types/node": "18.17.5",
-		"esbuild-register": "3.4.2"
+		"esbuild-register": "3.5.0"
 	}
 }

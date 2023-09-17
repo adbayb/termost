@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { PromptObject, PromptType } from "prompts";
 import prompts from "prompts";
 
@@ -26,7 +27,7 @@ export const createInput: CreateInstruction<
 				return "text";
 			default:
 				throw new Error(
-					`Unknown \`${type}\` type provided to \`input\``,
+					`Unknown \`${type as string}\` type provided to \`input\``,
 				);
 		}
 	};
@@ -41,13 +42,13 @@ export const createInput: CreateInstruction<
 
 		if (parameters.type === "select" || parameters.type === "multiselect") {
 			const isMultiSelect = parameters.type === "multiselect";
-			const options = parameters.options as Array<string>;
+			const options = parameters.options as string[];
 
 			const choices = options.map((option) => ({
 				title: option,
 				value: option,
 				...(isMultiSelect && {
-					selected: ((defaultValue || []) as Array<string>).includes(
+					selected: ((defaultValue || []) as string[]).includes(
 						option,
 					),
 				}),
@@ -81,13 +82,6 @@ export type InputParameters<
 	InstructionKey<Key> &
 		(
 			| {
-					type: "text";
-					label: Label<Values>;
-					defaultValue?: Values[Key] extends string
-						? Values[Key]
-						: never;
-			  }
-			| {
 					type: "confirm";
 					label: Label<Values>;
 					defaultValue?: Values[Key] extends boolean
@@ -95,22 +89,25 @@ export type InputParameters<
 						: never;
 			  }
 			| {
+					type: "multiselect";
+					label: Label<Values>;
+					options: Values[Key] extends string[] ? Values[Key] : never;
+					defaultValue?: Values[Key] extends string[]
+						? Values[Key]
+						: never;
+			  }
+			| {
 					type: "select";
 					label: Label<Values>;
-					options: Values[Key] extends string
-						? Array<Values[Key]>
-						: never;
+					options: Values[Key] extends string ? Values[Key][] : never;
 					defaultValue?: Values[Key] extends string
 						? Values[Key]
 						: never;
 			  }
 			| {
-					type: "multiselect";
+					type: "text";
 					label: Label<Values>;
-					options: Values[Key] extends Array<string>
-						? Values[Key]
-						: never;
-					defaultValue?: Values[Key] extends Array<string>
+					defaultValue?: Values[Key] extends string
 						? Values[Key]
 						: never;
 			  }

@@ -1,5 +1,5 @@
 export const createQueue = <Item>() => {
-	const items: Array<Item> = [];
+	const items: Item[] = [];
 
 	return {
 		enqueue(item: Item) {

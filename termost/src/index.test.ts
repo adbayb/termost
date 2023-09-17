@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { exec } from "../termost/src/helpers/process";
+import { exec } from "./helpers/process";
 
 describe("termost", () => {
 	test("should display `help`", async () => {

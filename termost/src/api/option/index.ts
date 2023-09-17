@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { CommandController } from "../command";
 import type {
 	CreateInstruction,
@@ -15,7 +16,7 @@ export const createOption =
 		OptionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 	> =>
 	(parameters) => {
-		const { key, name, defaultValue, description } = parameters;
+		const { key, name, description, defaultValue } = parameters;
 
 		const aliases =
 			typeof name === "string" ? [name] : [name.short, name.long];
@@ -40,7 +41,7 @@ export const createOption =
 				}
 			}
 
-			return { key, value: value ?? defaultValue };
+			return Promise.resolve({ key, value: value ?? defaultValue });
 		};
 	};
 

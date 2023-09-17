@@ -382,3 +382,9 @@ This project is built upon solid open-source foundations. We'd like to thank:
 ## 📖 License
 
 [MIT](https://github.com/adbayb/termost/blob/main/LICENSE "License MIT")
+
+## TODO
+
+-   Replace prompts with https://www.npmjs.com/package/enquirer
+-   Update listr2
+-   Replace chalk with https://github.com/sindresorhus/yoctocolors

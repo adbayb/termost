@@ -27,7 +27,7 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 		// @note: By design, the root command instructions are always executed
 		// even with subcommands (to share options, messages...)
 		if (isRootCommand && !isActiveCommand) {
-			rootController.enable();
+			void rootController.enable();
 		}
 
 		// @note: enable the current active command instructions:
@@ -41,22 +41,26 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 				optionKeys.includes(OPTION_HELP_NAMES[0]) ||
 				optionKeys.includes(OPTION_HELP_NAMES[1])
 			) {
-				return showHelp({
+				showHelp({
 					controller,
 					currentCommandName: name,
 					isRootCommand,
 					rootCommandName,
 				});
+
+				return;
 			}
 
 			if (
 				optionKeys.includes(OPTION_VERSION_NAMES[0]) ||
 				optionKeys.includes(OPTION_VERSION_NAMES[1])
 			) {
-				return console.info(version);
+				console.info(version);
+
+				return;
 			}
 
-			controller.enable();
+			void controller.enable();
 		}
 	}, 0);
 
@@ -75,7 +79,8 @@ const showHelp = ({
 	rootCommandName: string;
 	currentCommandName: string;
 	isRootCommand: boolean;
-	controller: CommandController;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	controller: CommandController<any>;
 }) => {
 	const commandMetadata = controller.getMetadata(rootCommandName);
 	const { options, description } = commandMetadata;
@@ -104,8 +109,8 @@ const showHelp = ({
 		print(description);
 	}
 
-	const padding = [...commandKeys, ...optionKeys].reduce((padding, item) => {
-		return Math.max(padding, item.length);
+	const padding = [...commandKeys, ...optionKeys].reduce((value, item) => {
+		return Math.max(value, item.length);
 	}, 0);
 
 	if (hasCommands) {
@@ -114,9 +119,10 @@ const showHelp = ({
 		for (const name of commandKeys) {
 			if (name === rootCommandName) continue;
 
-			const description = commands[name];
+			const commandDescription = commands[name];
 
-			if (description) printLabelValue(name, description, padding);
+			if (commandDescription)
+				printLabelValue(name, commandDescription, padding);
 		}
 	}
 
@@ -129,18 +135,21 @@ const showHelp = ({
 	}
 };
 
-const print = (...parameters: Parameters<typeof format>) =>
+const print = (...parameters: Parameters<typeof format>) => {
 	console.log(format(...parameters));
+};
 
-const printTitle = (message: string) =>
+const printTitle = (message: string) => {
 	print(`\n${message}:`, {
 		color: "yellow",
 		modifier: ["bold", "underline", "uppercase"],
 	});
+};
 
-const printLabelValue = (label: string, value: string, padding: number) =>
+const printLabelValue = (label: string, value: string, padding: number) => {
 	print(
 		`  ${format(label.padEnd(padding + 1, " "), {
 			color: "green",
 		})} ${value}`,
 	);
+};

@@ -13,7 +13,7 @@ export const format = (
 		modifier,
 	}: {
 		color?: Color;
-		modifier?: Modifier | Array<Modifier>;
+		modifier?: Modifier | Modifier[];
 	} = {},
 ): string => {
 	let transformer: chalk.Chalk = chalk;
@@ -51,24 +51,24 @@ export const format = (
  * @param options The configuration object to define the display type and/or override the default label
  */
 export const message = (
-	message: string | Array<string>,
+	content: string[] | string,
 	{
 		label,
 		type = "information",
 	}: { type?: MessageType; label?: string } = {},
 ) => {
 	const { color, defaultLabel, icon, method } = formatPropertiesByType[type];
-	const messages = typeof message === "string" ? [message] : message;
+	const messages = typeof content === "string" ? [content] : content;
 
 	method(
-		format(`\n${icon} ${label || defaultLabel}`, {
+		format(`\n${icon} ${label ?? defaultLabel}`, {
 			color,
 			modifier: "bold",
 		}),
 	);
 
-	for (const message of messages) {
-		method(format(`   ${message}`, { color }));
+	for (const msg of messages) {
+		method(format(`   ${msg}`, { color }));
 	}
 };
 
@@ -118,23 +118,23 @@ const chalkByModifier = {
 	strikethrough: "strikethrough",
 } as const;
 
-type MessageType = "success" | "error" | "warning" | "information";
+type MessageType = "error" | "information" | "success" | "warning";
 
 type Color =
-	| "red"
-	| "green"
-	| "yellow"
-	| "blue"
-	| "magenta"
-	| "cyan"
-	| "grey"
 	| "black"
-	| "white";
+	| "blue"
+	| "cyan"
+	| "green"
+	| "grey"
+	| "magenta"
+	| "red"
+	| "white"
+	| "yellow";
 
 type Modifier =
 	| "bold"
 	| "italic"
-	| "underline"
+	| "lowercase"
 	| "strikethrough"
-	| "uppercase"
-	| "lowercase";
+	| "underline"
+	| "uppercase";

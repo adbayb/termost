@@ -7,7 +7,7 @@ export const exec = async (
 	return new Promise<string>((resolve, reject) => {
 		let stdout = "";
 		let stderr = "";
-		const [bin, ...args] = command.split(" ") as [string, ...Array<string>];
+		const [bin, ...args] = command.split(" ") as [string, ...string[]];
 
 		const childProcess = spawn(bin, args, {
 			cwd: options.cwd,
@@ -20,15 +20,13 @@ export const exec = async (
 			},
 		});
 
-		childProcess.stdout &&
-			childProcess.stdout.on("data", (chunk) => {
-				stdout += chunk;
-			});
+		childProcess.stdout?.on("data", (chunk) => {
+			stdout += chunk;
+		});
 
-		childProcess.stderr &&
-			childProcess.stderr.on("data", (chunk) => {
-				stderr += chunk;
-			});
+		childProcess.stderr?.on("data", (chunk) => {
+			stderr += chunk;
+		});
 
 		childProcess.on("close", (exitCode) => {
 			if (exitCode !== 0) {

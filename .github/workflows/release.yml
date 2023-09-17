@@ -11,6 +11,9 @@ jobs:
     release:
         timeout-minutes: 5
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
         steps:
             - uses: actions/checkout@v3
             - uses: pnpm/action-setup@v2
@@ -31,7 +34,7 @@ jobs:
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
-            - name: Create release pull request
+            - name: Create release pull request or Publish to npm
               uses: changesets/action@v1
               with:
                   commit: "chore: release package(s)"

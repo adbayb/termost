@@ -10,15 +10,15 @@ import { createQueue } from "./queue";
 export type CommandController<
 	Values extends ObjectLikeConstraint = EmptyObject,
 > = {
-	addValue<Key extends keyof Values>(key: Key, value: Values[Key]): void;
-	addOptionDescription(key: string, description: string): void;
-	addInstruction(instruction: Instruction): void;
+	addValue: <Key extends keyof Values>(key: Key, value: Values[Key]) => void;
+	addOptionDescription: (key: string, description: string) => void;
+	addInstruction: (instruction: Instruction) => void;
 	/**
 	 * Enables a command by iterating over instructions and executing them
 	 */
-	enable(): Promise<void>;
-	getContext(rootCommandName: CommandName): Context<Values>;
-	getMetadata(rootCommandName: CommandName): CommandMetadata;
+	enable: () => Promise<void>;
+	getContext: (rootCommandName: CommandName) => Context<Values>;
+	getMetadata: (rootCommandName: CommandName) => CommandMetadata;
 };
 
 export const getCommandController = <Values extends ObjectLikeConstraint>(
@@ -40,6 +40,7 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 	description: CommandMetadata["description"],
 ) => {
 	const instructions = createQueue<Instruction>();
+	// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 	let context = {} as Context<Values>;
 
 	const metadata: CommandMetadata = {
@@ -51,8 +52,8 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 	};
 
 	const controller: CommandController<Values> = {
-		addOptionDescription(key, description) {
-			metadata.options[key] = description;
+		addOptionDescription(key, value) {
+			metadata.options[key] = value;
 		},
 		addValue(key, value) {
 			context[key] = value;
@@ -120,7 +121,11 @@ type CommandMetadata = {
 
 type Instruction = () => Promise<void>;
 
-const commandControllerCollection: Record<CommandName, CommandController> = {};
+const commandControllerCollection: Record<
+	CommandName,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	CommandController<any>
+> = {};
 
 const commandDescriptionCollection: Record<
 	CommandName,

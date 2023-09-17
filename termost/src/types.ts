@@ -11,8 +11,8 @@ export type EmptyObject = {};
  */
 export type ArgumentValues = {
 	command: CommandName;
-	options: Record<string, string | boolean | number>;
-	operands: Array<string>;
+	options: Record<string, boolean | number | string>;
+	operands: string[];
 };
 
 export type PackageMetadata = {
@@ -30,9 +30,9 @@ export type Context<Values extends ObjectLikeConstraint> = Values;
 export type InstructionParameters<
 	Values extends ObjectLikeConstraint,
 	ExtraParameters extends ObjectLikeConstraint = EmptyObject,
-> = {
+> = ExtraParameters & {
 	skip?: (context: Context<Values>, argv: ArgumentValues) => boolean;
-} & ExtraParameters;
+};
 
 export type InstructionKey<Key> = {
 	/**
@@ -53,10 +53,10 @@ type Instruction = (
 	context: Context<ObjectLikeConstraint>,
 	argv: ArgumentValues,
 ) => Promise<
-	| null
 	| (Partial<InstructionKey<keyof ObjectLikeConstraint | undefined>> & {
 			value: ObjectLikeConstraint[number];
 	  })
+	| null
 >;
 
 export type Label<Values extends ObjectLikeConstraint> =

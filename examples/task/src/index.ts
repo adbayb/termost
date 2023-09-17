@@ -12,7 +12,7 @@ program
 	.task({
 		key: "size",
 		label: "Task with returned value (persisted)",
-		async handler() {
+		handler() {
 			return 45;
 		},
 	})
@@ -26,7 +26,7 @@ program
 	.task({
 		key: "computedFromOtherTaskValues",
 		label: "Task can also access other persisted task values",
-		handler(context) {
+		async handler(context) {
 			if (context.size > 2000) {
 				return Promise.resolve("big" as const);
 			}
@@ -37,7 +37,7 @@ program
 	.task({
 		key: "execOutput",
 		label: "Or even execute external commands thanks to its provided helpers",
-		handler() {
+		async handler() {
 			return helpers.exec("echo 'Hello from shell'");
 		},
 	})
@@ -55,7 +55,9 @@ program
 	.task({
 		label: (context) =>
 			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
-		handler() {},
+		handler() {
+			return;
+		},
 	})
 	.task({
 		handler(context) {
@@ -106,6 +108,6 @@ program
 		},
 	});
 
-const wait = (delay: number) => {
+const wait = async (delay: number) => {
 	return new Promise((resolve) => setTimeout(resolve, delay));
 };

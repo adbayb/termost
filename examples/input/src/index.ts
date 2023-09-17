@@ -2,7 +2,7 @@ import { helpers, termost } from "termost";
 
 type ProgramContext = {
 	input1: "singleOption1" | "singleOption2";
-	input2: Array<"multipleOption1" | "multipleOption2">;
+	input2: ("multipleOption1" | "multipleOption2")[];
 	input3: boolean;
 	input4: string;
 };

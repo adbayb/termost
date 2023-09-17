@@ -7,7 +7,8 @@ export const findNearestPackageJson = (pathname: string): PackageMetadata => {
 	const packagePathname = path.resolve(pathname, "package.json");
 
 	if (isFileExists(packagePathname)) {
-		return require(packagePathname);
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		return require(packagePathname) as PackageMetadata;
 	}
 
 	return findNearestPackageJson(path.resolve(pathname, ".."));

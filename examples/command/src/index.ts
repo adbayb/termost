@@ -15,9 +15,9 @@ program.option({
 	defaultValue: false,
 });
 
-interface BuildCommandContext {
+type BuildCommandContext = {
 	localFlag: string;
-}
+};
 
 program
 	.command<BuildCommandContext>({

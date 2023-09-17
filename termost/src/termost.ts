@@ -28,22 +28,22 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	 * @param description - The CLI command description
 	 * @returns The Command API
 	 */
-	command<CommandValues extends ObjectLikeConstraint = EmptyObject>(
+	command: <CommandValues extends ObjectLikeConstraint = EmptyObject>(
 		params: CommandParameters,
-	): Termost<Values & CommandValues>;
-	input<Key extends keyof Values>(
+	) => Termost<CommandValues & Values>;
+	input: <Key extends keyof Values>(
 		params: InputParameters<Values, Key>,
-	): Termost<Values>;
-	option<Key extends keyof Values>(
+	) => Termost<Values>;
+	option: <Key extends keyof Values>(
 		params: OptionParameters<Values, Key>,
-	): Termost<Values>;
-	task<Key extends keyof Values | undefined = undefined>(
+	) => Termost<Values>;
+	task: <Key extends keyof Values | undefined = undefined>(
 		params: TaskParameters<Values, Key>,
-	): Termost<Values>;
+	) => Termost<Values>;
 };
 
 export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
-	metadata: string | Partial<PackageMetadata>,
+	metadata: Partial<PackageMetadata> | string,
 	callbacks: TerminationCallbacks = {},
 ) {
 	const paramsMetadata: Partial<PackageMetadata> = isObject(metadata)
@@ -51,16 +51,16 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 		: { description: metadata };
 
 	const packageMetadata = getPackageMetadata();
-	const programName = paramsMetadata.name || packageMetadata.name;
+	const programName = paramsMetadata.name ?? packageMetadata.name;
 	const { command = programName, options, operands } = getArguments();
 
 	setGracefulListeners(callbacks);
 
 	return createProgram<Values>({
 		argv: { command, options, operands },
-		description: paramsMetadata.description || packageMetadata.description,
+		description: paramsMetadata.description ?? packageMetadata.description,
 		name: programName,
-		version: paramsMetadata.version || packageMetadata.version,
+		version: paramsMetadata.version ?? packageMetadata.version,
 	});
 }
 
@@ -74,10 +74,10 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 	const createInstruction = <
 		Parameters extends InstructionParameters<ObjectLikeConstraint>,
 	>(
-		createInstruction: CreateInstruction<Parameters>,
+		factory: CreateInstruction<Parameters>,
 		params: InstructionParameters<Values>,
 	) => {
-		const instruction = createInstruction(params as Parameters);
+		const instruction = factory(params as Parameters);
 		const controller = getCommandController<Values>(currentCommandName);
 
 		controller.addInstruction(async () => {
@@ -141,8 +141,12 @@ type TerminationCallbacks = Partial<{
 }>;
 
 const setGracefulListeners = ({
-	onShutdown = () => {},
-	onException = () => {},
+	onShutdown = () => {
+		return;
+	},
+	onException = () => {
+		return;
+	},
 }: TerminationCallbacks) => {
 	process.on("SIGTERM", () => {
 		onShutdown();

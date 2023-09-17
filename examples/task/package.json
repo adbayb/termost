@@ -9,6 +9,6 @@
 		"termost": "^0.10.0"
 	},
 	"devDependencies": {
-		"esbuild-register": "3.4.2"
+		"esbuild-register": "3.5.0"
 	}
 }
