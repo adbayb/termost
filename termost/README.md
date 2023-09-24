@@ -386,4 +386,3 @@ This project is built upon solid open-source foundations. We'd like to thank:
 ## TODO
 
 -   [ ] Replace prompts with https://www.npmjs.com/package/enquirer
--   Replace chalk with https://github.com/sindresorhus/yoctocolors
