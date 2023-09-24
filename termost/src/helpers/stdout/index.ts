@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import pico from "picocolors";
 
 /**
  * A helper to format an arbitrary text as a message input
@@ -10,40 +10,37 @@ export const format = (
 	message: string,
 	{
 		color,
-		modifier,
+		modifiers,
 	}: {
 		color?: Color;
-		modifier?: Modifier | Modifier[];
-	} = {},
-): string => {
-	let transformer: chalk.Chalk = chalk;
+		modifiers?: Modifier[];
+	} = {
+		color: "white",
+		modifiers: [],
+	},
+) => {
+	const transformers: ((input: string) => string)[] = [];
 
-	if (color) {
-		transformer = transformer[chalkByFormatColor[color]];
-	}
+	transformers.push(pico[colorMapper[color ?? "white"]]);
 
-	if (modifier) {
-		const processOneModifier = (mod: Modifier) => {
-			if (mod === "uppercase") {
-				message = message.toUpperCase();
-			} else if (mod === "lowercase") {
-				message = message.toLowerCase();
-			} else {
-				transformer = transformer[chalkByModifier[mod]];
-			}
-		};
-
-		if (Array.isArray(modifier)) {
-			for (const mod of modifier) {
-				processOneModifier(mod);
-			}
+	(modifiers ?? []).forEach((mod: Modifier) => {
+		if (mod === "uppercase") {
+			message = message.toUpperCase();
+		} else if (mod === "lowercase") {
+			message = message.toLowerCase();
 		} else {
-			processOneModifier(modifier);
+			transformers.push(pico[modifierMapper[mod]]);
 		}
-	}
+	});
 
-	return transformer(message);
+	return compose(...transformers)(message);
 };
+
+const compose = <T>(...fns: ((a: T) => T)[]) =>
+	fns.reduce(
+		(prevFn, nextFn) => (value) => prevFn(nextFn(value)),
+		fns[0] as (a: T) => T,
+	);
 
 /**
  * An opinionated helper to display arbitrary text on the console
@@ -63,7 +60,7 @@ export const message = (
 	method(
 		format(`\n${icon} ${label ?? defaultLabel}`, {
 			color,
-			modifier: "bold",
+			modifiers: ["bold"],
 		}),
 	);
 
@@ -99,23 +96,23 @@ const formatPropertiesByType = {
 	},
 } as const;
 
-const chalkByFormatColor = {
-	red: "redBright",
-	green: "greenBright",
-	yellow: "yellowBright",
-	blue: "blueBright",
-	magenta: "magentaBright",
-	cyan: "cyanBright",
-	grey: "blackBright",
+const colorMapper = {
 	black: "black",
+	blue: "blue",
+	cyan: "cyan",
+	green: "green",
+	grey: "gray",
+	magenta: "magenta",
+	red: "red",
 	white: "white",
+	yellow: "yellow",
 } as const;
 
-const chalkByModifier = {
+const modifierMapper = {
 	bold: "bold",
 	italic: "italic",
-	underline: "underline",
 	strikethrough: "strikethrough",
+	underline: "underline",
 } as const;
 
 type MessageType = "error" | "information" | "success" | "warning";

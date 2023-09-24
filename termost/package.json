@@ -1,7 +1,7 @@
 {
 	"name": "termost",
 	"description": "Get the most of your terminal",
-	"version": "0.11.1",
+	"version": "0.11.0",
 	"publishConfig": {
 		"access": "public"
 	},
@@ -51,9 +51,9 @@
 		"test": "vitest --test-timeout=20000"
 	},
 	"dependencies": {
-		"chalk": "^4.1.2",
 		"enquirer": "^2.4.1",
-		"listr2": "^7.0.1"
+		"listr2": "^7.0.1",
+		"picocolors": "^1.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "18.17.5",

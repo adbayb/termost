@@ -1,153 +1,153 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`termost > should display \`help\` 1`] = `
-"[93m[1m[4m[24m[22m[39m
-[93m[1m[4mUSAGE:[24m[22m[39m
-[92m@examples/default[39m [...options]
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mDESCRIPTION:[24m[22m[39m
-Program description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help        [39m Display the help center
-  [92m-v, --version     [39m Print the version
-  [92m-f, --flag        [39m A super useful CLI flag"
+"[33m[33m[1m[4m
+USAGE:[24m[22m[33m[39m
+[37m[37m[32m[32m@examples/default[32m[37m [...options][37m[39m
+[33m[33m[1m[4m
+DESCRIPTION:[24m[22m[33m[39m
+[37m[37mProgram description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.[37m[39m
+[33m[33m[1m[4m
+OPTIONS:[24m[22m[33m[39m
+[37m[37m  [32m[32m-h, --help        [32m[37m Display the help center[37m[39m
+[37m[37m  [32m[32m-v, --version     [32m[37m Print the version[37m[39m
+[37m[37m  [32m[32m-f, --flag        [32m[37m A super useful CLI flag[37m[39m"
 `;
 
 exports[`termost > should display \`help\` 2`] = `
-"[93m[1m[4m[24m[22m[39m
-[93m[1m[4mUSAGE:[24m[22m[39m
-[92m@examples/default[39m [...options]
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mDESCRIPTION:[24m[22m[39m
-Program description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help        [39m Display the help center
-  [92m-v, --version     [39m Print the version
-  [92m-f, --flag        [39m A super useful CLI flag"
+"[33m[33m[1m[4m
+USAGE:[24m[22m[33m[39m
+[37m[37m[32m[32m@examples/default[32m[37m [...options][37m[39m
+[33m[33m[1m[4m
+DESCRIPTION:[24m[22m[33m[39m
+[37m[37mProgram description placeholder. Program name and version are retrieved from your \`package.json\`. You can override this automatic retrieval by using the \`termost({ name, description, version })\` builder form.[37m[39m
+[33m[33m[1m[4m
+OPTIONS:[24m[22m[33m[39m
+[37m[37m  [32m[32m-h, --help        [32m[37m Display the help center[37m[39m
+[37m[37m  [32m[32m-v, --version     [32m[37m Print the version[37m[39m
+[37m[37m  [32m[32m-f, --flag        [32m[37m A super useful CLI flag[37m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 1`] = `
-"[93m[1m[4m[24m[22m[39m
-[93m[1m[4mUSAGE:[24m[22m[39m
-[92m@examples/command[39m <command> [...options]
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mDESCRIPTION:[24m[22m[39m
-Example to showcase the \`command\` API
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mCOMMANDS:[24m[22m[39m
-  [92mbuild             [39m Transpile and bundle in production mode
-  [92mwatch             [39m Rebuild your assets on any code change
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help        [39m Display the help center
-  [92m-v, --version     [39m Print the version
-  [92m--global          [39m Shared flag between commands"
+"[33m[33m[1m[4m
+USAGE:[24m[22m[33m[39m
+[37m[37m[32m[32m@examples/command[32m[37m <command> [...options][37m[39m
+[33m[33m[1m[4m
+DESCRIPTION:[24m[22m[33m[39m
+[37m[37mExample to showcase the \`command\` API[37m[39m
+[33m[33m[1m[4m
+COMMANDS:[24m[22m[33m[39m
+[37m[37m  [32m[32mbuild             [32m[37m Transpile and bundle in production mode[37m[39m
+[37m[37m  [32m[32mwatch             [32m[37m Rebuild your assets on any code change[37m[39m
+[33m[33m[1m[4m
+OPTIONS:[24m[22m[33m[39m
+[37m[37m  [32m[32m-h, --help        [32m[37m Display the help center[37m[39m
+[37m[37m  [32m[32m-v, --version     [32m[37m Print the version[37m[39m
+[37m[37m  [32m[32m--global          [32m[37m Shared flag between commands[37m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 2`] = `
-"[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👋 Hello, I'm the build command[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Shared global flag = false[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Local command flag = local-value[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Context value = {\\"globalFlag\\":false,\\"localFlag\\":\\"local-value\\"}[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Argv value = {\\"command\\":\\"build\\",\\"options\\":{},\\"operands\\":[]}[39m"
+"[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👋 Hello, I'm the build command[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Shared global flag = false[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Local command flag = local-value[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Context value = {\\"globalFlag\\":false,\\"localFlag\\":\\"local-value\\"}[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Argv value = {\\"command\\":\\"build\\",\\"options\\":{},\\"operands\\":[]}[34m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 3`] = `
-"[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👋 Hello, I'm the watch command[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Shared global flag = false[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Context value = {\\"globalFlag\\":false}[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Argv value = {\\"command\\":\\"watch\\",\\"options\\":{},\\"operands\\":[]}[39m"
+"[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👋 Hello, I'm the watch command[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Shared global flag = false[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Context value = {\\"globalFlag\\":false}[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Argv value = {\\"command\\":\\"watch\\",\\"options\\":{},\\"operands\\":[]}[34m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 4`] = `
-"[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👋 Hello, I'm the build command[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Shared global flag = true[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Local command flag = hello[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Context value = {\\"globalFlag\\":true,\\"localFlag\\":\\"hello\\"}[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Argv value = {\\"command\\":\\"build\\",\\"options\\":{\\"global\\":true,\\"local\\":\\"hello\\"},\\"operands\\":[]}[39m"
+"[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👋 Hello, I'm the build command[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Shared global flag = true[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Local command flag = hello[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Context value = {\\"globalFlag\\":true,\\"localFlag\\":\\"hello\\"}[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Argv value = {\\"command\\":\\"build\\",\\"options\\":{\\"global\\":true,\\"local\\":\\"hello\\"},\\"operands\\":[]}[34m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 5`] = `
-"[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👋 Hello, I'm the watch command[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Shared global flag = true[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Context value = {\\"globalFlag\\":true}[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   👉 Argv value = {\\"command\\":\\"watch\\",\\"options\\":{\\"global\\":true},\\"operands\\":[]}[39m"
+"[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👋 Hello, I'm the watch command[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Shared global flag = true[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Context value = {\\"globalFlag\\":true}[34m[39m
+[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   👉 Argv value = {\\"command\\":\\"watch\\",\\"options\\":{\\"global\\":true},\\"operands\\":[]}[34m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 6`] = `
-"[93m[1m[4m[24m[22m[39m
-[93m[1m[4mUSAGE:[24m[22m[39m
-[92m@examples/command build[39m [...options]
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mDESCRIPTION:[24m[22m[39m
-Transpile and bundle in production mode
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help        [39m Display the help center
-  [92m-v, --version     [39m Print the version
-  [92m--global          [39m Shared flag between commands
-  [92m--local           [39m Local command flag"
+"[33m[33m[1m[4m
+USAGE:[24m[22m[33m[39m
+[37m[37m[32m[32m@examples/command build[32m[37m [...options][37m[39m
+[33m[33m[1m[4m
+DESCRIPTION:[24m[22m[33m[39m
+[37m[37mTranspile and bundle in production mode[37m[39m
+[33m[33m[1m[4m
+OPTIONS:[24m[22m[33m[39m
+[37m[37m  [32m[32m-h, --help        [32m[37m Display the help center[37m[39m
+[37m[37m  [32m[32m-v, --version     [32m[37m Print the version[37m[39m
+[37m[37m  [32m[32m--global          [32m[37m Shared flag between commands[37m[39m
+[37m[37m  [32m[32m--local           [32m[37m Local command flag[37m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 7`] = `
-"[93m[1m[4m[24m[22m[39m
-[93m[1m[4mUSAGE:[24m[22m[39m
-[92m@examples/command watch[39m [...options]
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mDESCRIPTION:[24m[22m[39m
-Rebuild your assets on any code change
-[93m[1m[4m[24m[22m[39m
-[93m[1m[4mOPTIONS:[24m[22m[39m
-  [92m-h, --help        [39m Display the help center
-  [92m-v, --version     [39m Print the version
-  [92m--global          [39m Shared flag between commands"
+"[33m[33m[1m[4m
+USAGE:[24m[22m[33m[39m
+[37m[37m[32m[32m@examples/command watch[32m[37m [...options][37m[39m
+[33m[33m[1m[4m
+DESCRIPTION:[24m[22m[33m[39m
+[37m[37mRebuild your assets on any code change[37m[39m
+[33m[33m[1m[4m
+OPTIONS:[24m[22m[33m[39m
+[37m[37m  [32m[32m-h, --help        [32m[37m Display the help center[37m[39m
+[37m[37m  [32m[32m-v, --version     [32m[37m Print the version[37m[39m
+[37m[37m  [32m[32m--global          [32m[37m Shared flag between commands[37m[39m"
 `;
 
 exports[`termost > should handle \`option\` api 1`] = `
-"[94m[1m[22m[39m
-[94m[1mℹ️  Information[22m[39m
-[94m   {[39m
-[94m  \\"optionWithAlias\\": 0,[39m
-[94m  \\"optionWithoutAlias\\": \\"defaultValue\\"[39m
-[94m}[39m"
+"[34m[34m[1m
+ℹ️  Information[22m[34m[39m
+[34m[34m   {
+  \\"optionWithAlias\\": 0,
+  \\"optionWithoutAlias\\": \\"defaultValue\\"
+}[34m[39m"
 `;
 
 exports[`termost > should handle \`task\` api 1`] = `
@@ -161,28 +161,28 @@ exports[`termost > should handle \`task\` api 1`] = `
 [32m✔[39m Or even execute external commands thanks to its provided helpers
 [?25h[33m❯[39m A task can have a dynamic label generated from contextual values: small
 [32m✔[39m A task can have a dynamic label generated from contextual values: small
-[?25h[94m[1m[22m[39m
-[94m[1mℹ️  Label & console output[22m[39m
-[94m   If you don't specify a label, the handler is executed in \\"live mode\\" (the output is not hidden by the label and is displayed gradually).[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Context management[22m[39m
-[94m   A task with a specified \\"key\\" can be retrieved here. Size = 45. If no \\"key\\" was specified the task returned value cannot be persisted across program instructions.[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  Output formatting[22m[39m
-[94m   The \`message\` helpers can be used to display task content in a nice way[39m
-[92m[1m[22m[39m
-[92m[1m✅ Success[22m[39m
-[92m   The \`message\` helpers can be used to display task content in a nice way[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  👋 You can also customize the label[22m[39m
-[94m   The \`message\` helpers can be used to display task content in a nice way[39m
-[94m[1m[22m[39m
-[94m[1mℹ️  👋 You can also customize the label[22m[39m
-[94m   I support also[39m
-[94m   multilines[39m
-[94m   with array input[39m
-[37m[3m[9m[1m[22m[29m[23m[39m
-[37m[3m[9m[1mYou can also have a total control on the formatting through the \`format\` helper.[22m[29m[23m[39m
+[?25h[34m[34m[1m
+ℹ️  Label & console output[22m[34m[39m
+[34m[34m   If you don't specify a label, the handler is executed in \\"live mode\\" (the output is not hidden by the label and is displayed gradually).[34m[39m
+[34m[34m[1m
+ℹ️  Context management[22m[34m[39m
+[34m[34m   A task with a specified \\"key\\" can be retrieved here. Size = 45. If no \\"key\\" was specified the task returned value cannot be persisted across program instructions.[34m[39m
+[34m[34m[1m
+ℹ️  Output formatting[22m[34m[39m
+[34m[34m   The \`message\` helpers can be used to display task content in a nice way[34m[39m
+[32m[32m[1m
+✅ Success[22m[32m[39m
+[32m[32m   The \`message\` helpers can be used to display task content in a nice way[32m[39m
+[34m[34m[1m
+ℹ️  👋 You can also customize the label[22m[34m[39m
+[34m[34m   The \`message\` helpers can be used to display task content in a nice way[34m[39m
+[34m[34m[1m
+ℹ️  👋 You can also customize the label[22m[34m[39m
+[34m[34m   I support also[34m[39m
+[34m[34m   multilines[34m[39m
+[34m[34m   with array input[34m[39m
+[37m[37m[3m[9m[1m
+You can also have a total control on the formatting through the \`format\` helper.[22m[29m[23m[37m[39m
 {
   \\"size\\": 45,
   \\"computedFromOtherTaskValues\\": \\"small\\",

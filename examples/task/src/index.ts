@@ -99,7 +99,7 @@ program
 					"\nYou can also have a total control on the formatting through the `format` helper.",
 					{
 						color: "white",
-						modifier: ["italic", "strikethrough", "bold"],
+						modifiers: ["italic", "strikethrough", "bold"],
 					},
 				),
 			);

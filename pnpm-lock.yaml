@@ -25,7 +25,7 @@ importers:
     dependencies:
       termost:
         specifier: ^0.11.1
-        version: link:../../termost
+        version: 0.11.1
     devDependencies:
       esbuild-register:
         specifier: 3.5.0
@@ -35,7 +35,7 @@ importers:
     dependencies:
       termost:
         specifier: ^0.11.1
-        version: link:../../termost
+        version: 0.11.1
     devDependencies:
       '@types/node':
         specifier: 18.17.5
@@ -48,7 +48,7 @@ importers:
     dependencies:
       termost:
         specifier: ^0.11.1
-        version: link:../../termost
+        version: 0.11.1
     devDependencies:
       esbuild-register:
         specifier: 3.5.0
@@ -58,7 +58,7 @@ importers:
     dependencies:
       termost:
         specifier: ^0.11.1
-        version: link:../../termost
+        version: 0.11.1
     devDependencies:
       esbuild-register:
         specifier: 3.5.0
@@ -68,7 +68,7 @@ importers:
     dependencies:
       termost:
         specifier: ^0.11.1
-        version: link:../../termost
+        version: 0.11.1
     devDependencies:
       esbuild-register:
         specifier: 3.5.0
@@ -76,15 +76,15 @@ importers:
 
   termost:
     dependencies:
-      chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
       enquirer:
         specifier: ^2.4.1
         version: 2.4.1
       listr2:
         specifier: ^7.0.1
         version: 7.0.1
+      picocolors:
+        specifier: ^1.0.0
+        version: 1.0.0
     devDependencies:
       '@types/node':
         specifier: 18.17.5
@@ -4905,7 +4905,6 @@ packages:
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
-    dev: true
 
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
@@ -5666,6 +5665,15 @@ packages:
     transitivePeerDependencies:
       - enquirer
     dev: true
+
+  /termost@0.11.1:
+    resolution: {integrity: sha512-JRvR3LX8hghlu4LzW3QTNXEomf2MD/xDFZ9Cyz7XgtMg2s5MooavWOUYEGbnhowqDriCqEOTzMMi6ob/Bp5x2g==}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.2
+      enquirer: 2.4.1
+      listr2: 7.0.1
+    dev: false
 
   /termost@0.9.0(enquirer@2.4.1):
     resolution: {integrity: sha512-xzmVn697Cz1dA4UIU30rk3YenUDPiD8NqA7RRSj5djA1OiLvw39wShM9Pplntf+o3J1PPOQWkHtAWbfs2/JQZg==}

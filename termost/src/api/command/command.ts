@@ -142,7 +142,7 @@ const print = (...parameters: Parameters<typeof format>) => {
 const printTitle = (message: string) => {
 	print(`\n${message}:`, {
 		color: "yellow",
-		modifier: ["bold", "underline", "uppercase"],
+		modifiers: ["bold", "underline", "uppercase"],
 	});
 };
 
