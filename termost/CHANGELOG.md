@@ -1,5 +1,17 @@
 # termost
 
+## 1.0.0
+
+### Major Changes
+
+- [`c773124`](https://github.com/adbayb/termost/commit/c773124cf7b315aa856b5592bdfef5cd203fb4b2) Thanks [@adbayb](https://github.com/adbayb)! - v1 release 🚀.
+
+  It includes installation size optimization by introducing the following updates:
+
+  - Chalk major bump
+  - Litsr2 major bump
+  - Prompts replaced in favor of Enquirer
+
 ## 0.10.0
 
 ### Minor Changes
