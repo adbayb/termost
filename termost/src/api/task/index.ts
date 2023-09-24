@@ -1,4 +1,4 @@
-import { Listr } from "listr2";
+import { Listr, PRESET_TIMER } from "listr2";
 
 import type {
 	ArgumentValues,
@@ -21,7 +21,7 @@ export const createTask: CreateInstruction<
 					collapseErrors: false,
 					formatOutput: "wrap",
 					showErrorMessage: true,
-					showTimer: true,
+					timer: PRESET_TIMER,
 				},
 		  })
 		: null;

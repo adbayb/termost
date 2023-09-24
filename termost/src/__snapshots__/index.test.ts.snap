@@ -151,17 +151,17 @@ exports[`termost > should handle \`option\` api 1`] = `
 `;
 
 exports[`termost > should handle \`task\` api 1`] = `
-"[STARTED] Task with returned value (persisted)
-[SUCCESS] Task with returned value (persisted)
-[STARTED] Task with side-effect only (no persisted value)
-[SUCCESS] Task with side-effect only (no persisted value)
-[STARTED] Task can also access other persisted task values
-[SUCCESS] Task can also access other persisted task values
-[STARTED] Or even execute external commands thanks to its provided helpers
-[SUCCESS] Or even execute external commands thanks to its provided helpers
-[STARTED] A task can have a dynamic label generated from contextual values: small
-[SUCCESS] A task can have a dynamic label generated from contextual values: small
-[94m[1m[22m[39m
+"[33m❯[39m Task with returned value (persisted)
+[32m✔[39m Task with returned value (persisted)
+[?25h[33m❯[39m Task with side-effect only (no persisted value)
+[32m✔[39m Task with side-effect only (no persisted value)
+[?25h[33m❯[39m Task can also access other persisted task values
+[32m✔[39m Task can also access other persisted task values
+[?25h[33m❯[39m Or even execute external commands thanks to its provided helpers
+[32m✔[39m Or even execute external commands thanks to its provided helpers
+[?25h[33m❯[39m A task can have a dynamic label generated from contextual values: small
+[32m✔[39m A task can have a dynamic label generated from contextual values: small
+[?25h[94m[1m[22m[39m
 [94m[1mℹ️  Label & console output[22m[39m
 [94m   If you don't specify a label, the handler is executed in \\"live mode\\" (the output is not hidden by the label and is displayed gradually).[39m
 [94m[1m[22m[39m
