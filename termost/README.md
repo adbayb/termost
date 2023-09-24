@@ -13,7 +13,7 @@ Termost allows building command line tools in a minute thanks to its:
 -   [Fluent](https://en.wikipedia.org/wiki/Fluent_interface) syntax to express your CLI configurations with instructions such as:
     -   [Subcommand](examples/command/src/index.ts) support
     -   Long and short [option](examples/option/src/index.ts) support
-    -   [Prompt](examples/input/src/index.ts) support
+    -   [User input](examples/input/src/index.ts) support
     -   [Task](examples/task/src/index.ts) support
 -   Shareable output between instructions
 -   Auto-generated help and version metadata
@@ -374,7 +374,7 @@ const wait = (delay: number) => {
 
 This project is built upon solid open-source foundations. We'd like to thank:
 
--   [`prompts`](https://www.npmjs.com/package/prompts) for managing `input` internals
+-   [`enquirer`](https://www.npmjs.com/package/enquirer) for managing `input` internals
 -   [`listr2`](https://www.npmjs.com/package/listr2) for managing `task` internals
 
 <br>
@@ -382,7 +382,3 @@ This project is built upon solid open-source foundations. We'd like to thank:
 ## 📖 License
 
 [MIT](https://github.com/adbayb/termost/blob/main/LICENSE "License MIT")
-
-## TODO
-
--   [ ] Replace prompts with https://www.npmjs.com/package/enquirer

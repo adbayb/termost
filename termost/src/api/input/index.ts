@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import type { PromptObject, PromptType } from "prompts";
-import prompts from "prompts";
+import { prompt } from "enquirer";
 
 import type {
 	CreateInstruction,
@@ -15,29 +14,14 @@ export const createInput: CreateInstruction<
 > = (parameters) => {
 	const { key, defaultValue, label, type } = parameters;
 
-	const mapTypeToPromptType = (): PromptType => {
-		switch (type) {
-			case "select":
-				return "select";
-			case "multiselect":
-				return "multiselect";
-			case "confirm":
-				return "confirm";
-			case "text":
-				return "text";
-			default:
-				throw new Error(
-					`Unknown \`${type as string}\` type provided to \`input\``,
-				);
-		}
-	};
-
 	return async function execute(context, argv) {
-		const promptObject: PromptObject = {
+		const promptObject: Parameters<typeof prompt>[0] & {
+			choices?: { title: string; value: string; selected?: boolean }[];
+		} = {
 			initial: defaultValue,
 			message: typeof label === "function" ? label(context, argv) : label,
 			name: key,
-			type: mapTypeToPromptType(),
+			type,
 		};
 
 		if (parameters.type === "select" || parameters.type === "multiselect") {
@@ -54,21 +38,10 @@ export const createInput: CreateInstruction<
 				}),
 			}));
 
-			// @note: initial value is managed differently between select and multiselect,
-			// we need to do some transformation to plug termost API with prompts one...
-			if (isMultiSelect) promptObject.initial = undefined;
-			else {
-				const foundIndex = options.findIndex(
-					(option) => option === defaultValue,
-				);
-
-				promptObject.initial = foundIndex >= 0 ? foundIndex : undefined;
-			}
-
 			promptObject.choices = choices;
 		}
 
-		const data = await prompts(promptObject);
+		const data = await prompt<ObjectLikeConstraint>(promptObject);
 
 		return { key, value: data[key] };
 	};
