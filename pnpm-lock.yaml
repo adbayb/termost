@@ -24,8 +24,8 @@ importers:
   examples/command:
     dependencies:
       termost:
-        specifier: ^0.11.1
-        version: 0.11.1
+        specifier: workspace:^
+        version: link:../../termost
     devDependencies:
       esbuild-register:
         specifier: 3.5.0
@@ -34,8 +34,8 @@ importers:
   examples/default:
     dependencies:
       termost:
-        specifier: ^0.11.1
-        version: 0.11.1
+        specifier: workspace:^
+        version: link:../../termost
     devDependencies:
       '@types/node':
         specifier: 18.17.5
@@ -47,8 +47,8 @@ importers:
   examples/input:
     dependencies:
       termost:
-        specifier: ^0.11.1
-        version: 0.11.1
+        specifier: workspace:^
+        version: link:../../termost
     devDependencies:
       esbuild-register:
         specifier: 3.5.0
@@ -57,8 +57,8 @@ importers:
   examples/option:
     dependencies:
       termost:
-        specifier: ^0.11.1
-        version: 0.11.1
+        specifier: workspace:^
+        version: link:../../termost
     devDependencies:
       esbuild-register:
         specifier: 3.5.0
@@ -67,8 +67,8 @@ importers:
   examples/task:
     dependencies:
       termost:
-        specifier: ^0.11.1
-        version: 0.11.1
+        specifier: workspace:^
+        version: link:../../termost
     devDependencies:
       esbuild-register:
         specifier: 3.5.0
@@ -1617,6 +1617,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       color-convert: 2.0.1
+    dev: true
 
   /ansi-styles@5.2.0:
     resolution: {integrity: sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==}
@@ -1899,6 +1900,7 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+    dev: true
 
   /character-entities-html4@2.1.0:
     resolution: {integrity: sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==}
@@ -2009,6 +2011,7 @@ packages:
     engines: {node: '>=7.0.0'}
     dependencies:
       color-name: 1.1.4
+    dev: true
 
   /color-name@1.1.3:
     resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
@@ -2016,6 +2019,7 @@ packages:
 
   /color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+    dev: true
 
   /colorette@2.0.20:
     resolution: {integrity: sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==}
@@ -3296,6 +3300,7 @@ packages:
   /has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
+    dev: true
 
   /has-property-descriptors@1.0.0:
     resolution: {integrity: sha512-62DVLZGoiEBDHQyqG4w9xCuZ7eJEwNmJRWw2VY84Oedb7WFcA27fiEVe8oUQx9hAUJ4ekurquucTGwsyO1XGdQ==}
@@ -5626,6 +5631,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       has-flag: 4.0.0
+    dev: true
 
   /supports-color@9.4.0:
     resolution: {integrity: sha512-VL+lNrEoIXww1coLPOmiEmK/0sGigko5COxI09KzHc2VJXJsQ37UaQ+8quuxjDeA7+KnLGTWRyOXSLLR2Wb4jw==}
@@ -5665,15 +5671,6 @@ packages:
     transitivePeerDependencies:
       - enquirer
     dev: true
-
-  /termost@0.11.1:
-    resolution: {integrity: sha512-JRvR3LX8hghlu4LzW3QTNXEomf2MD/xDFZ9Cyz7XgtMg2s5MooavWOUYEGbnhowqDriCqEOTzMMi6ob/Bp5x2g==}
-    hasBin: true
-    dependencies:
-      chalk: 4.1.2
-      enquirer: 2.4.1
-      listr2: 7.0.1
-    dev: false
 
   /termost@0.9.0(enquirer@2.4.1):
     resolution: {integrity: sha512-xzmVn697Cz1dA4UIU30rk3YenUDPiD8NqA7RRSj5djA1OiLvw39wShM9Pplntf+o3J1PPOQWkHtAWbfs2/JQZg==}
