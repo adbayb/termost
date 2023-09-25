@@ -1,5 +1,11 @@
 # termost
 
+## 0.12.0
+
+### Minor Changes
+
+- [`b365ee6`](https://github.com/adbayb/termost/commit/b365ee6d047c0dbef64e3651251b98881267766a) Thanks [@adbayb](https://github.com/adbayb)! - Replace chalk with picocolors
+
 ## 0.11.1
 
 ### Patch Changes
