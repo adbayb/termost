@@ -40,44 +40,81 @@ Once you're done, you can play with the API:
 ```ts
 #!/usr/bin/env node
 
-import { termost, helpers } from "termost";
+import { helpers, termost } from "termost";
 
 type ProgramContext = {
-	sharedOutput: string;
-	option: string;
+	globalFlag: string;
 };
 
-const program = termost<ProgramContext>("My super program description");
+type DebugCommandContext = {
+	localFlag: string;
+};
+
+const program = termost<ProgramContext>("CLI example", {
+	onException(error) {
+		console.error(`Error logic ${error.message}`);
+	},
+	onShutdown() {
+		console.log("Clean-up logic");
+	},
+});
+
+program.option({
+	key: "globalFlag",
+	name: { long: "global", short: "g" },
+	description:
+		"A global flag/option example accessible by all commands (key is used to persist the value into the context object)",
+	defaultValue:
+		"A default value can be set if no flag is provided by the user",
+});
 
 program
-	.option({
-		key: "option",
-		name: { long: "flag", short: "f" },
-		description: "A super useful CLI flag",
-		defaultValue: "Hello from option",
+	.command({
+		name: "build",
+		description:
+			"A custom command example runnable via `bin-name build` (command help available via `bin-name build --help`)",
 	})
 	.task({
-		key: "sharedOutput",
-		label: "Retrieves files",
+		label: "A label can be displayed to follow the task progress",
 		async handler() {
-			return await helpers.exec('echo "Hello from task"', {
-				cwd: process.cwd(),
-			});
-		},
-	})
-	.task({
-		handler(context) {
-			helpers.message(`Task value: ${context.sharedOutput}`);
-			helpers.message(`Option value: ${context.option}`, {
-				type: "warning",
-			});
+			await fakeBuild();
 		},
 	});
+
+program
+	.command<DebugCommandContext>({
+		name: "debug",
+		description: "A command to play with Termost capabilities",
+	})
+	.option({
+		key: "localFlag",
+		name: "local",
+		description: "A local flag accessible only by the `debug` command",
+		defaultValue: "local-value",
+	})
+	.task({
+		handler(context, argv) {
+			helpers.message(`Hello, I'm the ${argv.command} command`);
+			helpers.message(`Context value = ${JSON.stringify(context)}`);
+			helpers.message(`Argv value = ${JSON.stringify(argv)}`);
+		},
+	});
+
+const fakeBuild = async () => {
+	return new Promise((resolve) => {
+		setTimeout(resolve, 3000);
+	});
+};
 ```
 
-The output will look like this:
+Depending on the command, the output will look like this (`bin-name` is the program name automatically retrieved from the `package.json>name`):
 
-<img width="287" alt="Capture d’écran 2021-08-17 à 15 45 53" src="https://user-images.githubusercontent.com/10498826/129737100-52d70ee4-66a1-4f56-96ec-b56c7f378a50.png">
+| Command                 |                                                                       Preview                                                                       |
+| :---------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------: |
+| `bin-name --help`       |                <img alt="Global help" src="https://github.com/adbayb/termost/assets/10498826/ccb55954-5cd1-4528-a98a-0b1fb480447f">                 |
+| `bin-name debug --help` |                 <img alt="Local help" src="https://github.com/adbayb/termost/assets/10498826/4127d5d6-4592-496a-b03d-484de4f8a2f7">                 |
+| `bin-name build`        |        <img alt="Subcommand with task example" src="https://github.com/adbayb/termost/assets/10498826/89374e76-b993-4cfd-b7e6-3d8de5d80ac1">        |
+| `bin-name debug`        | <img alt="Subcommand with option and context example" src="https://github.com/adbayb/termost/assets/10498826/3c8c5d97-aa30-49ff-834c-584111b76afa"> |
 
 <br>
 
