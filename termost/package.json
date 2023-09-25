@@ -51,7 +51,7 @@
 		"test": "vitest --test-timeout=20000"
 	},
 	"dependencies": {
-		"chalk": "^5.3.0",
+		"chalk": "^4.1.2",
 		"enquirer": "^2.4.1",
 		"listr2": "^7.0.1"
 	},

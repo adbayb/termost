@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import type { ChalkInstance } from "chalk";
 
 /**
  * A helper to format an arbitrary text as a message input
@@ -17,7 +16,7 @@ export const format = (
 		modifier?: Modifier | Modifier[];
 	} = {},
 ): string => {
-	let transformer: ChalkInstance = chalk;
+	let transformer: chalk.Chalk = chalk;
 
 	if (color) {
 		transformer = transformer[chalkByFormatColor[color]];
