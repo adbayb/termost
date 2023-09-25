@@ -1,5 +1,11 @@
 # termost
 
+## 0.11.1
+
+### Patch Changes
+
+- [`917e380`](https://github.com/adbayb/termost/commit/917e3800f2bb848be4ca1c8b3279e8d0e4409250) Thanks [@adbayb](https://github.com/adbayb)! - Fix regression on CJS module by downgrading Chalk version
+
 ## 0.11.0
 
 ### Minor Changes
