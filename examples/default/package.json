@@ -6,7 +6,7 @@
 		"start": "node -r esbuild-register ./src/index.ts"
 	},
 	"dependencies": {
-		"termost": "^0.11.0"
+		"termost": "^0.11.1"
 	},
 	"devDependencies": {
 		"@types/node": "18.17.5",
