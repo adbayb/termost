@@ -84,14 +84,14 @@ program
 			helpers.message(content, { type: "error" });
 			helpers.message(content, { type: "success" });
 			helpers.message(content, {
-				type: "information",
 				label: "👋 You can also customize the label",
+				type: "information",
 			});
 			helpers.message(
 				["I support also", "multilines", "with array input"],
 				{
-					type: "information",
 					label: "👋 You can also customize the label",
+					type: "information",
 				},
 			);
 			console.log(

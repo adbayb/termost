@@ -1,3 +1,11 @@
+import { createCommand, getCommandController } from "./api/command";
+import type { CommandParameters } from "./api/command";
+import { createInput } from "./api/input";
+import type { InputParameters } from "./api/input";
+import { createOption } from "./api/option";
+import type { OptionParameters } from "./api/option";
+import { createTask } from "./api/task";
+import type { TaskParameters } from "./api/task";
 import { getPackageMetadata } from "./helpers/package";
 import { getArguments } from "./helpers/stdin";
 import type {
@@ -9,14 +17,6 @@ import type {
 	PackageMetadata,
 	ProgramMetadata,
 } from "./types";
-import type { CommandParameters } from "./api/command";
-import { createCommand, getCommandController } from "./api/command";
-import type { InputParameters } from "./api/input";
-import { createInput } from "./api/input";
-import type { OptionParameters } from "./api/option";
-import { createOption } from "./api/option";
-import type { TaskParameters } from "./api/task";
-import { createTask } from "./api/task";
 
 /**
  * The termost fluent interface API
@@ -52,14 +52,14 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 
 	const packageMetadata = getPackageMetadata();
 	const programName = paramsMetadata.name ?? packageMetadata.name;
-	const { command = programName, options, operands } = getArguments();
+	const { command = programName, operands, options } = getArguments();
 
 	setGracefulListeners(callbacks);
 
 	return createProgram<Values>({
-		argv: { command, options, operands },
-		description: paramsMetadata.description ?? packageMetadata.description,
 		name: programName,
+		description: paramsMetadata.description ?? packageMetadata.description,
+		argv: { command, operands, options },
 		version: paramsMetadata.version ?? packageMetadata.version,
 	});
 }
@@ -67,7 +67,7 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 export const createProgram = <Values extends ObjectLikeConstraint>(
 	metadata: ProgramMetadata,
 ): Termost<Values> => {
-	const { argv, name, description } = metadata;
+	const { name, description, argv } = metadata;
 	const rootCommandName: CommandName = name;
 	let currentCommandName: CommandName = rootCommandName;
 
@@ -136,15 +136,15 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 };
 
 type TerminationCallbacks = Partial<{
-	onShutdown: () => void;
 	onException: (error: Error) => void;
+	onShutdown: () => void;
 }>;
 
 const setGracefulListeners = ({
-	onShutdown = () => {
+	onException = () => {
 		return;
 	},
-	onException = () => {
+	onShutdown = () => {
 		return;
 	},
 }: TerminationCallbacks) => {

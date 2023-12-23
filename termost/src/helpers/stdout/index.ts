@@ -52,7 +52,7 @@ export const message = (
 	{
 		label,
 		type = "information",
-	}: { type?: MessageType; label?: string } = {},
+	}: { label?: string; type?: MessageType } = {},
 ) => {
 	const { color, defaultLabel, icon, method } = formatPropertiesByType[type];
 	const messages = typeof content === "string" ? [content] : content;

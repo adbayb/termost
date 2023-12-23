@@ -11,27 +11,26 @@ const program = termost<ProgramContext>("Example to showcase the `input` API");
 
 program
 	.input({
-		type: "select",
 		key: "input1",
 		label: "What is your single choice?",
-		options: ["singleOption1", "singleOption2"],
 		defaultValue: "singleOption2",
+		options: ["singleOption1", "singleOption2"],
+		type: "select",
 	})
 	.input({
-		type: "multiselect",
 		key: "input2",
 		label: "What is your multiple choices?",
-		options: ["multipleOption1", "multipleOption2"],
 		defaultValue: ["multipleOption2"],
+		options: ["multipleOption1", "multipleOption2"],
+		type: "multiselect",
 	})
 	.input({
-		type: "confirm",
 		key: "input3",
 		label: "Are you sure to skip next input?",
 		defaultValue: false,
+		type: "confirm",
 	})
 	.input({
-		type: "text",
 		key: "input4",
 		label: (context) =>
 			`Dynamic input label generated from a contextual value: ${context.input1}`,
@@ -41,6 +40,7 @@ program
 
 			return Boolean(context.input3);
 		},
+		type: "text",
 	})
 	.task({
 		handler(context) {

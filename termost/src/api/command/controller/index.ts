@@ -10,9 +10,9 @@ import { createQueue } from "./queue";
 export type CommandController<
 	Values extends ObjectLikeConstraint = EmptyObject,
 > = {
-	addValue: <Key extends keyof Values>(key: Key, value: Values[Key]) => void;
-	addOptionDescription: (key: string, description: string) => void;
 	addInstruction: (instruction: Instruction) => void;
+	addOptionDescription: (key: string, description: string) => void;
+	addValue: <Key extends keyof Values>(key: Key, value: Values[Key]) => void;
 	/**
 	 * Enables a command by iterating over instructions and executing them
 	 */
@@ -52,14 +52,14 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 	};
 
 	const controller: CommandController<Values> = {
+		addInstruction(instruction) {
+			instructions.enqueue(instruction);
+		},
 		addOptionDescription(key, value) {
 			metadata.options[key] = value;
 		},
 		addValue(key, value) {
 			context[key] = value;
-		},
-		addInstruction(instruction) {
-			instructions.enqueue(instruction);
 		},
 		async enable() {
 			while (!instructions.isEmpty()) {
