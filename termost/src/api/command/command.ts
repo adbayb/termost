@@ -2,12 +2,12 @@
 import { format } from "../../helpers/stdout";
 import type { ObjectLikeConstraint, ProgramMetadata } from "../../types";
 
-import type { CommandController } from "./controller";
 import {
 	createCommandController,
 	getCommandController,
 	getCommandDescriptionCollection,
 } from "./controller";
+import type { CommandController } from "./controller";
 
 export type CommandParameters = {
 	name: string;
@@ -16,7 +16,7 @@ export type CommandParameters = {
 
 export const createCommand = <Values extends ObjectLikeConstraint>(
 	{ name, description }: CommandParameters,
-	{ argv, name: rootCommandName, version }: ProgramMetadata,
+	{ name: rootCommandName, argv, version }: ProgramMetadata,
 ) => {
 	const isRootCommand = name === rootCommandName;
 	const isActiveCommand = argv.command === name;
@@ -71,19 +71,19 @@ const OPTION_HELP_NAMES = ["help", "h"] as const;
 const OPTION_VERSION_NAMES = ["version", "v"] as const;
 
 const showHelp = ({
-	rootCommandName,
+	controller,
 	currentCommandName,
 	isRootCommand,
-	controller,
+	rootCommandName,
 }: {
-	rootCommandName: string;
-	currentCommandName: string;
-	isRootCommand: boolean;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	controller: CommandController<any>;
+	currentCommandName: string;
+	isRootCommand: boolean;
+	rootCommandName: string;
 }) => {
 	const commandMetadata = controller.getMetadata(rootCommandName);
-	const { options, description } = commandMetadata;
+	const { description, options } = commandMetadata;
 	const commands = getCommandDescriptionCollection();
 	const optionKeys = Object.keys(commandMetadata.options);
 	const commandKeys = Object.keys(commands);

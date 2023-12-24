@@ -11,14 +11,14 @@ export type EmptyObject = {};
  */
 export type ArgumentValues = {
 	command: CommandName;
-	options: Record<string, boolean | number | string>;
 	operands: string[];
+	options: Record<string, boolean | number | string>;
 };
 
 export type PackageMetadata = {
 	name: string;
-	version: string;
 	description: string;
+	version: string;
 };
 
 export type ProgramMetadata = PackageMetadata & {

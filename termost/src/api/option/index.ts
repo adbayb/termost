@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import type { CommandController } from "../command";
 import type {
 	CreateInstruction,
 	InstructionKey,
@@ -7,6 +6,7 @@ import type {
 	ObjectLikeConstraint,
 	ProgramMetadata,
 } from "../../types";
+import type { CommandController } from "../command";
 
 export const createOption =
 	(

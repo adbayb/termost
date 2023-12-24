@@ -12,15 +12,15 @@ import type {
 export const createInput: CreateInstruction<
 	InputParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 > = (parameters) => {
-	const { key, defaultValue, label, type } = parameters;
+	const { key, label, defaultValue, type } = parameters;
 
 	return async function execute(context, argv) {
 		const promptObject: Parameters<typeof prompt>[0] & {
-			choices?: { title: string; value: string; selected?: boolean }[];
+			choices?: { title: string; selected?: boolean; value: string }[];
 		} = {
+			name: key,
 			initial: defaultValue,
 			message: typeof label === "function" ? label(context, argv) : label,
-			name: key,
 			type,
 		};
 
@@ -55,34 +55,34 @@ export type InputParameters<
 	InstructionKey<Key> &
 		(
 			| {
-					type: "confirm";
 					label: Label<Values>;
 					defaultValue?: Values[Key] extends boolean
 						? Values[Key]
 						: never;
+					type: "confirm";
 			  }
 			| {
-					type: "multiselect";
 					label: Label<Values>;
-					options: Values[Key] extends string[] ? Values[Key] : never;
+					defaultValue?: Values[Key] extends string
+						? Values[Key]
+						: never;
+					options: Values[Key] extends string ? Values[Key][] : never;
+					type: "select";
+			  }
+			| {
+					label: Label<Values>;
+					defaultValue?: Values[Key] extends string
+						? Values[Key]
+						: never;
+					type: "text";
+			  }
+			| {
+					label: Label<Values>;
 					defaultValue?: Values[Key] extends string[]
 						? Values[Key]
 						: never;
-			  }
-			| {
-					type: "select";
-					label: Label<Values>;
-					options: Values[Key] extends string ? Values[Key][] : never;
-					defaultValue?: Values[Key] extends string
-						? Values[Key]
-						: never;
-			  }
-			| {
-					type: "text";
-					label: Label<Values>;
-					defaultValue?: Values[Key] extends string
-						? Values[Key]
-						: never;
+					options: Values[Key] extends string[] ? Values[Key] : never;
+					type: "multiselect";
 			  }
 		)
 >;

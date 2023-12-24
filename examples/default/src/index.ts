@@ -1,22 +1,22 @@
 import { helpers, termost } from "termost";
 
 type ProgramContext = {
-	sharedOutput: string;
 	option: string;
+	sharedOutput: string;
 };
 
 const program = termost<ProgramContext>(
 	"Program description placeholder. Program name and version are retrieved from your `package.json`. You can override this automatic retrieval by using the `termost({ name, description, version })` builder form.",
 	{
-		onShutdown() {
-			console.log(
-				"Catches `SIGINT` and `SIGTERM` OS signals (useful, for example, to release resources before interrupting the process)",
-			);
-		},
 		onException(error) {
 			console.log(
 				"Catches `uncaughtException` and `unhandledRejection` events",
 				error,
+			);
+		},
+		onShutdown() {
+			console.log(
+				"Catches `SIGINT` and `SIGTERM` OS signals (useful, for example, to release resources before interrupting the process)",
 			);
 		},
 	},
@@ -30,9 +30,10 @@ program
 		defaultValue: "Default value",
 	})
 	.task({
+		key: "sharedOutput",
 		label: "Retrieves files",
 		async handler() {
-			await helpers.exec('echo "Hello from task"', {
+			return helpers.exec('echo "Hello from task"', {
 				cwd: process.cwd(),
 			});
 		},

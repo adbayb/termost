@@ -32,7 +32,7 @@ program
 	})
 	.task({
 		handler(context, argv) {
-			const { localFlag, globalFlag } = context;
+			const { globalFlag, localFlag } = context;
 
 			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
 			helpers.message(`👉 Shared global flag = ${globalFlag}`);

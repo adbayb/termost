@@ -11,13 +11,13 @@ export const exec = async (
 
 		const childProcess = spawn(bin, args, {
 			cwd: options.cwd,
-			shell: true,
-			stdio: options.hasLiveOutput ? "inherit" : "pipe",
 			env: {
 				...process.env,
 				// @note: make sure to force color display for spawned processes
 				FORCE_COLOR: "1",
 			},
+			shell: true,
+			stdio: options.hasLiveOutput ? "inherit" : "pipe",
 		});
 
 		childProcess.stdout?.on("data", (chunk) => {
