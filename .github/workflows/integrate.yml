@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
@@ -22,7 +22,7 @@ jobs:
                   cache: pnpm
             - name: Setup cache
               id: cache
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: |
                       ./node_modules
@@ -39,7 +39,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
@@ -51,7 +51,7 @@ jobs:
                   cache: pnpm
             - name: Setup cache
               id: cache
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: |
                       ./node_modules
@@ -70,7 +70,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
@@ -82,7 +82,7 @@ jobs:
                   cache: pnpm
             - name: Setup cache
               id: cache
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: |
                       ./node_modules
@@ -101,7 +101,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
             - uses: pnpm/action-setup@v2
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
@@ -113,7 +113,7 @@ jobs:
                   cache: pnpm
             - name: Setup cache
               id: cache
-              uses: actions/cache@v3
+              uses: actions/cache@v4
               with:
                   path: |
                       ./node_modules
