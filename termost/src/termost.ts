@@ -46,21 +46,35 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 	metadata: Partial<PackageMetadata> | string,
 	callbacks: TerminationCallbacks = {},
 ) {
-	const paramsMetadata: Partial<PackageMetadata> = isObject(metadata)
+	let { name, description, version } = isObject(metadata)
 		? metadata
-		: { description: metadata };
+		: {
+				name: undefined,
+				description: metadata,
+				version: undefined,
+		  };
 
-	const packageMetadata = getPackageMetadata();
-	const programName = paramsMetadata.name ?? packageMetadata.name;
-	const { command = programName, operands, options } = getArguments();
+	if (
+		name === undefined ||
+		description === undefined ||
+		version === undefined
+	) {
+		const packageMetadata = getPackageMetadata();
+
+		name ??= packageMetadata.name;
+		description ??= packageMetadata.description;
+		version ??= packageMetadata.version;
+	}
+
+	const { command = name, operands, options } = getArguments();
 
 	setGracefulListeners(callbacks);
 
 	return createProgram<Values>({
-		name: programName,
-		description: paramsMetadata.description ?? packageMetadata.description,
+		name,
+		description,
 		argv: { command, operands, options },
-		version: paramsMetadata.version ?? packageMetadata.version,
+		version,
 	});
 }
 
