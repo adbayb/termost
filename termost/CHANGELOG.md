@@ -1,5 +1,11 @@
 # termost
 
+## 0.12.1
+
+### Patch Changes
+
+- [#31](https://github.com/adbayb/termost/pull/31) [`84ce62c`](https://github.com/adbayb/termost/commit/84ce62c1a83db1cf2413edcdcdb64d63195247af) Thanks [@garronej](https://github.com/garronej)! - Fixes always crash if can't resolve metadata
+
 ## 0.12.0
 
 ### Minor Changes
