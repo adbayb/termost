@@ -32,9 +32,9 @@
 		]
 	},
 	"devDependencies": {
-		"@adbayb/eslint-config": "1.9.0",
-		"@adbayb/prettier-config": "1.3.0",
-		"@adbayb/stack": "1.13.0",
+		"@adbayb/eslint-config": "1.12.0",
+		"@adbayb/prettier-config": "1.5.0",
+		"@adbayb/stack": "1.16.1",
 		"@adbayb/ts-config": "1.0.0"
 	}
 }
