@@ -23,7 +23,7 @@ export const createTask: CreateInstruction<
 					showErrorMessage: true,
 					timer: PRESET_TIMER,
 				},
-		  })
+			})
 		: null;
 
 	return async function execute(context, argv) {

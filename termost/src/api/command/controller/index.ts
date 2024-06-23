@@ -14,7 +14,7 @@ export type CommandController<
 	addOptionDescription: (key: string, description: string) => void;
 	addValue: <Key extends keyof Values>(key: Key, value: Values[Key]) => void;
 	/**
-	 * Enables a command by iterating over instructions and executing them
+	 * Enables a command by iterating over instructions and executing them.
 	 */
 	enable: () => Promise<void>;
 	getContext: (rootCommandName: CommandName) => Context<Values>;

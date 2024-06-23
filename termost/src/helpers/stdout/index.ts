@@ -1,10 +1,14 @@
 import pico from "picocolors";
 
 /**
- * A helper to format an arbitrary text as a message input
- * @param message The text to display
- * @param options The configuration object to control the formatting properties
- * @returns The formatted text
+ * A helper to format an arbitrary text as a message input.
+ * @param message - The text to display.
+ * @param options - The configuration object to control the formatting properties.
+ * @param options.color - The color to apply.
+ * @param options.modifiers - The modifiers to apply (can be italic, bold, ...).
+ * @returns The formatted text.
+ * @example
+ * const formattedMessage = format("my message");
  */
 export const format = (
 	message: string,
@@ -43,9 +47,13 @@ const compose = <T>(...fns: ((a: T) => T)[]) =>
 	);
 
 /**
- * An opinionated helper to display arbitrary text on the console
- * @param message The text to display. Use an array if you need to display a message in several lines
- * @param options The configuration object to define the display type and/or override the default label
+ * An opinionated helper to display arbitrary text on the console.
+ * @param content - The text to display. Use an array if you need to display a message in several lines.
+ * @param options - The configuration object to define the display type and/or override the default label.
+ * @param options.label - The label to display.
+ * @param options.type - The message type.
+ * @example
+ * message("message to log");
  */
 export const message = (
 	content: string[] | string,
