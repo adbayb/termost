@@ -76,8 +76,12 @@ describe("termost", () => {
 /**
  * A test utility to strip contextual information (including absolute paths) output by `pnpm --filter run` command.
  * It allows to run tests whatever the testing environment (CI, local, ...).
- * @param command The command to run
- * @returns The generic command output
+ * @param command - The command to run.
+ * @returns The generic command output.
+ * @example
+ * const shortFlagOutput = await safeExec(
+ * 	"pnpm --filter @examples/default start -h",
+ * );
  */
 const safeExec = async (command: string) => {
 	const output = await exec(command);

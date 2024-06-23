@@ -7,7 +7,7 @@ export type ObjectLikeConstraint = Record<string, any>;
 export type EmptyObject = {};
 
 /**
- * Raw CLI arguments parsed from user inputs
+ * Raw CLI arguments parsed from user inputs.
  */
 export type ArgumentValues = {
 	command: CommandName;
@@ -44,7 +44,7 @@ export type InstructionKey<Key> = {
 };
 
 /**
- * Follows the command design pattern
+ * Follows the command design pattern.
  */
 export type CreateInstruction<
 	Parameters extends InstructionParameters<ObjectLikeConstraint>,

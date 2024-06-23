@@ -46,24 +46,6 @@ OPTIONS:[24m[22m[33m[39m
 [37m[37m  [32m[32m--global          [32m[37m Shared flag between commands[37m[39m"
 `;
 
-exports[`termost > should display \`help\` given no command provided 1`] = `
-"[33m[33m[1m[4m
-USAGE:[24m[22m[33m[39m
-[37m[37m[32m[32m@examples/command[32m[37m <command> [...options][37m[39m
-[33m[33m[1m[4m
-DESCRIPTION:[24m[22m[33m[39m
-[37m[37mExample to showcase the \`command\` API[37m[39m
-[33m[33m[1m[4m
-COMMANDS:[24m[22m[33m[39m
-[37m[37m  [32m[32mbuild             [32m[37m Transpile and bundle in production mode[37m[39m
-[37m[37m  [32m[32mwatch             [32m[37m Rebuild your assets on any code change[37m[39m
-[33m[33m[1m[4m
-OPTIONS:[24m[22m[33m[39m
-[37m[37m  [32m[32m-h, --help        [32m[37m Display the help center[37m[39m
-[37m[37m  [32m[32m-v, --version     [32m[37m Print the version[37m[39m
-[37m[37m  [32m[32m--global          [32m[37m Shared flag between commands[37m[39m"
-`;
-
 exports[`termost > should handle \`command\` api 1`] = `
 "[33m[33m[1m[4m
 USAGE:[24m[22m[33m[39m

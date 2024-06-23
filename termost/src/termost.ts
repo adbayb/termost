@@ -19,14 +19,14 @@ import type {
 } from "./types";
 
 /**
- * The termost fluent interface API
+ * The termost fluent interface API.
  */
 export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	/**
-	 * Allows to attach a new sub-command to the program
-	 * @param name - The CLI command name
-	 * @param description - The CLI command description
-	 * @returns The Command API
+	 * Allows to attach a new sub-command to the program.
+	 * @param name - The CLI command name.
+	 * @param description - The CLI command description.
+	 * @returns The Command API.
 	 */
 	command: <CommandValues extends ObjectLikeConstraint = EmptyObject>(
 		params: CommandParameters,
@@ -52,7 +52,7 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 				name: undefined,
 				description: metadata,
 				version: undefined,
-		  };
+			};
 
 	if (
 		name === undefined ||
