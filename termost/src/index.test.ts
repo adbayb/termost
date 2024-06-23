@@ -16,6 +16,12 @@ describe("termost", () => {
 		expect(shortFlagOutput).toMatchSnapshot();
 	});
 
+	test("should display `help` given empty root command", async () => {
+		const output = await safeExec("pnpm --filter @examples/command start");
+
+		expect(output).toMatchSnapshot();
+	});
+
 	test("should handle `command` api", async () => {
 		const helpOutput = await safeExec(
 			"pnpm --filter @examples/command start --help",
