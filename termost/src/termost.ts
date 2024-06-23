@@ -74,6 +74,7 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 		name,
 		description,
 		argv: { command, operands, options },
+		hasOutput: {},
 		version,
 	});
 }
@@ -114,6 +115,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 	const program: Termost<Values> = {
 		command<CommandValues>(params: CommandParameters) {
 			currentCommandName = createCommand(params, metadata);
+			metadata.hasOutput[currentCommandName] = false;
 
 			return this as Termost<CommandValues & Values>;
 		},
@@ -135,6 +137,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		},
 		task(params) {
 			createInstruction(createTask, params);
+			metadata.hasOutput[currentCommandName] = true;
 
 			return this;
 		},

@@ -23,6 +23,7 @@ export type PackageMetadata = {
 
 export type ProgramMetadata = PackageMetadata & {
 	argv: ArgumentValues;
+	hasOutput: Record<CommandName, boolean>;
 };
 
 export type Context<Values extends ObjectLikeConstraint> = Values;

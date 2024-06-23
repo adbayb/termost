@@ -16,13 +16,16 @@ export type CommandParameters = {
 
 export const createCommand = <Values extends ObjectLikeConstraint>(
 	{ name, description }: CommandParameters,
-	{ name: rootCommandName, argv, version }: ProgramMetadata,
+	metadata: ProgramMetadata,
 ) => {
+	const { name: rootCommandName, argv, version } = metadata;
 	const isRootCommand = name === rootCommandName;
 	const isActiveCommand = argv.command === name;
 	const controller = createCommandController<Values>(name, description);
 	const rootController = getCommandController(rootCommandName);
 
+	// Timeout to force evaluating help output at the end of the program instructions chaining.
+	// It allows collecting all needed input to fill the output:
 	setTimeout(() => {
 		// @note: By design, the root command instructions are always executed
 		// even with subcommands (to share options, messages...)
@@ -39,7 +42,8 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 
 			if (
 				optionKeys.includes(OPTION_HELP_NAMES[0]) ||
-				optionKeys.includes(OPTION_HELP_NAMES[1])
+				optionKeys.includes(OPTION_HELP_NAMES[1]) ||
+				(isRootCommand && !metadata.hasOutput[rootCommandName])
 			) {
 				showHelp({
 					controller,
