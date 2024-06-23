@@ -1,5 +1,0 @@
----
-"termost": minor
----
-
-Update dependencies.

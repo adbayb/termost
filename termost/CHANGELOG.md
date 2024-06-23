@@ -1,5 +1,13 @@
 # termost
 
+## 0.13.0
+
+### Minor Changes
+
+- [`0d66524`](https://github.com/adbayb/termost/commit/0d66524a1347c4c834619cebf5f9005e05b548f3) Thanks [@adbayb](https://github.com/adbayb)! - Implement help fallback if the default command has no output.
+
+- [`31329c1`](https://github.com/adbayb/termost/commit/31329c1b56032fb1603cc2d54c5551aecfe6d53c) Thanks [@adbayb](https://github.com/adbayb)! - Update dependencies.
+
 ## 0.12.1
 
 ### Patch Changes
