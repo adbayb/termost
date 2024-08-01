@@ -52,13 +52,13 @@
 	},
 	"dependencies": {
 		"enquirer": "^2.4.1",
-		"listr2": "^8.2.3",
+		"listr2": "^8.2.4",
 		"picocolors": "^1.0.1"
 	},
 	"devDependencies": {
 		"@types/node": "20.14.13",
 		"quickbundle": "1.2.0",
-		"typescript": "5.5.2",
+		"typescript": "5.5.4",
 		"vitest": "1.6.0"
 	}
 }
