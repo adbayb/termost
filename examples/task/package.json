@@ -9,6 +9,6 @@
 		"termost": "workspace:^"
 	},
 	"devDependencies": {
-		"esbuild-register": "3.5.0"
+		"esbuild-register": "3.6.0"
 	}
 }
