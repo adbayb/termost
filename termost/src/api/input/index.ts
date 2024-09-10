@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { prompt } from "enquirer";
+import enquirer from "enquirer";
 
 import type {
 	CreateInstruction,
@@ -8,6 +8,8 @@ import type {
 	Label,
 	ObjectLikeConstraint,
 } from "../../types";
+
+const { prompt } = enquirer;
 
 export const createInput: CreateInstruction<
 	InputParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
