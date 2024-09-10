@@ -1,0 +1,14 @@
+{
+	"private": true,
+	"name": "@examples/empty",
+	"version": "0.0.0",
+	"scripts": {
+		"start": "node -r esbuild-register ./src/index.ts"
+	},
+	"dependencies": {
+		"termost": "workspace:^"
+	},
+	"devDependencies": {
+		"esbuild-register": "3.6.0"
+	}
+}

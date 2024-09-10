@@ -74,7 +74,7 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
 		name,
 		description,
 		argv: { command, operands, options },
-		hasOutput: {},
+		isEmptyCommand: {},
 		version,
 	});
 }
@@ -115,12 +115,13 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 	const program: Termost<Values> = {
 		command<CommandValues>(params: CommandParameters) {
 			currentCommandName = createCommand(params, metadata);
-			metadata.hasOutput[currentCommandName] = false;
+			metadata.isEmptyCommand[currentCommandName] = true; // This flag is disabled only for instructions that introduce stdio side effects (`option` instructions are so ignored).
 
 			return this as Termost<CommandValues & Values>;
 		},
 		input(params) {
 			createInstruction(createInput, params);
+			metadata.isEmptyCommand[currentCommandName] = false;
 
 			return this;
 		},
@@ -137,7 +138,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		},
 		task(params) {
 			createInstruction(createTask, params);
-			metadata.hasOutput[currentCommandName] = true;
+			metadata.isEmptyCommand[currentCommandName] = false;
 
 			return this;
 		},

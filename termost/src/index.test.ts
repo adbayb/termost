@@ -3,6 +3,19 @@ import { describe, expect, test } from "vitest";
 import { exec } from "./helpers/process";
 
 describe("termost", () => {
+	test("should display `version`", async () => {
+		const longFlagOutput = await safeExec(
+			"pnpm --filter @examples/default start --version",
+		);
+
+		const shortFlagOutput = await safeExec(
+			"pnpm --filter @examples/default start -v",
+		);
+
+		expect(longFlagOutput).toMatchSnapshot();
+		expect(shortFlagOutput).toMatchSnapshot();
+	});
+
 	test("should display `help`", async () => {
 		const longFlagOutput = await safeExec(
 			"pnpm --filter @examples/default start --help",
@@ -16,10 +29,27 @@ describe("termost", () => {
 		expect(shortFlagOutput).toMatchSnapshot();
 	});
 
-	test("should display `help` given empty root command", async () => {
-		const output = await safeExec("pnpm --filter @examples/command start");
+	test("should display `help` given empty command", async () => {
+		const rootCommand = await safeExec(
+			"pnpm --filter @examples/empty start",
+		);
 
-		expect(output).toMatchSnapshot();
+		const buildCommand = await safeExec(
+			"pnpm --filter @examples/empty start build",
+		);
+
+		const buildCommandWithOption = await safeExec(
+			"pnpm --filter @examples/empty start build --option test",
+		);
+
+		const watchCommand = await safeExec(
+			"pnpm --filter @examples/empty start watch",
+		);
+
+		expect(rootCommand).toMatchSnapshot();
+		expect(buildCommand).toMatchSnapshot();
+		expect(buildCommandWithOption).toMatchSnapshot();
+		expect(watchCommand).toMatchSnapshot();
 	});
 
 	test("should handle `command` api", async () => {

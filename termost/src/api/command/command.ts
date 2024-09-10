@@ -40,20 +40,14 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 			// metadata (especially to let the global help option to display all available commands):
 			const optionKeys = Object.keys(argv.options);
 
-			if (
-				optionKeys.includes(OPTION_HELP_NAMES[0]) ||
-				optionKeys.includes(OPTION_HELP_NAMES[1]) ||
-				(isRootCommand && !metadata.hasOutput[rootCommandName])
-			) {
+			const help = () => {
 				showHelp({
 					controller,
 					currentCommandName: name,
 					isRootCommand,
 					rootCommandName,
 				});
-
-				return;
-			}
+			};
 
 			if (
 				optionKeys.includes(OPTION_VERSION_NAMES[0]) ||
@@ -64,7 +58,21 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 				return;
 			}
 
-			void controller.enable();
+			if (
+				optionKeys.includes(OPTION_HELP_NAMES[0]) ||
+				optionKeys.includes(OPTION_HELP_NAMES[1])
+			) {
+				help();
+
+				return;
+			}
+
+			if (metadata.isEmptyCommand[name]) {
+				// Show help by default if no processing is done for the current command
+				help();
+			} else {
+				void controller.enable();
+			}
 		}
 	}, 0);
 

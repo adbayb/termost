@@ -44,6 +44,16 @@ importers:
         specifier: 3.6.0
         version: 3.6.0(esbuild@0.21.5)
 
+  examples/empty:
+    dependencies:
+      termost:
+        specifier: workspace:^
+        version: link:../../termost
+    devDependencies:
+      esbuild-register:
+        specifier: 3.6.0
+        version: 3.6.0(esbuild@0.21.5)
+
   examples/input:
     dependencies:
       termost:
