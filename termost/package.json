@@ -6,10 +6,8 @@
 		"access": "public"
 	},
 	"files": [
-		"bin",
 		"dist"
 	],
-	"bin": "./bin/index.cjs",
 	"sideEffects": false,
 	"platform": "node",
 	"source": "./src/index.ts",
