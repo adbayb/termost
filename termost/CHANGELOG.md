@@ -1,5 +1,11 @@
 # termost
 
+## 0.13.2
+
+### Patch Changes
+
+- [`c344f46`](https://github.com/adbayb/termost/commit/c344f4606e8a3dd4731dc7ff60ebc9e72fd3eaa7) Thanks [@adbayb](https://github.com/adbayb)! - Help fallback prevents the version being displayed.
+
 ## 0.13.1
 
 ### Patch Changes
