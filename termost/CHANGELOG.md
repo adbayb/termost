@@ -1,5 +1,13 @@
 # termost
 
+## 0.13.1
+
+### Patch Changes
+
+- [`7b157f6`](https://github.com/adbayb/termost/commit/7b157f6b5f165b7a732d2f50b1fba7c9fe52f617) Thanks [@adbayb](https://github.com/adbayb)! - Fix enquirer simulated cjs import in esm-only environment.
+
+- [`2fb995f`](https://github.com/adbayb/termost/commit/2fb995fb4c6543ab3ecd60f4e1a02d7995a7d943) Thanks [@adbayb](https://github.com/adbayb)! - Make package metadata resolution compatible with esm-only environment.
+
 ## 0.13.0
 
 ### Minor Changes
