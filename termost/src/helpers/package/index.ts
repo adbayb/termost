@@ -4,19 +4,20 @@ import { resolve } from "node:path";
 
 import type { PackageMetadata } from "../../types";
 
-const require = createRequire(process.cwd());
+const binCallerPath = process.argv[1] ?? "";
+const require = createRequire(binCallerPath);
 
 export const getPackageMetadata = (
-	pathname: string = process.cwd(),
+	pathname: string = binCallerPath,
 ): PackageMetadata => {
-	const packagePathname = resolve(pathname, "package.json");
-
-	if (isFileExists(packagePathname)) {
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		return require(packagePathname) as PackageMetadata;
-	}
-
 	try {
+		const packagePathname = resolve(pathname, "package.json");
+
+		if (isFileExists(packagePathname)) {
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
+			return require(packagePathname) as PackageMetadata;
+		}
+
 		return getPackageMetadata(resolve(pathname, ".."));
 	} catch (error) {
 		throw new Error(
