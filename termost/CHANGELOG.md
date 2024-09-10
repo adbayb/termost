@@ -1,5 +1,15 @@
 # termost
 
+## 0.14.0
+
+### Minor Changes
+
+- [`ad4aa85`](https://github.com/adbayb/termost/commit/ad4aa858bce68bf91c798b80b04a5c5cf37e85db) Thanks [@adbayb](https://github.com/adbayb)! - Make termost not runnable by removing uneeded bin folder.
+
+### Patch Changes
+
+- [`ef991db`](https://github.com/adbayb/termost/commit/ef991dbd3a1cfdab9a2bc19223a62266152b489b) Thanks [@adbayb](https://github.com/adbayb)! - Fix a version resolution regression.
+
 ## 0.13.2
 
 ### Patch Changes
