@@ -1,37 +1,36 @@
-import fs from "fs";
-import path from "path";
+import { accessSync, constants } from "node:fs";
+import { createRequire } from "node:module";
+import { resolve } from "node:path";
 
 import type { PackageMetadata } from "../../types";
 
-export const findNearestPackageJson = (pathname: string): PackageMetadata => {
-	const packagePathname = path.resolve(pathname, "package.json");
+const require = createRequire(process.cwd());
+
+export const getPackageMetadata = (
+	pathname: string = process.cwd(),
+): PackageMetadata => {
+	const packagePathname = resolve(pathname, "package.json");
 
 	if (isFileExists(packagePathname)) {
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		return require(packagePathname) as PackageMetadata;
 	}
 
-	return findNearestPackageJson(path.resolve(pathname, ".."));
+	try {
+		return getPackageMetadata(resolve(pathname, ".."));
+	} catch (error) {
+		throw new Error(
+			`Termost was unable to retrieve automatically the package name and version. To fix it, use \`termost({ name, description, version })\` to define them manually.\nMore details: ${String(error)}.`,
+		);
+	}
 };
 
 const isFileExists = (pathname: string) => {
 	try {
-		fs.accessSync(pathname, fs.constants.F_OK);
+		accessSync(pathname, constants.F_OK);
 
 		return true;
 	} catch {
 		return false;
 	}
-};
-
-export const getPackageMetadata = () => {
-	const mainFilename = require.main?.filename;
-
-	if (!mainFilename) {
-		throw new Error(
-			"Termost was unable to retrieve automatically the package name and version. To fix it, use `termost({ name, description, version })` to define them manually.",
-		);
-	}
-
-	return findNearestPackageJson(path.dirname(mainFilename));
 };
