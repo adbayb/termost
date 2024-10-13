@@ -1,3 +1,6 @@
 {
-	"extends": "@adbayb/ts-config"
+	"extends": "@adbayb/ts-config",
+	"compilerOptions": {
+		"moduleResolution": "Bundler"
+	}
 }

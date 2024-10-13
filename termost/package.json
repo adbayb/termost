@@ -9,16 +9,12 @@
 		"dist"
 	],
 	"sideEffects": false,
-	"platform": "node",
-	"source": "./src/index.ts",
-	"main": "./dist/index.cjs",
-	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
+			"source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
 			"require": "./dist/index.cjs",
-			"import": "./dist/index.mjs",
-			"types": "./dist/index.d.ts"
+			"import": "./dist/index.mjs"
 		}
 	},
 	"keywords": [
@@ -50,12 +46,12 @@
 	},
 	"dependencies": {
 		"enquirer": "^2.4.1",
-		"listr2": "^8.2.4",
+		"listr2": "^8.2.5",
 		"picocolors": "^1.1.0"
 	},
 	"devDependencies": {
-		"@types/node": "20.16.10",
-		"quickbundle": "1.2.0",
-		"vitest": "2.1.1"
+		"@types/node": "20.16.11",
+		"quickbundle": "2.2.0",
+		"vitest": "2.1.2"
 	}
 }

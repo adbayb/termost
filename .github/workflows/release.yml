@@ -16,7 +16,7 @@ jobs:
             pull-requests: write
         steps:
             - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: pnpm/action-setup@v4
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
               id: node

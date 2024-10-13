@@ -11,7 +11,7 @@ jobs:
         steps:
             - name: Checkout the code
               uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: pnpm/action-setup@v4
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
               id: node
@@ -40,7 +40,7 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: pnpm/action-setup@v4
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
               id: node
@@ -71,7 +71,7 @@ jobs:
         steps:
             - name: Checkout the code
               uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: pnpm/action-setup@v4
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
               id: node
@@ -102,7 +102,7 @@ jobs:
         steps:
             - name: Checkout the code
               uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - uses: pnpm/action-setup@v4
             - name: Get node version
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
               id: node
