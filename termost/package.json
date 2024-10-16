@@ -5,17 +5,16 @@
 	"publishConfig": {
 		"access": "public"
 	},
+	"type": "module",
+	"sideEffects": false,
 	"files": [
 		"dist"
 	],
-	"sideEffects": false,
 	"exports": {
-		".": {
-			"source": "./src/index.ts",
-			"types": "./dist/index.d.ts",
-			"require": "./dist/index.cjs",
-			"import": "./dist/index.mjs"
-		}
+		"source": "./src/index.ts",
+		"types": "./dist/index.d.ts",
+		"require": "./dist/index.cjs",
+		"import": "./dist/index.mjs"
 	},
 	"keywords": [
 		"cli",
@@ -47,11 +46,11 @@
 	"dependencies": {
 		"enquirer": "^2.4.1",
 		"listr2": "^8.2.5",
-		"picocolors": "^1.1.0"
+		"picocolors": "^1.1.1"
 	},
 	"devDependencies": {
 		"@types/node": "20.16.11",
-		"quickbundle": "2.2.0",
-		"vitest": "2.1.2"
+		"quickbundle": "2.4.0",
+		"vitest": "2.1.3"
 	}
 }
