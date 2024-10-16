@@ -1,5 +1,11 @@
 # termost
 
+## 0.15.0
+
+### Minor Changes
+
+- [`73542c2`](https://github.com/adbayb/termost/commit/73542c289093ac4d964e90684095227f6a0f5309) Thanks [@adbayb](https://github.com/adbayb)! - Enable ES Module resolution by default.
+
 ## 0.14.0
 
 ### Minor Changes
