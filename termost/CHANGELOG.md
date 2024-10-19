@@ -1,5 +1,11 @@
 # termost
 
+## 0.16.0
+
+### Minor Changes
+
+- [`70d3dd0`](https://github.com/adbayb/termost/commit/70d3dd07466e5aff16108579646f62bd85cd3840) Thanks [@adbayb](https://github.com/adbayb)! - Log the stack trace in case of task error(s).
+
 ## 0.15.0
 
 ### Minor Changes
