@@ -17,6 +17,8 @@ export const createTask: CreateInstruction<
 
 	const receiver = label
 		? new Listr([], {
+				collectErrors: "minimal",
+				exitOnError: true,
 				rendererOptions: {
 					collapseErrors: false,
 					formatOutput: "wrap",
@@ -43,7 +45,17 @@ export const createTask: CreateInstruction<
 				task: async () => (value = await handler(context, argv)),
 			});
 
-			await receiver.run();
+			try {
+				await receiver.run();
+			} catch (error) {
+				if (error instanceof Error && error.stack) {
+					console.error("\x1b[31m");
+					console.error(error.stack);
+					console.error("\x1b[0m");
+				}
+
+				throw error;
+			}
 		}
 
 		return { key, value };
