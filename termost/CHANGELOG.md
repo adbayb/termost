@@ -1,5 +1,11 @@
 # termost
 
+## 0.17.0
+
+### Minor Changes
+
+- [`f090498`](https://github.com/adbayb/termost/commit/f090498b1c4dca3078dfdf558390d8793979fdcc) Thanks [@adbayb](https://github.com/adbayb)! - Reduce task error output noise.
+
 ## 0.16.0
 
 ### Minor Changes
