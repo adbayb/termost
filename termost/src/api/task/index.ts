@@ -22,7 +22,7 @@ export const createTask: CreateInstruction<
 				rendererOptions: {
 					collapseErrors: false,
 					formatOutput: "wrap",
-					showErrorMessage: true,
+					showErrorMessage: false,
 					timer: PRESET_TIMER,
 				},
 			})
