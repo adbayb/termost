@@ -8,6 +8,7 @@ import { createTask } from "./api/task";
 import type { TaskParameters } from "./api/task";
 import { getPackageMetadata } from "./helpers/package";
 import { getArguments } from "./helpers/stdin";
+import { message } from "./helpers/stdout";
 import type {
 	CommandName,
 	CreateInstruction,
@@ -178,12 +179,14 @@ const setGracefulListeners = ({
 
 	process.on("uncaughtException", (error) => {
 		onException(error);
+		message(error);
 		process.exit(1);
 	});
 
 	process.on("unhandledRejection", (reason) => {
 		if (reason instanceof Error) {
 			onException(reason);
+			message(reason);
 		}
 
 		process.exit(1);

@@ -10,13 +10,13 @@ const program = termost<ProgramContext>(
 	{
 		onException(error) {
 			console.log(
-				"Catches `uncaughtException` and `unhandledRejection` events",
+				"`onException` catches `uncaughtException` and `unhandledRejection`",
 				error,
 			);
 		},
 		onShutdown() {
 			console.log(
-				"Catches `SIGINT` and `SIGTERM` OS signals (useful, for example, to release resources before interrupting the process)",
+				"`onShutdown` catches `SIGINT` and `SIGTERM` OS signals (useful, for example, to release resources before interrupting the process)",
 			);
 		},
 	},

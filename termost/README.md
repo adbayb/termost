@@ -370,13 +370,6 @@ program
 				type: "information",
 				label: "👋 You can also customize the label",
 			});
-			helpers.message(
-				["I support also", "multilines", "with array input"],
-				{
-					type: "information",
-					label: "👋 You can also customize the label",
-				},
-			);
 			console.log(
 				helpers.format(
 					"\nYou can also have a total control on the formatting through the `format` helper.",

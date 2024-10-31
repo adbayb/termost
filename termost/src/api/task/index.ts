@@ -45,17 +45,7 @@ export const createTask: CreateInstruction<
 				task: async () => (value = await handler(context, argv)),
 			});
 
-			try {
-				await receiver.run();
-			} catch (error) {
-				if (error instanceof Error && error.stack) {
-					console.error("\x1b[31m");
-					console.error(error.stack);
-					console.error("\x1b[0m");
-				}
-
-				throw error;
-			}
+			await receiver.run();
 		}
 
 		return { key, value };

@@ -1,0 +1,9 @@
+name: Continuous integration
+
+on:
+    push:
+        branches-ignore: main
+
+jobs:
+    main:
+        uses: ./.github/workflows/workflow.yml

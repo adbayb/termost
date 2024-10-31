@@ -1,4 +1,4 @@
-name: Release
+name: Continous delivery
 
 on:
     push:
@@ -8,8 +8,11 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
+    integrate:
+        uses: ./.github/workflows/workflow.yml
     release:
         timeout-minutes: 5
+        needs: integrate
         runs-on: ubuntu-latest
         permissions:
             contents: write
@@ -34,7 +37,11 @@ jobs:
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
-            - name: Create release pull request or Publish to npm
+            - name: Publish pre-release version(s)
+              run: |
+                  pnpm --filter=\!@examples/\* --recursive exec pnpm version "$(pnpm show ./ version)-next-${GITHUB_SHA::7}"
+                  pnpm --filter=\!@examples/\* --recursive exec pnpm publish --tag next --no-git-checks
+            - name: Prepare or Publish stable version(s)
               uses: changesets/action@v1
               with:
                   commit: "chore: release package(s)"

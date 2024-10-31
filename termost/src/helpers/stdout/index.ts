@@ -40,15 +40,9 @@ export const format = (
 	return compose(...transformers)(message);
 };
 
-const compose = <T>(...fns: ((a: T) => T)[]) =>
-	fns.reduce(
-		(prevFn, nextFn) => (value) => prevFn(nextFn(value)),
-		fns[0] as (a: T) => T,
-	);
-
 /**
  * An opinionated helper to display arbitrary text on the console.
- * @param content - The text to display. Use an array if you need to display a message in several lines.
+ * @param content - The content to display. A content can be either a string or an error.
  * @param options - The configuration object to define the display type and/or override the default label.
  * @param options.label - The label to display.
  * @param options.type - The message type.
@@ -56,26 +50,29 @@ const compose = <T>(...fns: ((a: T) => T)[]) =>
  * message("message to log");
  */
 export const message = (
-	content: string[] | string,
-	{
-		label,
-		type = "information",
-	}: { label?: string; type?: MessageType } = {},
+	content: Error | string,
+	options?: { label?: string; type?: MessageType },
 ) => {
+	const isTextualContent = typeof content === "string";
+	const type = options?.type ?? (isTextualContent ? "information" : "error");
 	const { color, defaultLabel, icon, method } = formatPropertiesByType[type];
-	const messages = typeof content === "string" ? [content] : content;
 
 	method(
-		format(`\n${icon} ${label ?? defaultLabel}`, {
+		format(`\n${icon} ${options?.label ?? defaultLabel}`, {
 			color,
 			modifiers: ["bold"],
 		}),
 	);
 
-	for (const msg of messages) {
-		method(format(`   ${msg}`, { color }));
-	}
+	// Do not format error with colors to preserve the stack trace:
+	method(isTextualContent ? format(`   ${content}`, { color }) : content);
 };
+
+const compose = <T>(...fns: ((a: T) => T)[]) =>
+	fns.reduce(
+		(prevFn, nextFn) => (value) => prevFn(nextFn(value)),
+		fns[0] as (a: T) => T,
+	);
 
 const formatPropertiesByType = {
 	error: {
@@ -87,7 +84,7 @@ const formatPropertiesByType = {
 	information: {
 		color: "blue",
 		defaultLabel: "Information",
-		icon: "ℹ️ ",
+		icon: "ℹ️",
 		method: console.info,
 	},
 	success: {

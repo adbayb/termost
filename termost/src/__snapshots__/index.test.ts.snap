@@ -110,68 +110,68 @@ OPTIONS:[24m[22m[33m[39m
 
 exports[`termost > should handle \`command\` api 2`] = `
 "[34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👋 Hello, I'm the build command[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👋 Hello, I'm the build command[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Shared global flag = false[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Shared global flag = false[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Local command flag = local-value[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Local command flag = local-value[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Context value = {"globalFlag":false,"localFlag":"local-value"}[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Context value = {"globalFlag":false,"localFlag":"local-value"}[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Argv value = {"command":"build","operands":[],"options":{}}[34m[39m"
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Argv value = {"command":"build","operands":[],"options":{}}[34m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 3`] = `
 "[34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👋 Hello, I'm the watch command[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👋 Hello, I'm the watch command[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Shared global flag = false[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Shared global flag = false[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Context value = {"globalFlag":false}[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Context value = {"globalFlag":false}[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Argv value = {"command":"watch","operands":[],"options":{}}[34m[39m"
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Argv value = {"command":"watch","operands":[],"options":{}}[34m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 4`] = `
 "[34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👋 Hello, I'm the build command[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👋 Hello, I'm the build command[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Shared global flag = true[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Shared global flag = true[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Local command flag = hello[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Local command flag = hello[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Context value = {"globalFlag":true,"localFlag":"hello"}[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Context value = {"globalFlag":true,"localFlag":"hello"}[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Argv value = {"command":"build","operands":[],"options":{"global":true,"local":"hello"}}[34m[39m"
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Argv value = {"command":"build","operands":[],"options":{"global":true,"local":"hello"}}[34m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 5`] = `
 "[34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👋 Hello, I'm the watch command[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👋 Hello, I'm the watch command[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Shared global flag = true[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Shared global flag = true[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Context value = {"globalFlag":true}[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Context value = {"globalFlag":true}[34m[39m
 [34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   👉 Argv value = {"command":"watch","operands":[],"options":{"global":true}}[34m[39m"
+ℹ️ Information[22m[34m[39m
+[34m[34m👉 Argv value = {"command":"watch","operands":[],"options":{"global":true}}[34m[39m"
 `;
 
 exports[`termost > should handle \`command\` api 6`] = `
@@ -205,8 +205,8 @@ OPTIONS:[24m[22m[33m[39m
 
 exports[`termost > should handle \`option\` api 1`] = `
 "[34m[34m[1m
-ℹ️  Information[22m[34m[39m
-[34m[34m   {
+ℹ️ Information[22m[34m[39m
+[34m[34m{
   "optionWithAlias": 0,
   "optionWithoutAlias": "defaultValue"
 }[34m[39m"
@@ -224,25 +224,26 @@ exports[`termost > should handle \`task\` api 1`] = `
 [33m❯[39m A task can have a dynamic label generated from contextual values: small
 [32m✔[39m A task can have a dynamic label generated from contextual values: small
 [34m[34m[1m
-ℹ️  Label & console output[22m[34m[39m
-[34m[34m   If you don't specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).[34m[39m
+ℹ️ Label & console output[22m[34m[39m
+[34m[34mIf you don't specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).[34m[39m
 [34m[34m[1m
-ℹ️  Context management[22m[34m[39m
-[34m[34m   A task with a specified "key" can be retrieved here. Size = 45. If no "key" was specified the task returned value cannot be persisted across program instructions.[34m[39m
+ℹ️ Context management[22m[34m[39m
+[34m[34mA task with a specified "key" can be retrieved here. Size = 45. If no "key" was specified the task returned value cannot be persisted across program instructions.[34m[39m
 [34m[34m[1m
-ℹ️  Output formatting[22m[34m[39m
-[34m[34m   The \`message\` helpers can be used to display task content in a nice way[34m[39m
-[32m[32m[1m
-✅ Success[22m[32m[39m
-[32m[32m   The \`message\` helpers can be used to display task content in a nice way[32m[39m
+ℹ️ Output formatting[22m[34m[39m
+[34m[34mThe \`message\` helpers can be used to display task content in a nice way[34m[39m
 [34m[34m[1m
-ℹ️  👋 You can also customize the label[22m[34m[39m
-[34m[34m   The \`message\` helpers can be used to display task content in a nice way[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34mThe \`message\` helpers can be used to display task content in a nice way[34m[39m
 [34m[34m[1m
-ℹ️  👋 You can also customize the label[22m[34m[39m
-[34m[34m   I support also[34m[39m
-[34m[34m   multilines[34m[39m
-[34m[34m   with array input[34m[39m
+ℹ️ Information[22m[34m[39m
+[34m[34mThe \`message\` helpers can be used to display task content in a nice way[34m[39m
+[34m[34m[1m
+ℹ️ Information[22m[34m[39m
+[34m[34mThe \`message\` helpers can be used to display task content in a nice way[34m[39m
+[34m[34m[1m
+ℹ️ 👋 You can also customize the label[22m[34m[39m
+[34m[34mThe \`message\` helpers can be used to display task content in a nice way[34m[39m
 [37m[37m[3m[9m[1m
 You can also have a total control on the formatting through the \`format\` helper.[22m[29m[23m[37m[39m
 {

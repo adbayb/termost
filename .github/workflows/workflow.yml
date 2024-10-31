@@ -1,7 +1,7 @@
-name: Continuous Integration
+name: Main shareable workflow
 
 on:
-    push:
+    workflow_call:
 
 jobs:
     install:
@@ -94,34 +94,3 @@ jobs:
               run: pnpm install --frozen-lockfile
             - name: Check (static analysis including linters, types, and commit message)
               run: pnpm check
-    test:
-        timeout-minutes: 5
-        needs: build
-        name: Test
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout the code
-              uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v4
-            - name: Get node version
-              run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-              id: node
-            - name: Setup node ${{ steps.node.outputs.version }}
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ steps.node.outputs.version }}
-                  cache: pnpm
-            - name: Setup cache
-              id: cache
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      ./node_modules
-                      ./turbo
-                  key: ${{ runner.os }}-cache-${{ github.sha }}
-                  restore-keys: |
-                      ${{ runner.os }}-cache-
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
-            - name: Check (code execution)
-              run: pnpm test

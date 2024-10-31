@@ -87,13 +87,6 @@ program
 				label: "👋 You can also customize the label",
 				type: "information",
 			});
-			helpers.message(
-				["I support also", "multilines", "with array input"],
-				{
-					label: "👋 You can also customize the label",
-					type: "information",
-				},
-			);
 			console.log(
 				helpers.format(
 					"\nYou can also have a total control on the formatting through the `format` helper.",
