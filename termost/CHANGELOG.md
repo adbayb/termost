@@ -1,5 +1,13 @@
 # termost
 
+## 0.18.0
+
+### Minor Changes
+
+- [`ef758a6`](https://github.com/adbayb/termost/commit/ef758a65119a3693160d3f12b813beb4255574cf) Thanks [@adbayb](https://github.com/adbayb)! - Display uncaught error by default and allow `helpers.message` to accept Error-like objects.
+
+  Please note that the `helpers.message` do not accept anymore an array of strings.
+
 ## 0.17.0
 
 ### Minor Changes
