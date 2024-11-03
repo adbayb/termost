@@ -42,11 +42,18 @@ jobs:
               run: |
                   pnpm --filter=\!@examples/\* --recursive exec pnpm version "$(pnpm show ./ version)-next-${GITHUB_SHA::7}"
                   pnpm --filter=\!@examples/\* --recursive exec pnpm publish --tag next --no-git-checks
-            - name: Prepare or Publish stable version(s)
+            - name: Create release pull request
+              if: "!contains(github.event.head_commit.message, 'chore: release package(s)')"
               uses: changesets/action@v1
               with:
                   commit: "chore: release package(s)"
                   title: "chore: release package(s)"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Publish stable version(s)
+              if: "contains(github.event.head_commit.message, 'chore: release package(s)')"
+              uses: changesets/action@v1
+              with:
                   version: pnpm release:version
                   publish: pnpm release:publish
               env:

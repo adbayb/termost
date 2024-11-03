@@ -4,41 +4,11 @@ on:
     workflow_call:
 
 jobs:
-    install:
+    main:
         timeout-minutes: 5
-        name: Install
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v4
-            - name: Get node version
-              run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-              id: node
-            - name: Setup node ${{ steps.node.outputs.version }}
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ steps.node.outputs.version }}
-                  cache: pnpm
-            - name: Setup cache
-              id: cache
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      ./node_modules
-                      ./turbo
-                  key: ${{ runner.os }}-cache-${{ github.sha }}
-                  restore-keys: |
-                      ${{ runner.os }}-cache-
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
-    build:
-        timeout-minutes: 5
-        needs: install
-        name: Build
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
               uses: actions/checkout@v4
             - uses: pnpm/action-setup@v4
             - name: Get node version
@@ -63,34 +33,7 @@ jobs:
               run: pnpm install --frozen-lockfile
             - name: Build
               run: pnpm build
-    check:
-        timeout-minutes: 5
-        needs: build
-        name: Check
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout the code
-              uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v4
-            - name: Get node version
-              run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-              id: node
-            - name: Setup node ${{ steps.node.outputs.version }}
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ steps.node.outputs.version }}
-                  cache: pnpm
-            - name: Setup cache
-              id: cache
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      ./node_modules
-                      ./turbo
-                  key: ${{ runner.os }}-cache-${{ github.sha }}
-                  restore-keys: |
-                      ${{ runner.os }}-cache-
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
             - name: Check (static analysis including linters, types, and commit message)
               run: pnpm check
+            - name: Test
+              run: pnpm test
