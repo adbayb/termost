@@ -1,6 +1,7 @@
-import { accessSync, constants } from "node:fs";
-import { createRequire } from "node:module";
+import process from "node:process";
 import { resolve } from "node:path";
+import { createRequire } from "node:module";
+import { accessSync, constants } from "node:fs";
 
 import type { PackageMetadata } from "../../types";
 
@@ -14,7 +15,6 @@ export const getPackageMetadata = (
 		const packagePathname = resolve(pathname, "package.json");
 
 		if (isFileExists(packagePathname)) {
-			// eslint-disable-next-line @typescript-eslint/no-var-requires
 			return require(packagePathname) as PackageMetadata;
 		}
 

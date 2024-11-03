@@ -1,5 +1,5 @@
-import { exec } from "./helpers/process";
 import { format, message } from "./helpers/stdout";
+import { exec } from "./helpers/process";
 
 export { termost } from "./termost";
 export type { Termost } from "./termost";

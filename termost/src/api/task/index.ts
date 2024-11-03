@@ -36,10 +36,7 @@ export const createTask: CreateInstruction<
 		} else {
 			receiver.add({
 				...(label && {
-					title:
-						typeof label === "function"
-							? label(context, argv)
-							: label,
+					title: typeof label === "function" ? label(context, argv) : label,
 				}),
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 				task: async () => (value = await handler(context, argv)),

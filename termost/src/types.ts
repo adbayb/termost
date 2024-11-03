@@ -3,7 +3,7 @@ export type CommandName = string;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ObjectLikeConstraint = Record<string, any>;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type EmptyObject = {};
 
 /**

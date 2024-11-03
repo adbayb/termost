@@ -1,6 +1,4 @@
 {
-	"extends": "@adbayb/ts-config",
-	"compilerOptions": {
-		"moduleResolution": "Bundler"
-	}
+	"extends": "@adbayb/stack/typescript",
+	"exclude": ["node_modules", "**/node_modules", "**/dist"]
 }

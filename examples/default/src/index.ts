@@ -1,3 +1,5 @@
+import process from "node:process";
+
 import { helpers, termost } from "termost";
 
 type ProgramContext = {

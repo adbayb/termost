@@ -1,7 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { format } from "../../helpers/stdout";
 import type { ObjectLikeConstraint, ProgramMetadata } from "../../types";
-
+import { format } from "../../helpers/stdout";
 import {
 	createCommandController,
 	getCommandController,
@@ -24,20 +23,26 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 	const controller = createCommandController<Values>(name, description);
 	const rootController = getCommandController(rootCommandName);
 
-	// Timeout to force evaluating help output at the end of the program instructions chaining.
-	// It allows collecting all needed input to fill the output:
+	/*
+	 * Timeout to force evaluating help output at the end of the program instructions chaining.
+	 * It allows collecting all needed input to fill the output:
+	 */
 	setTimeout(() => {
-		// @note: By design, the root command instructions are always executed
-		// even with subcommands (to share options, messages...)
+		/**
+		 * By design, the root command instructions are always executed
+		 * even with subcommands (to share options, messages...).
+		 */
 		if (isRootCommand && !isActiveCommand) {
 			void rootController.enable();
 		}
 
-		// @note: enable the current active command instructions:
+		// Enable the current active command instructions:
 		if (isActiveCommand) {
-			// @note: setTimeout 0 allows to run activation logic in the next event loop iteration.
-			// It'll allow to make sure that the `metadata` is correctly filled with all commands
-			// metadata (especially to let the global help option to display all available commands):
+			/**
+			 * SetTimeout 0 allows to run activation logic in the next event loop iteration.
+			 * It'll allow to make sure that the `metadata` is correctly filled with all commands
+			 * metadata (especially to let the global help option to display all available commands).
+			 */
 			const optionKeys = Object.keys(argv.options);
 
 			const help = () => {
@@ -93,6 +98,7 @@ const showHelp = ({
 	currentCommandName: string;
 	isRootCommand: boolean;
 	rootCommandName: string;
+	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 }) => {
 	const commandMetadata = controller.getMetadata(rootCommandName);
 	const { description, options } = commandMetadata;
@@ -111,9 +117,7 @@ const showHelp = ({
 			{
 				color: "green",
 			},
-		)} ${hasCommands ? "<command> " : ""}${
-			hasOptions ? "[...options]" : ""
-		}`,
+		)} ${hasCommands ? "<command> " : ""}${hasOptions ? "[...options]" : ""}`,
 	);
 
 	if (description) {

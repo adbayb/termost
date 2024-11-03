@@ -1,4 +1,5 @@
 {
+	"name": "root",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -17,24 +18,13 @@
 	},
 	"packageManager": "pnpm@9.12.3",
 	"engines": {
-		"node": ">=18.0.0",
-		"pnpm": ">=8.0.0",
+		"node": ">=22.0.0",
+		"pnpm": ">=9.0.0",
 		"npm": "please-use-pnpm",
 		"yarn": "please-use-pnpm"
 	},
-	"prettier": "@adbayb/prettier-config",
-	"eslintConfig": {
-		"extends": "@adbayb"
-	},
-	"commitlint": {
-		"extends": [
-			"@commitlint/config-conventional"
-		]
-	},
+	"prettier": "@adbayb/stack/prettier",
 	"devDependencies": {
-		"@adbayb/eslint-config": "1.12.0",
-		"@adbayb/prettier-config": "1.5.0",
-		"@adbayb/stack": "1.16.1",
-		"@adbayb/ts-config": "1.0.0"
+		"@adbayb/stack": "2.0.0"
 	}
 }

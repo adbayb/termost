@@ -1,14 +1,5 @@
-import { createCommand, getCommandController } from "./api/command";
-import type { CommandParameters } from "./api/command";
-import { createInput } from "./api/input";
-import type { InputParameters } from "./api/input";
-import { createOption } from "./api/option";
-import type { OptionParameters } from "./api/option";
-import { createTask } from "./api/task";
-import type { TaskParameters } from "./api/task";
-import { getPackageMetadata } from "./helpers/package";
-import { getArguments } from "./helpers/stdin";
-import { message } from "./helpers/stdout";
+import process from "node:process";
+
 import type {
 	CommandName,
 	CreateInstruction,
@@ -18,6 +9,17 @@ import type {
 	PackageMetadata,
 	ProgramMetadata,
 } from "./types";
+import { message } from "./helpers/stdout";
+import { getArguments } from "./helpers/stdin";
+import { getPackageMetadata } from "./helpers/package";
+import { createTask } from "./api/task";
+import type { TaskParameters } from "./api/task";
+import { createOption } from "./api/option";
+import type { OptionParameters } from "./api/option";
+import { createInput } from "./api/input";
+import type { InputParameters } from "./api/input";
+import { createCommand, getCommandController } from "./api/command";
+import type { CommandParameters } from "./api/command";
 
 /**
  * The termost fluent interface API.
@@ -106,10 +108,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 
 			if (!output || !output.key) return;
 
-			controller.addValue(
-				output.key,
-				output.value as Values[keyof Values],
-			);
+			controller.addValue(output.key, output.value as Values[keyof Values]);
 		});
 	};
 
@@ -128,10 +127,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		},
 		option(params) {
 			createInstruction(
-				createOption(
-					getCommandController(currentCommandName),
-					metadata,
-				),
+				createOption(getCommandController(currentCommandName), metadata),
 				params,
 			);
 

@@ -68,11 +68,17 @@ export const message = (
 	method(isTextualContent ? format(`   ${content}`, { color }) : content);
 };
 
-const compose = <T>(...fns: ((a: T) => T)[]) =>
-	fns.reduce(
+const compose = <T>(...fns: ((a: T) => T)[]) => {
+	if (!fns[0])
+		throw new Error(
+			"No function is provided, defeating the purpose of composing functions. Make sure to provide at least one function as an argument.",
+		);
+
+	return fns.reduce<(a: T) => T>(
 		(prevFn, nextFn) => (value) => prevFn(nextFn(value)),
-		fns[0] as (a: T) => T,
+		fns[0],
 	);
+};
 
 const formatPropertiesByType = {
 	error: {

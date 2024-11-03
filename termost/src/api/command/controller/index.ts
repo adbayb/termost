@@ -4,7 +4,6 @@ import type {
 	EmptyObject,
 	ObjectLikeConstraint,
 } from "../../../types";
-
 import { createQueue } from "./queue";
 
 export type CommandController<
@@ -71,13 +70,13 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 			}
 		},
 		getContext(rootCommandName) {
-			// @note: By design, global values are accessible to subcommands
-			// Consequently, root command values are merged with the current command ones:
+			/**
+			 * By design, global values are accessible to subcommands.
+			 * Consequently, root command values are merged with the current command ones.
+			 */
 			if (name !== rootCommandName) {
 				const rootController = getCommandController(rootCommandName);
-
-				const globalContext =
-					rootController.getContext(rootCommandName);
+				const globalContext = rootController.getContext(rootCommandName);
 
 				context = {
 					...globalContext,
@@ -90,9 +89,7 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 		getMetadata(rootCommandName) {
 			if (name !== rootCommandName) {
 				const globalMetadata =
-					getCommandController(rootCommandName).getMetadata(
-						rootCommandName,
-					);
+					getCommandController(rootCommandName).getMetadata(rootCommandName);
 
 				metadata.options = {
 					...globalMetadata.options,
