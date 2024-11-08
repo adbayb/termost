@@ -11,7 +11,6 @@ import type {
 } from "./types";
 import { message } from "./helpers/stdout";
 import { getArguments } from "./helpers/stdin";
-import { getPackageMetadata } from "./helpers/package";
 import { createTask } from "./api/task";
 import type { TaskParameters } from "./api/task";
 import { createOption } from "./api/option";
@@ -45,33 +44,16 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	) => Termost<Values>;
 };
 
-export function termost<Values extends ObjectLikeConstraint = EmptyObject>(
-	metadata: Partial<PackageMetadata> | string,
-	callbacks: TerminationCallbacks = {},
-) {
-	let { name, description, version } = isObject(metadata)
-		? metadata
-		: {
-				name: undefined,
-				description: metadata,
-				version: undefined,
-			};
-
-	if (
-		name === undefined ||
-		description === undefined ||
-		version === undefined
-	) {
-		const packageMetadata = getPackageMetadata();
-
-		name ??= packageMetadata.name;
-		description ??= packageMetadata.description;
-		version ??= packageMetadata.version;
-	}
-
+export function termost<Values extends ObjectLikeConstraint = EmptyObject>({
+	name,
+	description,
+	onException,
+	onShutdown,
+	version,
+}: PackageMetadata & TerminationCallbacks) {
 	const { command = name, operands, options } = getArguments();
 
-	setGracefulListeners(callbacks);
+	setGracefulListeners({ onException, onShutdown });
 
 	return createProgram<Values>({
 		name,
@@ -151,8 +133,8 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 };
 
 type TerminationCallbacks = Partial<{
-	onException: (error: Error) => void;
-	onShutdown: () => void;
+	onException: ((error: Error) => void) | undefined;
+	onShutdown: (() => void) | undefined;
 }>;
 
 const setGracefulListeners = ({
@@ -187,8 +169,4 @@ const setGracefulListeners = ({
 
 		process.exit(1);
 	});
-};
-
-const isObject = (value: unknown): value is ObjectLikeConstraint => {
-	return value !== null && typeof value === "object";
 };

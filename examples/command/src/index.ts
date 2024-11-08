@@ -1,12 +1,16 @@
 import { helpers, termost } from "termost";
 
+import { name, version } from "../package.json" with { type: "json" };
+
 type ProgramContext = {
 	globalFlag: boolean;
 };
 
-const program = termost<ProgramContext>(
-	"Example to showcase the `command` API",
-);
+const program = termost<ProgramContext>({
+	name,
+	description: "Example to showcase the `command` API",
+	version,
+});
 
 program.option({
 	key: "globalFlag",

@@ -1,5 +1,7 @@
 import { helpers, termost } from "termost";
 
+import { name, version } from "../package.json" with { type: "json" };
+
 type ProgramContext = {
 	input1: "singleOption1" | "singleOption2";
 	input2: ("multipleOption1" | "multipleOption2")[];
@@ -7,7 +9,11 @@ type ProgramContext = {
 	input4: string;
 };
 
-const program = termost<ProgramContext>("Example to showcase the `input` API");
+const program = termost<ProgramContext>({
+	name,
+	description: "Example to showcase the `input` API",
+	version,
+});
 
 program
 	.input({

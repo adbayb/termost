@@ -1,12 +1,18 @@
 import { helpers, termost } from "termost";
 
+import { name, version } from "../package.json" with { type: "json" };
+
 type ProgramContext = {
 	computedFromOtherTaskValues: "big" | "small";
 	execOutput: string;
 	size: number;
 };
 
-const program = termost<ProgramContext>("Example to showcase the `task` API");
+const program = termost<ProgramContext>({
+	name,
+	description: "Example to showcase the `task` API",
+	version,
+});
 
 program
 	.task({

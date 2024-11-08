@@ -1,12 +1,16 @@
 import { termost } from "termost";
 
+import { name, version } from "../package.json" with { type: "json" };
+
 type ProgramContext = {
 	option: string;
 };
 
-const program = termost<ProgramContext>(
-	"Example to showcase empty `command` fallback",
-);
+const program = termost<ProgramContext>({
+	name,
+	description: "Example to showcase empty `command` fallback",
+	version,
+});
 
 program
 	.command({

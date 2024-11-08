@@ -1,11 +1,17 @@
 import { helpers, termost } from "termost";
 
+import { name, version } from "../package.json" with { type: "json" };
+
 type ProgramContext = {
 	optionWithAlias: number;
 	optionWithoutAlias: string;
 };
 
-const program = termost<ProgramContext>("Example to showcase the `option` API");
+const program = termost<ProgramContext>({
+	name,
+	description: "Example to showcase the `option` API",
+	version,
+});
 
 program
 	.option({
