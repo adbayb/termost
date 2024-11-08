@@ -41,6 +41,7 @@ Once you're done, you can play with the API:
 #!/usr/bin/env node
 
 import { helpers, termost } from "termost";
+import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
 type ProgramContext = {
 	globalFlag: string;
@@ -50,7 +51,10 @@ type DebugCommandContext = {
 	localFlag: string;
 };
 
-const program = termost<ProgramContext>("CLI example", {
+const program = termost<ProgramContext>({
+	name,
+	description: "CLI description",
+	version,
 	onException(error) {
 		console.error(`Error logic ${error.message}`);
 	},
@@ -132,8 +136,13 @@ Please note that the root command context is shared across subcommands but subco
 #!/usr/bin/env node
 
 import { termost, helpers } from "termost";
+import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
-const program = termost("Example to showcase the `command` API");
+const program = termost({
+	name,
+	description: "CLI description",
+	version,
+});
 
 program
 	.command({
@@ -174,6 +183,7 @@ It supports several types:
 #!/usr/bin/env node
 
 import { termost, helpers } from "termost";
+import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
 type ProgramContext = {
 	input1: "singleOption1" | "singleOption2";
@@ -182,7 +192,11 @@ type ProgramContext = {
 	input4: string;
 };
 
-const program = termost<ProgramContext>("Example to showcase the `input` API");
+const program = termost<ProgramContext>({
+	name,
+	description: "CLI description",
+	version,
+});
 
 program
 	.input({
@@ -236,13 +250,18 @@ The option value can be accessed through its `key` property from the current con
 #!/usr/bin/env node
 
 import { termost, helpers } from "termost";
+import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
 type ProgramContext = {
 	optionWithAlias: number;
 	optionWithoutAlias: string;
 };
 
-const program = termost<ProgramContext>("Example to showcase the `option` API");
+const program = termost<ProgramContext>({
+	name,
+	description: "CLI description",
+	version,
+});
 
 program
 	.option({
@@ -281,6 +300,7 @@ The output can be either:
 #!/usr/bin/env node
 
 import { helpers, termost } from "../src";
+import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
 type ProgramContext = {
 	computedFromOtherTaskValues: "big" | "small";
@@ -288,7 +308,11 @@ type ProgramContext = {
 	size: number;
 };
 
-const program = termost<ProgramContext>("Example to showcase the `task` API");
+const program = termost<ProgramContext>({
+	name,
+	description: "CLI description",
+	version,
+});
 
 program
 	.task({
@@ -395,7 +419,7 @@ const wait = (delay: number) => {
 
 ## 🤩 Built with Termost
 
-- [Quickbundle](https://github.com/adbayb/quickbundle) The zero-configuration bundler powered by ESBuild
+- [Quickbundle](https://github.com/adbayb/quickbundle) The zero-configuration transpiler and bundler for the web.
 
 <br>
 
