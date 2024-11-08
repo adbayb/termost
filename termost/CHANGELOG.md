@@ -1,5 +1,11 @@
 # termost
 
+## 1.2.0
+
+### Minor Changes
+
+- [`b4224bc`](https://github.com/adbayb/termost/commit/b4224bc11098b5c40a1629cf9cb081de8edb3211) Thanks [@adbayb](https://github.com/adbayb)! - Update `termost(input)` input contract to allow a single configuration object and make name, version, and description fields required.
+
 ## 0.18.0
 
 ### Minor Changes
