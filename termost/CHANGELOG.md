@@ -1,5 +1,13 @@
 # termost
 
+## 1.3.0
+
+### Minor Changes
+
+- [`838b409`](https://github.com/adbayb/termost/commit/838b409603e86968027f0175c1d7318229491ef0) Thanks [@adbayb](https://github.com/adbayb)! - Add more options to `helpers.message` to configure line breaks and no default label display.
+
+- [`e5b2458`](https://github.com/adbayb/termost/commit/e5b24586ab5e460c9d509928799940b86ec62763) Thanks [@adbayb](https://github.com/adbayb)! - Message helper accepts now a boolean to configure line breaks at once for all positions.
+
 ## 1.2.0
 
 ### Minor Changes
