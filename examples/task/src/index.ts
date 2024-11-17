@@ -32,12 +32,12 @@ program
 	.task({
 		key: "computedFromOtherTaskValues",
 		label: "Task can also access other persisted task values",
-		async handler(context) {
+		handler(context) {
 			if (context.size > 2000) {
-				return Promise.resolve("big" as const);
+				return "big" as const;
 			}
 
-			return Promise.resolve("small" as const);
+			return "small" as const;
 		},
 	})
 	.task({
@@ -68,7 +68,7 @@ program
 	.task({
 		handler(context) {
 			helpers.message(
-				`If you don't specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).`,
+				'If you don\'t specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).',
 				{ label: "Label & console output" },
 			);
 

@@ -12,28 +12,23 @@ import pico from "picocolors";
  */
 export const format = (
 	message: string,
-	{
-		color,
-		modifiers,
-	}: {
+	options: {
 		color?: Color;
 		modifiers?: Modifier[];
-	} = {
-		color: "white",
-		modifiers: [],
-	},
+	} = {},
 ) => {
+	const { color = "white", modifiers = [] } = options;
 	const transformers: ((input: string) => string)[] = [];
 
-	transformers.push(pico[colorMapper[color ?? "white"]]);
+	transformers.push(pico[colorMapper[color]]);
 
-	(modifiers ?? []).forEach((mod: Modifier) => {
-		if (mod === "uppercase") {
+	modifiers.forEach((modifier: Modifier) => {
+		if (modifier === "uppercase") {
 			message = message.toUpperCase();
-		} else if (mod === "lowercase") {
+		} else if (modifier === "lowercase") {
 			message = message.toLowerCase();
 		} else {
-			transformers.push(pico[modifierMapper[mod]]);
+			transformers.push(pico[modifierMapper[modifier]]);
 		}
 	});
 
@@ -46,9 +41,9 @@ export const format = (
  * @param options - The configuration object to define the display type and/or override the default label.
  * @param options.label - The label to display.
  * @param options.type - The message type.
- * @param options.linebreak - Configure line break addition.
- * @param options.linebreak.start - Configure line break addition in a start trailing position (by default, true).
- * @param options.linebreak.end - Configure line break addition in an end trailing position (by default, false).
+ * @param options.lineBreakByPosition - Configure line break addition.
+ * @param options.lineBreakByPosition.start - Configure line break addition in a start trailing position (by default, true).
+ * @param options.lineBreakByPosition.end - Configure line break addition in an end trailing position (by default, false).
  * @example
  * message("message to log");
  */
@@ -56,23 +51,23 @@ export const message = (
 	content: Error | string,
 	{
 		label: optionLabel,
-		linebreak: optionLinebreak,
+		lineBreakByPosition: optionLineBreakByPosition,
 		type: optionType,
 	}: {
 		label?: string | false;
-		linebreak?: { end: boolean; start: boolean };
+		lineBreakByPosition?: { end: boolean; start: boolean };
 		type?: MessageType;
 	} = {},
 ) => {
 	const isTextualContent = typeof content === "string";
 	const type = optionType ?? (isTextualContent ? "information" : "error");
 	const { color, defaultLabel, icon, method } = formatPropertiesByType[type];
-	const linebreakStart = optionLinebreak?.start ?? true;
-	const linebreakEnd = optionLinebreak?.end ?? false;
+	const lineBreakStart = optionLineBreakByPosition?.start ?? true;
+	const lineBreakEnd = optionLineBreakByPosition?.end ?? false;
 
 	const getLabel = () => {
 		if (optionLabel === false) {
-			return content instanceof Error ? content.message : content;
+			return isTextualContent ? content : content.message;
 		}
 
 		return optionLabel ?? defaultLabel;
@@ -80,7 +75,7 @@ export const message = (
 
 	method(
 		format(
-			`${linebreakStart ? "\n" : ""}${icon} ${getLabel()}${linebreakEnd ? "\n" : ""}`,
+			`${lineBreakStart ? "\n" : ""}${icon} ${getLabel()}${lineBreakEnd ? "\n" : ""}`,
 			{
 				color,
 				modifiers: ["bold"],
@@ -99,7 +94,8 @@ const compose = <T>(...fns: ((a: T) => T)[]) => {
 		);
 
 	return fns.reduce<(a: T) => T>(
-		(prevFn, nextFn) => (value) => prevFn(nextFn(value)),
+		(previousFunction, nextFunction) => (value) =>
+			previousFunction(nextFunction(value)),
 		fns[0],
 	);
 };

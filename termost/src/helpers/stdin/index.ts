@@ -29,7 +29,7 @@ export const getArguments = () => {
 		if (shortFlagMatchResult?.name) {
 			flushOptimisticOption();
 
-			const optionFlags = shortFlagMatchResult.name.split("");
+			const optionFlags = [...shortFlagMatchResult.name];
 			const lastIndex = optionFlags.length - 1;
 
 			optionFlags.forEach((flag, index) => {

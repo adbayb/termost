@@ -16,7 +16,7 @@
 		"release:version": "stack release --tag",
 		"release:publish": "stack release --publish"
 	},
-	"packageManager": "pnpm@9.12.3",
+	"packageManager": "pnpm@9.13.2",
 	"engines": {
 		"node": ">=22.0.0",
 		"pnpm": ">=9.0.0",
@@ -25,6 +25,6 @@
 	},
 	"prettier": "@adbayb/stack/prettier",
 	"devDependencies": {
-		"@adbayb/stack": "2.0.0"
+		"@adbayb/stack": "2.5.0"
 	}
 }

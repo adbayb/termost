@@ -31,16 +31,16 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	 * @returns The Command API.
 	 */
 	command: <CommandValues extends ObjectLikeConstraint = EmptyObject>(
-		params: CommandParameters,
+		parameters: CommandParameters,
 	) => Termost<CommandValues & Values>;
 	input: <Key extends keyof Values>(
-		params: InputParameters<Values, Key>,
+		parameters: InputParameters<Values, Key>,
 	) => Termost<Values>;
 	option: <Key extends keyof Values>(
-		params: OptionParameters<Values, Key>,
+		parameters: OptionParameters<Values, Key>,
 	) => Termost<Values>;
 	task: <Key extends keyof Values | undefined = undefined>(
-		params: TaskParameters<Values, Key>,
+		parameters: TaskParameters<Values, Key>,
 	) => Termost<Values>;
 };
 
@@ -75,13 +75,13 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		Parameters extends InstructionParameters<ObjectLikeConstraint>,
 	>(
 		factory: CreateInstruction<Parameters>,
-		params: InstructionParameters<Values>,
+		parameters: InstructionParameters<Values>,
 	) => {
-		const instruction = factory(params as Parameters);
+		const instruction = factory(parameters as Parameters);
 		const controller = getCommandController<Values>(currentCommandName);
 
 		controller.addInstruction(async () => {
-			const { skip } = params;
+			const { skip } = parameters;
 			const context = controller.getContext(rootCommandName);
 
 			if (skip?.(context, argv)) return;
@@ -95,28 +95,28 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 	};
 
 	const program: Termost<Values> = {
-		command<CommandValues>(params: CommandParameters) {
-			currentCommandName = createCommand(params, metadata);
+		command<CommandValues>(parameters: CommandParameters) {
+			currentCommandName = createCommand(parameters, metadata);
 			metadata.isEmptyCommand[currentCommandName] = true; // This flag is disabled only for instructions that introduce stdio side effects (`option` instructions are so ignored).
 
 			return this as Termost<CommandValues & Values>;
 		},
-		input(params) {
-			createInstruction(createInput, params);
+		input(parameters) {
+			createInstruction(createInput, parameters);
 			metadata.isEmptyCommand[currentCommandName] = false;
 
 			return this;
 		},
-		option(params) {
+		option(parameters) {
 			createInstruction(
 				createOption(getCommandController(currentCommandName), metadata),
-				params,
+				parameters,
 			);
 
 			return this;
 		},
-		task(params) {
-			createInstruction(createTask, params);
+		task(parameters) {
+			createInstruction(createTask, parameters);
 			metadata.isEmptyCommand[currentCommandName] = false;
 
 			return this;

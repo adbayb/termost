@@ -117,7 +117,7 @@ const showHelp = ({
 			{
 				color: "green",
 			},
-		)} ${hasCommands ? "<command> " : ""}${hasOptions ? "[...options]" : ""}`,
+		)} ${hasCommands ? "<command> " : ""}${hasOptions ? "[…options]" : ""}`,
 	);
 
 	if (description) {

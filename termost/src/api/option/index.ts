@@ -39,6 +39,7 @@ export const createOption =
 				}
 			}
 
+			// eslint-disable-next-line unicorn/no-useless-promise-resolve-reject
 			return Promise.resolve({ key, value: value ?? defaultValue });
 		};
 	};
