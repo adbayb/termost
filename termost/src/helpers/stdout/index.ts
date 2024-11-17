@@ -41,9 +41,7 @@ export const format = (
  * @param options - The configuration object to define the display type and/or override the default label.
  * @param options.label - The label to display.
  * @param options.type - The message type.
- * @param options.lineBreakByPosition - Configure line break addition.
- * @param options.lineBreakByPosition.start - Configure line break addition in a start trailing position (by default, true).
- * @param options.lineBreakByPosition.end - Configure line break addition in an end trailing position (by default, false).
+ * @param options.lineBreak - Configure line break addition.
  * @example
  * message("message to log");
  */
@@ -51,19 +49,35 @@ export const message = (
 	content: Error | string,
 	{
 		label: optionLabel,
-		lineBreakByPosition: optionLineBreakByPosition,
+		lineBreak: optionlineBreak,
 		type: optionType,
 	}: {
 		label?: string | false;
-		lineBreakByPosition?: { end: boolean; start: boolean };
+		lineBreak?: LineBreakByPosition | boolean;
 		type?: MessageType;
 	} = {},
 ) => {
 	const isTextualContent = typeof content === "string";
 	const type = optionType ?? (isTextualContent ? "information" : "error");
 	const { color, defaultLabel, icon, method } = formatPropertiesByType[type];
-	const lineBreakStart = optionLineBreakByPosition?.start ?? true;
-	const lineBreakEnd = optionLineBreakByPosition?.end ?? false;
+
+	const getLineBreak = (): LineBreakByPosition => {
+		if (optionlineBreak === undefined) {
+			return {
+				end: false,
+				start: true,
+			};
+		}
+
+		if (isRecord(optionlineBreak)) {
+			return optionlineBreak;
+		}
+
+		return {
+			end: optionlineBreak,
+			start: optionlineBreak,
+		};
+	};
 
 	const getLabel = () => {
 		if (optionLabel === false) {
@@ -73,9 +87,11 @@ export const message = (
 		return optionLabel ?? defaultLabel;
 	};
 
+	const lineBreak = getLineBreak();
+
 	method(
 		format(
-			`${lineBreakStart ? "\n" : ""}${icon} ${getLabel()}${lineBreakEnd ? "\n" : ""}`,
+			`${lineBreak.start ? "\n" : ""}${icon} ${getLabel()}${lineBreak.end ? "\n" : ""}`,
 			{
 				color,
 				modifiers: ["bold"],
@@ -87,16 +103,22 @@ export const message = (
 	method(isTextualContent ? format(`   ${content}`, { color }) : content);
 };
 
-const compose = <T>(...fns: ((a: T) => T)[]) => {
-	if (!fns[0])
+type LineBreakByPosition = { end: boolean; start: boolean };
+
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+	return typeof value === "object" && value !== null && !Array.isArray(value);
+};
+
+const compose = <T>(...functions: ((a: T) => T)[]) => {
+	if (!functions[0])
 		throw new Error(
 			"No function is provided, defeating the purpose of composing functions. Make sure to provide at least one function as an argument.",
 		);
 
-	return fns.reduce<(a: T) => T>(
+	return functions.reduce<(a: T) => T>(
 		(previousFunction, nextFunction) => (value) =>
 			previousFunction(nextFunction(value)),
-		fns[0],
+		functions[0],
 	);
 };
 
