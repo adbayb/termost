@@ -60,12 +60,13 @@ export const message = (
 	const isTextualContent = typeof content === "string";
 	const type = optionType ?? (isTextualContent ? "information" : "error");
 	const { color, defaultLabel, icon, method } = formatPropertiesByType[type];
+	const hasNoLabel = optionLabel === false;
 
 	const getLineBreak = (): LineBreakByPosition => {
 		if (optionlineBreak === undefined) {
 			return {
 				end: false,
-				start: true,
+				start: false,
 			};
 		}
 
@@ -80,7 +81,7 @@ export const message = (
 	};
 
 	const getLabel = () => {
-		if (optionLabel === false) {
+		if (hasNoLabel) {
 			return isTextualContent ? content : content.message;
 		}
 
@@ -89,18 +90,27 @@ export const message = (
 
 	const lineBreak = getLineBreak();
 
-	method(
-		format(
-			`${lineBreak.start ? "\n" : ""}${icon} ${getLabel()}${lineBreak.end ? "\n" : ""}`,
-			{
-				color,
-				modifiers: ["bold"],
-			},
-		),
-	);
+	const output = [
+		format(`${lineBreak.start ? "\n" : ""}${icon} ${getLabel()}`, {
+			color,
+			modifiers: ["bold"],
+		}),
+		!hasNoLabel && isTextualContent
+			? format(`   ${content}`, { color })
+			: undefined,
+		!isTextualContent
+			? // Do not format error with colors to preserve the stack trace:
+				content
+			: undefined,
+	].filter(Boolean);
 
-	// Do not format error with colors to preserve the stack trace:
-	method(isTextualContent ? format(`   ${content}`, { color }) : content);
+	output.forEach((item) => {
+		method(item);
+	});
+
+	if (lineBreak.end) {
+		method();
+	}
 };
 
 type LineBreakByPosition = { end: boolean; start: boolean };

@@ -38,10 +38,18 @@ program
 		handler(context, argv) {
 			const { globalFlag, localFlag } = context;
 
-			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
-			helpers.message(`👉 Shared global flag = ${globalFlag}`);
-			helpers.message(`👉 Local command flag = ${localFlag}`);
-			helpers.message(`👉 Context value = ${JSON.stringify(context)}`);
+			helpers.message(`👋 Hello, I'm the ${argv.command} command`, {
+				lineBreak: { end: true, start: false },
+			});
+			helpers.message(`👉 Shared global flag = ${globalFlag}`, {
+				label: false,
+			});
+			helpers.message(`👉 Local command flag = ${localFlag}`, {
+				lineBreak: true,
+			});
+			helpers.message(`👉 Context value = ${JSON.stringify(context)}`, {
+				lineBreak: { end: true, start: true },
+			});
 			helpers.message(`👉 Argv value = ${JSON.stringify(argv)}`);
 		},
 	});
