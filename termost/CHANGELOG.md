@@ -1,5 +1,11 @@
 # termost
 
+## 1.4.0
+
+### Minor Changes
+
+- [`a14c632`](https://github.com/adbayb/termost/commit/a14c6329bf0108365f28fbc29c598353574f47e7) Thanks [@adbayb](https://github.com/adbayb)! - Remove default line breaks for message helper.
+
 ## 1.3.0
 
 ### Minor Changes
