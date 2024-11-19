@@ -90,7 +90,10 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 
 			if (!output || !output.key) return;
 
-			controller.addValue(output.key, output.value as Values[keyof Values]);
+			controller.addValue(
+				output.key,
+				output.value as Values[keyof Values],
+			);
 		});
 	};
 
@@ -109,7 +112,10 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		},
 		option(parameters) {
 			createInstruction(
-				createOption(getCommandController(currentCommandName), metadata),
+				createOption(
+					getCommandController(currentCommandName),
+					metadata,
+				),
 				parameters,
 			);
 

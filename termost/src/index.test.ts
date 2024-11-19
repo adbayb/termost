@@ -30,7 +30,9 @@ describe("termost", () => {
 	});
 
 	test("should display `help` given empty command", async () => {
-		const rootCommand = await safeExec("pnpm --filter @examples/empty start");
+		const rootCommand = await safeExec(
+			"pnpm --filter @examples/empty start",
+		);
 
 		const buildCommand = await safeExec(
 			"pnpm --filter @examples/empty start build",

@@ -25,6 +25,6 @@
 	},
 	"prettier": "@adbayb/stack/prettier",
 	"devDependencies": {
-		"@adbayb/stack": "2.5.0"
+		"@adbayb/stack": "2.8.0"
 	}
 }

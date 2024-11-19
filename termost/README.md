@@ -10,15 +10,15 @@
 
 Termost allows building command line tools in a minute thanks to its:
 
-- [Fluent](https://en.wikipedia.org/wiki/Fluent_interface) syntax to express your CLI configurations with instructions such as:
-  - [Subcommand](examples/command/src/index.ts) support
-  - Long and short [option](examples/option/src/index.ts) support
-  - [User input](examples/input/src/index.ts) support
-  - [Task](examples/task/src/index.ts) support
-- Shareable output between instructions
-- Auto-generated help and version metadata
-- TypeScript support to foster a type-safe API
-- Built-in helpers to make stdin/stdout management a breeze (including exec, and message helpers...)
+-   [Fluent](https://en.wikipedia.org/wiki/Fluent_interface) syntax to express your CLI configurations with instructions such as:
+    -   [Subcommand](examples/command/src/index.ts) support
+    -   Long and short [option](examples/option/src/index.ts) support
+    -   [User input](examples/input/src/index.ts) support
+    -   [Task](examples/task/src/index.ts) support
+-   Shareable output between instructions
+-   Auto-generated help and version metadata
+-   TypeScript support to foster a type-safe API
+-   Built-in helpers to make stdin/stdout management a breeze (including exec, and message helpers...)
 
 <br>
 
@@ -68,7 +68,8 @@ program.option({
 	name: { long: "global", short: "g" },
 	description:
 		"A global flag/option example accessible by all commands (key is used to persist the value into the context object)",
-	defaultValue: "A default value can be set if no flag is provided by the user",
+	defaultValue:
+		"A default value can be set if no flag is provided by the user",
 });
 
 program
@@ -293,8 +294,8 @@ program
 The `task` executes a handler (either a synchronous or an asynchronous one).  
 The output can be either:
 
-- Displayed gradually if no `label` is provided
-- Displayed until the promise is fulfilled if a `label` property is specified (in the meantime, a spinner with the label is showcased)
+-   Displayed gradually if no `label` is provided
+-   Displayed until the promise is fulfilled if a `label` property is specified (in the meantime, a spinner with the label is showcased)
 
 ```ts
 #!/usr/bin/env node
@@ -419,7 +420,7 @@ const wait = (delay: number) => {
 
 ## 🤩 Built with Termost
 
-- [Quickbundle](https://github.com/adbayb/quickbundle) The zero-configuration transpiler and bundler for the web.
+-   [Quickbundle](https://github.com/adbayb/quickbundle) The zero-configuration transpiler and bundler for the web.
 
 <br>
 
@@ -427,8 +428,8 @@ const wait = (delay: number) => {
 
 This project is built upon solid open-source foundations. We'd like to thank:
 
-- [`enquirer`](https://www.npmjs.com/package/enquirer) for managing `input` internals
-- [`listr2`](https://www.npmjs.com/package/listr2) for managing `task` internals
+-   [`enquirer`](https://www.npmjs.com/package/enquirer) for managing `input` internals
+-   [`listr2`](https://www.npmjs.com/package/listr2) for managing `task` internals
 
 <br>
 

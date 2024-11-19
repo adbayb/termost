@@ -33,11 +33,17 @@ export const getArguments = () => {
 			const lastIndex = optionFlags.length - 1;
 
 			optionFlags.forEach((flag, index) => {
-				addOptimisticOption(flag, lastIndex === index ? undefined : true);
+				addOptimisticOption(
+					flag,
+					lastIndex === index ? undefined : true,
+				);
 			});
 		} else if (longFlagMatchResult?.name) {
 			flushOptimisticOption();
-			addOptimisticOption(longFlagMatchResult.name, longFlagMatchResult.value);
+			addOptimisticOption(
+				longFlagMatchResult.name,
+				longFlagMatchResult.value,
+			);
 		} else if (currentOptionName) {
 			options[currentOptionName] = castValue(parameter);
 			currentOptionName = undefined;

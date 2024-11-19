@@ -76,7 +76,9 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 			 */
 			if (name !== rootCommandName) {
 				const rootController = getCommandController(rootCommandName);
-				const globalContext = rootController.getContext(rootCommandName);
+
+				const globalContext =
+					rootController.getContext(rootCommandName);
 
 				context = {
 					...globalContext,
@@ -89,7 +91,9 @@ export const createCommandController = <Values extends ObjectLikeConstraint>(
 		getMetadata(rootCommandName) {
 			if (name !== rootCommandName) {
 				const globalMetadata =
-					getCommandController(rootCommandName).getMetadata(rootCommandName);
+					getCommandController(rootCommandName).getMetadata(
+						rootCommandName,
+					);
 
 				metadata.options = {
 					...globalMetadata.options,

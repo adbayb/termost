@@ -34,7 +34,9 @@ export const createInput: CreateInstruction<
 				title: option,
 				value: option,
 				...(isMultiSelect && {
-					selected: ((defaultValue || []) as string[]).includes(option),
+					selected: ((defaultValue || []) as string[]).includes(
+						option,
+					),
 				}),
 			}));
 
@@ -56,23 +58,31 @@ export type InputParameters<
 		(
 			| {
 					label: Label<Values>;
-					defaultValue?: Values[Key] extends boolean ? Values[Key] : never;
+					defaultValue?: Values[Key] extends boolean
+						? Values[Key]
+						: never;
 					type: "confirm";
 			  }
 			| {
 					label: Label<Values>;
-					defaultValue?: Values[Key] extends string ? Values[Key] : never;
+					defaultValue?: Values[Key] extends string
+						? Values[Key]
+						: never;
 					options: Values[Key] extends string ? Values[Key][] : never;
 					type: "select";
 			  }
 			| {
 					label: Label<Values>;
-					defaultValue?: Values[Key] extends string ? Values[Key] : never;
+					defaultValue?: Values[Key] extends string
+						? Values[Key]
+						: never;
 					type: "text";
 			  }
 			| {
 					label: Label<Values>;
-					defaultValue?: Values[Key] extends string[] ? Values[Key] : never;
+					defaultValue?: Values[Key] extends string[]
+						? Values[Key]
+						: never;
 					options: Values[Key] extends string[] ? Values[Key] : never;
 					type: "multiselect";
 			  }

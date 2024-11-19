@@ -8,6 +8,8 @@ describe("process", () => {
 	});
 
 	test("should `exec` given error", async () => {
-		await expect(exec("unavailable_command12345")).rejects.toThrow(/not found/);
+		await expect(exec("unavailable_command12345")).rejects.toThrow(
+			/not found/,
+		);
 	});
 });
