@@ -52,6 +52,6 @@
 	"devDependencies": {
 		"@types/node": "22.9.0",
 		"quickbundle": "2.8.0",
-		"vitest": "2.1.5"
+		"vitest": "2.1.6"
 	}
 }
