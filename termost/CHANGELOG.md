@@ -1,5 +1,11 @@
 # termost
 
+## 1.5.0
+
+### Minor Changes
+
+-   [#56](https://github.com/adbayb/termost/pull/56) [`6f9b1da`](https://github.com/adbayb/termost/commit/6f9b1daac7a6ef82859b174f2bb06f0cbd9d726a) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `vitest` to `2.1.6`.
+
 ## 1.4.0
 
 ### Minor Changes
