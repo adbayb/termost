@@ -50,7 +50,7 @@
 		"picocolors": "^1.1.1"
 	},
 	"devDependencies": {
-		"@types/node": "22.10.1",
+		"@types/node": "22.10.5",
 		"quickbundle": "2.8.0",
 		"vitest": "2.1.6"
 	}
