@@ -16,7 +16,7 @@
 		"release:version": "stack release --tag",
 		"release:publish": "stack release --publish"
 	},
-	"packageManager": "pnpm@9.15.6",
+	"packageManager": "pnpm@10.6.2",
 	"engines": {
 		"node": ">=22.0.0",
 		"pnpm": ">=9.0.0",
