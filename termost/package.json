@@ -1,22 +1,7 @@
 {
 	"name": "termost",
-	"description": "Get the most of your terminal",
 	"version": "1.4.0",
-	"publishConfig": {
-		"access": "public"
-	},
-	"type": "module",
-	"sideEffects": false,
-	"files": [
-		"dist"
-	],
-	"exports": {
-		"source": "./src/index.ts",
-		"types": "./dist/index.d.ts",
-		"require": "./dist/index.cjs",
-		"import": "./dist/index.mjs",
-		"default": "./dist/index.mjs"
-	},
+	"description": "Get the most of your terminal",
 	"keywords": [
 		"cli",
 		"terminal",
@@ -28,21 +13,33 @@
 		"question",
 		"message"
 	],
-	"license": "MIT",
-	"author": "Ayoub Adib <adbayb@gmail.com> (https://twitter.com/adbayb)",
-	"bugs": "https://github.com/adbayb/termost/issues",
 	"homepage": "https://github.com/adbayb/termost/tree/main/termost#readme",
+	"bugs": "https://github.com/adbayb/termost/issues",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:adbayb/termost.git",
 		"directory": "termost"
 	},
+	"license": "MIT",
+	"author": "Ayoub Adib <adbayb@gmail.com> (https://twitter.com/adbayb)",
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		"source": "./src/index.ts",
+		"types": "./dist/index.d.ts",
+		"require": "./dist/index.cjs",
+		"import": "./dist/index.mjs",
+		"default": "./dist/index.mjs"
+	},
+	"files": [
+		"dist"
+	],
 	"scripts": {
+		"build": "quickbundle build",
 		"prepublishOnly": "pnpm build",
 		"start": "pnpm watch",
-		"build": "quickbundle build",
-		"watch": "quickbundle watch",
-		"test": "vitest --test-timeout=20000"
+		"test": "vitest --test-timeout=20000",
+		"watch": "quickbundle watch"
 	},
 	"dependencies": {
 		"enquirer": "^2.4.1",
@@ -50,8 +47,11 @@
 		"picocolors": "^1.1.1"
 	},
 	"devDependencies": {
-		"@types/node": "22.13.5",
-		"quickbundle": "2.8.0",
-		"vitest": "3.0.4"
+		"@types/node": "22.13.10",
+		"quickbundle": "2.10.0",
+		"vitest": "3.0.8"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

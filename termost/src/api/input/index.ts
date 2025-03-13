@@ -34,7 +34,7 @@ export const createInput: CreateInstruction<
 				title: option,
 				value: option,
 				...(isMultiSelect && {
-					selected: ((defaultValue || []) as string[]).includes(
+					selected: ((defaultValue ?? []) as string[]).includes(
 						option,
 					),
 				}),

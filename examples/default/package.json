@@ -1,7 +1,7 @@
 {
-	"private": true,
 	"name": "@examples/default",
 	"version": "0.0.0",
+	"private": true,
 	"scripts": {
 		"start": "node -r esbuild-register ./src/index.ts"
 	},
@@ -9,7 +9,7 @@
 		"termost": "workspace:^"
 	},
 	"devDependencies": {
-		"@types/node": "22.13.5",
+		"@types/node": "22.13.10",
 		"esbuild-register": "3.6.0"
 	}
 }

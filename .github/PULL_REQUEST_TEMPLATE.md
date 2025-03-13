@@ -13,8 +13,8 @@
 
 Please include a concise summary of the change with the relevant context and main highlights:
 
--   [ ] What I've done 1
--   [ ] What I've done 2...
+- [ ] What I've done 1
+- [ ] What I've done 2...
 
 ## Screenshots
 
@@ -24,6 +24,6 @@ Please include a concise summary of the change with the relevant context and mai
 
 ## Resources
 
--   Issue (GitHub, ...)
--   Specification (ADRs, RFCs, ...)
--   ...
+- Issue (GitHub, ...)
+- Specification (ADRs, RFCs, ...)
+- ...
