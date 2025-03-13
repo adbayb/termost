@@ -1,30 +1,28 @@
 {
 	"name": "root",
-	"private": true,
 	"version": "0.0.0",
+	"private": true,
 	"type": "module",
 	"scripts": {
-		"prepare": "stack install && pnpm build",
-		"clean": "stack clean",
-		"check": "stack check",
-		"fix": "stack fix",
-		"start": "stack start",
 		"build": "stack build",
-		"watch": "stack watch",
-		"test": "stack test",
+		"check": "stack check",
+		"clean": "stack clean",
+		"fix": "stack fix",
+		"prepare": "stack install && pnpm build",
 		"release:log": "stack release --log",
+		"release:publish": "stack release --publish",
 		"release:version": "stack release --tag",
-		"release:publish": "stack release --publish"
-	},
-	"packageManager": "pnpm@9.15.6",
-	"engines": {
-		"node": ">=22.0.0",
-		"pnpm": ">=9.0.0",
-		"npm": "please-use-pnpm",
-		"yarn": "please-use-pnpm"
+		"start": "stack start",
+		"test": "stack test",
+		"watch": "stack watch"
 	},
 	"prettier": "@adbayb/stack/prettier",
 	"devDependencies": {
-		"@adbayb/stack": "2.8.0"
+		"@adbayb/stack": "2.21.0"
+	},
+	"packageManager": "pnpm@10.6.2",
+	"engines": {
+		"node": ">=22.0.0",
+		"pnpm": ">=10.0.0"
 	}
 }
