@@ -1,5 +1,21 @@
 # termost
 
+## 1.5.0
+
+### Minor Changes
+
+- [#63](https://github.com/adbayb/termost/pull/63) [`143c36f`](https://github.com/adbayb/termost/commit/143c36f47cf724c7656e648803be889cc20d9eca) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `vitest` to `3.0.4`.
+
+- [#62](https://github.com/adbayb/termost/pull/62) [`dc88600`](https://github.com/adbayb/termost/commit/dc88600173c554bf14f9f682619a0b0ba0a3a38e) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `@types/node` to `22.12.0`.
+
+- [#57](https://github.com/adbayb/termost/pull/57) [`4f5cbe0`](https://github.com/adbayb/termost/commit/4f5cbe06a8abf42a0b99e425341c3b41ff31ec77) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `@types/node` to `22.10.1`.
+
+- [#59](https://github.com/adbayb/termost/pull/59) [`d362adc`](https://github.com/adbayb/termost/commit/d362adc6131d8d3c803c6feca108906f1a0f2ef8) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `@types/node` to `22.10.5`.
+
+- [#65](https://github.com/adbayb/termost/pull/65) [`e7efd75`](https://github.com/adbayb/termost/commit/e7efd758f4d4ad1ddae6eb3fd275096625916c1f) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `@types/node` to `22.13.5`.
+
+- [#56](https://github.com/adbayb/termost/pull/56) [`6f9b1da`](https://github.com/adbayb/termost/commit/6f9b1daac7a6ef82859b174f2bb06f0cbd9d726a) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `vitest` to `2.1.6`.
+
 ## 1.4.0
 
 ### Minor Changes
