@@ -47,7 +47,7 @@
 		"picocolors": "^1.1.1"
 	},
 	"devDependencies": {
-		"@types/node": "22.15.30",
+		"@types/node": "22.15.34",
 		"quickbundle": "2.12.0",
 		"vitest": "3.0.8"
 	},
