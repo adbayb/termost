@@ -101,7 +101,6 @@
 ### Minor Changes
 
 - [`50ae237`](https://github.com/adbayb/termost/commit/50ae237c4269f624bd707976dc61c0f9fbddebb2) Thanks [@adbayb](https://github.com/adbayb)! - Installation size optimization by introducing the following updates:
-
     - Chalk major bump
     - Litsr2 major bump
     - Prompts replaced in favor of Enquirer

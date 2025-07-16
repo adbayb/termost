@@ -9,7 +9,7 @@
 		"termost": "workspace:^"
 	},
 	"devDependencies": {
-		"@types/node": "22.15.34",
+		"@types/node": "22.16.4",
 		"esbuild-register": "3.6.0"
 	}
 }
