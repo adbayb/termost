@@ -25,6 +25,12 @@ program
 		name: "longOption",
 		description: "Useful CLI flag",
 		defaultValue: "defaultValue",
+		validate({ optionWithoutAlias }) {
+			if (["error", "invalid"].includes(optionWithoutAlias))
+				return new Error("Invalid input");
+
+			return undefined;
+		},
 	})
 	.task({
 		handler(context) {

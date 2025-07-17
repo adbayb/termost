@@ -54,17 +54,16 @@ export type InputParameters<
 	Key extends keyof Values,
 > = InstructionParameters<
 	Values,
-	InstructionKey<Key> &
-		(
+	InstructionKey<Key> & {
+		label: Label<Values>;
+	} & (
 			| {
-					label: Label<Values>;
 					defaultValue?: Values[Key] extends boolean
 						? Values[Key]
 						: never;
 					type: "confirm";
 			  }
 			| {
-					label: Label<Values>;
 					defaultValue?: Values[Key] extends string
 						? Values[Key]
 						: never;
@@ -72,14 +71,12 @@ export type InputParameters<
 					type: "select";
 			  }
 			| {
-					label: Label<Values>;
 					defaultValue?: Values[Key] extends string
 						? Values[Key]
 						: never;
 					type: "text";
 			  }
 			| {
-					label: Label<Values>;
 					defaultValue?: Values[Key] extends string[]
 						? Values[Key]
 						: never;

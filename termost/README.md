@@ -70,6 +70,11 @@ program.option({
 		"A global flag/option example accessible by all commands (key is used to persist the value into the context object)",
 	defaultValue:
 		"A default value can be set if no flag is provided by the user",
+	validate({ globalFlag }) {
+		if (globalFlag === "invalid") return new Error("Invalid input");
+
+		return undefined;
+	},
 });
 
 program
@@ -174,7 +179,7 @@ program
 </details>
 
 <details>
-<summary><b>input({ key, label, type, skip, ...typeParameters })</b></summary>
+<summary><b>input({ key, label, type, skip, validate, ...typeParameters })</b></summary>
 <p>
 
 The `input` API creates an interactive prompt.  
@@ -229,6 +234,11 @@ program
 		skip(context) {
 			return Boolean(context.input3);
 		},
+		validate(context) {
+			if (context.input4 === "invalid") return new Error("Invalid input");
+
+			return undefined;
+		},
 	})
 	.task({
 		handler(context) {
@@ -241,7 +251,7 @@ program
 </details>
 
 <details>
-<summary><b>option({ key, name, description, defaultValue, skip })</b></summary>
+<summary><b>option({ key, name, description, defaultValue, skip, validate })</b></summary>
 <p>
 
 The `option` API defines a contextual CLI option.  
@@ -276,6 +286,12 @@ program
 		name: "longOption",
 		description: "Useful CLI flag",
 		defaultValue: "defaultValue",
+		validate(context) {
+			if (context.optionWithoutAlias === "invalid")
+				return new Error("Invalid input");
+
+			return undefined;
+		},
 	})
 	.task({
 		handler(context) {
@@ -288,7 +304,7 @@ program
 </details>
 
 <details>
-<summary><b>task({ key, label, handler, skip })</b></summary>
+<summary><b>task({ key, label, handler, skip, validate })</b></summary>
 <p>
 
 The `task` executes a handler (either a synchronous or an asynchronous one).  
@@ -339,6 +355,12 @@ program
 			}
 
 			return Promise.resolve("small");
+		},
+		validate(context) {
+			if (context.computedFromOtherTaskValues === "big")
+				return new Error("Invalid input");
+
+			return undefined;
 		},
 	})
 	.task({

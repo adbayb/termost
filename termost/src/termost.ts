@@ -53,15 +53,17 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>({
 }: PackageMetadata & TerminationCallbacks) {
 	const { command = name, operands, options } = getArguments();
 
-	setGracefulListeners({ onException, onShutdown });
-
-	return createProgram<Values>({
+	const metadata: ProgramMetadata = {
 		name,
 		description,
 		argv: { command, operands, options },
 		isEmptyCommand: {},
 		version,
-	});
+	};
+
+	setGracefulListeners({ onException, onShutdown });
+
+	return createProgram<Values>(metadata);
 }
 
 export const createProgram = <Values extends ObjectLikeConstraint>(
@@ -81,7 +83,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		const controller = getCommandController<Values>(currentCommandName);
 
 		controller.addInstruction(async () => {
-			const { skip } = parameters;
+			const { skip, validate } = parameters;
 			const context = controller.getContext(rootCommandName);
 
 			if (skip?.(context, argv)) return;
@@ -94,6 +96,15 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 				output.key,
 				output.value as Values[keyof Values],
 			);
+
+			const error = validate?.(
+				controller.getContext(rootCommandName),
+				argv,
+			);
+
+			if (!error) return;
+
+			throw error;
 		});
 	};
 
@@ -162,15 +173,15 @@ const setGracefulListeners = ({
 	});
 
 	process.on("uncaughtException", (error) => {
+		message(error, { label: false, lineBreak: true });
 		onException(error);
-		message(error);
 		process.exit(1);
 	});
 
 	process.on("unhandledRejection", (reason) => {
 		if (reason instanceof Error) {
+			message(reason, { label: false, lineBreak: true });
 			onException(reason);
-			message(reason);
 		}
 
 		process.exit(1);

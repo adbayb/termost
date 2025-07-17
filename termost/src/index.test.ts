@@ -52,6 +52,15 @@ describe("termost", () => {
 		expect(watchCommand).toMatchSnapshot();
 	});
 
+	test("should handle `validation`", async () => {
+		await expect(async () =>
+			safeExec("pnpm --filter @examples/validation start -o error"),
+		).rejects.toThrow(/Invalid option->input/);
+		await expect(async () =>
+			safeExec("pnpm --filter @examples/validation start"),
+		).rejects.toThrow(/Invalid task->input/);
+	});
+
 	test("should handle `command` api", async () => {
 		const helpOutput = await safeExec(
 			"pnpm --filter @examples/command start --help",

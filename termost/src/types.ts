@@ -33,6 +33,10 @@ export type InstructionParameters<
 	ExtraParameters extends ObjectLikeConstraint = EmptyObject,
 > = ExtraParameters & {
 	skip?: (context: Context<Values>, argv: ArgumentValues) => boolean;
+	validate?: (
+		context: Context<Values>,
+		argv: ArgumentValues,
+	) => Error | undefined;
 };
 
 export type InstructionKey<Key> = {

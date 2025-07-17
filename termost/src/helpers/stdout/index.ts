@@ -136,25 +136,25 @@ const formatPropertiesByType = {
 	error: {
 		color: "red",
 		defaultLabel: "Error",
-		icon: "❌",
+		icon: "✖",
 		method: console.error,
 	},
 	information: {
 		color: "blue",
 		defaultLabel: "Information",
-		icon: "ℹ️",
+		icon: "ℹ",
 		method: console.info,
 	},
 	success: {
 		color: "green",
 		defaultLabel: "Success",
-		icon: "✅",
+		icon: "✔",
 		method: console.log,
 	},
 	warning: {
 		color: "yellow",
 		defaultLabel: "Warning",
-		icon: "⚠️ ",
+		icon: "⚠",
 		method: console.warn,
 	},
 } as const;

@@ -39,6 +39,12 @@ program
 
 			return "small" as const;
 		},
+		validate({ computedFromOtherTaskValues }) {
+			if (computedFromOtherTaskValues === "big")
+				return new Error("Invalid input");
+
+			return undefined;
+		},
 	})
 	.task({
 		key: "execOutput",
