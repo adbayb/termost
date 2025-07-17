@@ -16,14 +16,19 @@ export const createInput: CreateInstruction<
 > = (parameters) => {
 	const { key, label, defaultValue, type } = parameters;
 
+	const mappedPromptType =
+		type === "select" || type === "multiselect" ? "autocomplete" : type;
+
 	return async function execute(context, argv) {
 		const promptObject: Parameters<typeof prompt>[0] & {
 			choices?: { title: string; selected?: boolean; value: string }[];
+			limit?: number;
+			multiple?: boolean;
 		} = {
 			name: key,
 			initial: defaultValue,
 			message: typeof label === "function" ? label(context, argv) : label,
-			type,
+			type: mappedPromptType,
 		};
 
 		if (parameters.type === "select" || parameters.type === "multiselect") {
@@ -32,14 +37,17 @@ export const createInput: CreateInstruction<
 
 			const choices = options.map((option) => ({
 				title: option,
-				value: option,
+				multiple: isMultiSelect,
 				...(isMultiSelect && {
 					selected: ((defaultValue ?? []) as string[]).includes(
 						option,
 					),
 				}),
+				value: option,
 			}));
 
+			promptObject.limit = 10;
+			promptObject.multiple = isMultiSelect;
 			promptObject.choices = choices;
 		}
 
