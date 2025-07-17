@@ -173,14 +173,14 @@ const setGracefulListeners = ({
 	});
 
 	process.on("uncaughtException", (error) => {
-		message(error, { label: false, lineBreak: true });
+		message(error, { lineBreak: true });
 		onException(error);
 		process.exit(1);
 	});
 
 	process.on("unhandledRejection", (reason) => {
 		if (reason instanceof Error) {
-			message(reason, { label: false, lineBreak: true });
+			message(reason, { lineBreak: true });
 			onException(reason);
 		}
 
