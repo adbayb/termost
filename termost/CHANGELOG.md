@@ -1,5 +1,13 @@
 # termost
 
+## 1.5.0
+
+### Minor Changes
+
+- [`78bcfa9`](https://github.com/adbayb/termost/commit/78bcfa9577b98520d02e405fe0945388fad25266) Thanks [@adbayb](https://github.com/adbayb)! - Update listr2 to v9.0.1.
+
+- [`7897f04`](https://github.com/adbayb/termost/commit/7897f047399146fe21bb3591f3bab551ccc00a96) Thanks [@adbayb](https://github.com/adbayb)! - Add validation support for `option`, `input`, and `task` interfaces.
+
 ## 1.4.0
 
 ### Minor Changes
