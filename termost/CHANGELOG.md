@@ -1,5 +1,11 @@
 # termost
 
+## 1.7.0
+
+### Minor Changes
+
+- [`26bd5ea`](https://github.com/adbayb/termost/commit/26bd5ea4e1c9e72c22ebd71bf5eb6d9b775cf072) Thanks [@adbayb](https://github.com/adbayb)! - Improve `input` interface to allow autocompletion and limit the number of options to 10 by default.
+
 ## 1.6.0
 
 ### Minor Changes
