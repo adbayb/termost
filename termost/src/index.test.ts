@@ -54,10 +54,10 @@ describe("termost", () => {
 
 	test("should handle `validation`", async () => {
 		await expect(async () =>
-			safeExec("pnpm --filter @examples/validation start -o error"),
+			safeExec("pnpm --filter @examples/validation start:test -o error"),
 		).rejects.toThrow(/Invalid option->input/);
 		await expect(async () =>
-			safeExec("pnpm --filter @examples/validation start"),
+			safeExec("pnpm --filter @examples/validation start:test"),
 		).rejects.toThrow(/Invalid task->input/);
 	});
 

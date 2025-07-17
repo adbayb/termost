@@ -58,6 +58,17 @@ export type InputParameters<
 		label: Label<Values>;
 	} & (
 			| {
+					defaultValue?: Values[Key] extends
+						| string[]
+						| readonly string[]
+						? Values[Key][number][]
+						: never;
+					options: Values[Key] extends string[] | readonly string[]
+						? Values[Key]
+						: never;
+					type: "multiselect";
+			  }
+			| {
 					defaultValue?: Values[Key] extends boolean
 						? Values[Key]
 						: never;
@@ -67,7 +78,9 @@ export type InputParameters<
 					defaultValue?: Values[Key] extends string
 						? Values[Key]
 						: never;
-					options: Values[Key] extends string ? Values[Key][] : never;
+					options: Values[Key] extends string
+						? Values[Key][] | readonly Values[Key][]
+						: never;
 					type: "select";
 			  }
 			| {
@@ -75,13 +88,6 @@ export type InputParameters<
 						? Values[Key]
 						: never;
 					type: "text";
-			  }
-			| {
-					defaultValue?: Values[Key] extends string[]
-						? Values[Key]
-						: never;
-					options: Values[Key] extends string[] ? Values[Key] : never;
-					type: "multiselect";
 			  }
 		)
 >;
