@@ -1,5 +1,11 @@
 # termost
 
+## 1.8.0
+
+### Minor Changes
+
+- [`537e186`](https://github.com/adbayb/termost/commit/537e18678277e2ac488eaac0b35906bdc53fd525) Thanks [@adbayb](https://github.com/adbayb)! - Preserve error label in case of error.
+
 ## 1.7.0
 
 ### Minor Changes
