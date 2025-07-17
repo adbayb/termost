@@ -1,5 +1,11 @@
 # termost
 
+## 1.6.0
+
+### Minor Changes
+
+- [`ec977d8`](https://github.com/adbayb/termost/commit/ec977d83eb6ce3067a7fb4de1714057934d0ba71) Thanks [@adbayb](https://github.com/adbayb)! - Support readonly `options` for `input` interface.
+
 ## 1.5.0
 
 ### Minor Changes
