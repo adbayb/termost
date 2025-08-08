@@ -1,5 +1,11 @@
 # termost
 
+## 1.9.0
+
+### Minor Changes
+
+- [#75](https://github.com/adbayb/termost/pull/75) [`190c05d`](https://github.com/adbayb/termost/commit/190c05de1c29954b99c50b034e9d547ae43e0d1a) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `@types/node` to `22.17.0`.
+
 ## 1.8.0
 
 ### Minor Changes
