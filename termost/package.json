@@ -43,7 +43,7 @@
 	},
 	"dependencies": {
 		"enquirer": "^2.4.1",
-		"listr2": "^9.0.3",
+		"listr2": "^9.0.4",
 		"picocolors": "^1.1.1"
 	},
 	"devDependencies": {
