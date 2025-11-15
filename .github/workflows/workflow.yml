@@ -15,7 +15,7 @@ jobs:
               run: echo "version=$(cat .nvmrc)" >> $GITHUB_OUTPUT
               id: node
             - name: Setup node ${{ steps.node.outputs.version }}
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v6
               with:
                   node-version: ${{ steps.node.outputs.version }}
                   cache: pnpm
