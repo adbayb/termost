@@ -7,13 +7,8 @@ export const exec = async (command: string, options: ExecOptions = {}) => {
 		let stdout = "";
 		let stderr = "";
 
-		const [bin, ...arguments_] = command.split(" ") as [
-			string,
-			...string[],
-		];
-
 		// eslint-disable-next-line sonarjs/os-command
-		const childProcess = spawn(bin, arguments_, {
+		const childProcess = spawn(command, {
 			cwd,
 			env: {
 				// eslint-disable-next-line n/no-process-env
