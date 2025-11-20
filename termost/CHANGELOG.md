@@ -1,5 +1,15 @@
 # termost
 
+## 1.9.0
+
+### Minor Changes
+
+- [#76](https://github.com/adbayb/termost/pull/76) [`d3ba4be`](https://github.com/adbayb/termost/commit/d3ba4be2255b92569b9df815b7009996c145b7ab) Thanks [@renovate](https://github.com/apps/renovate)! - Updated dependency `listr2` to `^9.0.4`.
+
+### Patch Changes
+
+- [`4ad4c6c`](https://github.com/adbayb/termost/commit/4ad4c6c97381ddefb2a835b4a698aeedbb223869) Thanks [@adbayb](https://github.com/adbayb)! - Remove Node v24 deprecation warning due to passing args to children process when shell option is enabled.
+
 ## 1.8.0
 
 ### Minor Changes
