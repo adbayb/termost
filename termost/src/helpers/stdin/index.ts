@@ -1,5 +1,3 @@
-import process from "node:process";
-
 export const getArguments = () => {
 	const parameters = process.argv.slice(2);
 	let command: string | undefined;

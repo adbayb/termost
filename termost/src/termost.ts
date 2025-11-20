@@ -1,5 +1,3 @@
-import process from "node:process";
-
 import type {
 	CommandName,
 	CreateInstruction,

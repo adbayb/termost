@@ -1,4 +1,3 @@
-import process from "node:process";
 import { spawn } from "node:child_process";
 
 export const exec = async (command: string, options: ExecOptions = {}) => {

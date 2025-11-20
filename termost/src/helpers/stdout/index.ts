@@ -18,9 +18,10 @@ export const format = (
 	} = {},
 ) => {
 	const { color = "white", modifiers = [] } = options;
-	const transformers: ((input: string) => string)[] = [];
 
-	transformers.push(pico[colorMapper[color]]);
+	const transformers: ((input: string) => string)[] = [
+		pico[colorMapper[color]],
+	];
 
 	modifiers.forEach((modifier: Modifier) => {
 		if (modifier === "uppercase") {

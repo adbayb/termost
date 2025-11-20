@@ -1,5 +1,3 @@
-import process from "node:process";
-
 import { helpers, termost } from "termost";
 
 import { name, version } from "../package.json" with { type: "json" };
