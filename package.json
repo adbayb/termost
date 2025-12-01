@@ -20,7 +20,7 @@
 	"devDependencies": {
 		"@adbayb/stack": "2.32.0"
 	},
-	"packageManager": "pnpm@10.22.0",
+	"packageManager": "pnpm@10.24.0",
 	"engines": {
 		"node": ">=22.0.0",
 		"pnpm": ">=10.0.0"
