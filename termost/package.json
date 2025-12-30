@@ -48,8 +48,8 @@
 	},
 	"devDependencies": {
 		"@types/node": "24.10.1",
-		"quickbundle": "2.15.0",
-		"vitest": "4.0.12"
+		"quickbundle": "2.16.0",
+		"vitest": "4.0.16"
 	},
 	"publishConfig": {
 		"access": "public"
