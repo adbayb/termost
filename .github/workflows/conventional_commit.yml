@@ -30,7 +30,7 @@ jobs:
                   subjectPattern: ^(?![A-Z]).+$
                   subjectPatternError: The subject must start with a lowercase character
             # Create a sticky comment to display the detailed error
-            - uses: marocchino/sticky-pull-request-comment@v2
+            - uses: marocchino/sticky-pull-request-comment@v3
               if: always() && (steps.check_pr_rule.outputs.error_message != null)
               with:
                   header: check_pr_comment
@@ -42,7 +42,7 @@ jobs:
                       ```
             # Delete a previous comment when the issue has been resolved
             - if: ${{ steps.check_pr_rule.outputs.error_message == null }}
-              uses: marocchino/sticky-pull-request-comment@v2
+              uses: marocchino/sticky-pull-request-comment@v3
               with:
                   header: check_pr_comment
                   delete: true
