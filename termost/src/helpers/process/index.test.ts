@@ -4,7 +4,7 @@ import { exec } from ".";
 
 describe("process", () => {
 	test("should `exec` given no error", async () => {
-		expect(await exec('echo "Plop"')).toBe("Plop");
+		await expect(exec('echo "Plop"')).resolves.toBe("Plop");
 	});
 
 	test("should `exec` given error", async () => {

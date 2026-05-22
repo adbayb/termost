@@ -1,6 +1,6 @@
 import { helpers, termost } from "termost";
 
-import { name, version } from "../package.json" with { type: "json" };
+import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
 	computedFromOtherTaskValues: "big" | "small";
@@ -9,29 +9,27 @@ type ProgramContext = {
 };
 
 const program = termost<ProgramContext>({
-	name,
 	description: "Example to showcase the `task` API",
-	version,
+	name: package_.name,
+	version: package_.version,
 });
 
 program
 	.task({
-		key: "size",
-		label: "Task with returned value (persisted)",
 		handler() {
 			return 45;
 		},
+		key: "size",
+		label: "Task with returned value (persisted)",
 	})
 	.task({
-		label: "Task with side-effect only (no persisted value)",
 		async handler() {
 			// @note: side-effect only handler
 			await wait(500);
 		},
+		label: "Task with side-effect only (no persisted value)",
 	})
 	.task({
-		key: "computedFromOtherTaskValues",
-		label: "Task can also access other persisted task values",
 		handler(context) {
 			if (context.size > 2000) {
 				return "big" as const;
@@ -39,6 +37,8 @@ program
 
 			return "small" as const;
 		},
+		key: "computedFromOtherTaskValues",
+		label: "Task can also access other persisted task values",
 		validate({ computedFromOtherTaskValues }) {
 			if (computedFromOtherTaskValues === "big")
 				return new Error("Invalid input");
@@ -47,17 +47,17 @@ program
 		},
 	})
 	.task({
-		key: "execOutput",
-		label: "Or even execute external commands thanks to its provided helpers",
 		async handler() {
 			return helpers.exec("echo 'Hello from shell'");
 		},
+		key: "execOutput",
+		label: "Or even execute external commands thanks to its provided helpers",
 	})
 	.task({
-		label: "A task can be skipped as well",
 		async handler() {
 			await wait(2000);
 		},
+		label: "A task can be skipped as well",
 		skip(context) {
 			const needOptimization = context.size > 2000;
 
@@ -65,11 +65,11 @@ program
 		},
 	})
 	.task({
-		label: (context) =>
-			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
 		handler() {
 			return;
 		},
+		label: (context) =>
+			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
 	})
 	.task({
 		handler(context) {

@@ -9,22 +9,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v5
-            - uses: pnpm/action-setup@v4
+              uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v6
             - uses: actions/setup-node@v6
               with:
-                  node-version-file: ".nvmrc"
                   cache: pnpm
-            - name: Setup cache
-              id: cache
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      ./node_modules
-                      ./turbo
-                  key: ${{ runner.os }}-cache-${{ github.sha }}
-                  restore-keys: |
-                      ${{ runner.os }}-cache-
+                  node-version-file: ".nvmrc"
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
             - name: Build

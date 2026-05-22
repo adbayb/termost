@@ -45,10 +45,10 @@ export const getArguments = () => {
 		} else if (currentOptionName) {
 			options[currentOptionName] = castValue(parameter);
 			currentOptionName = undefined;
-		} else if (!command) {
-			command = parameter;
-		} else {
+		} else if (command) {
 			operands.push(parameter);
+		} else {
+			command = parameter;
 		}
 	}
 

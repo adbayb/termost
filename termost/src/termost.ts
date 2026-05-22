@@ -1,3 +1,7 @@
+import type { CommandParameters } from "./api/command";
+import type { InputParameters } from "./api/input";
+import type { OptionParameters } from "./api/option";
+import type { TaskParameters } from "./api/task";
 import type {
 	CommandName,
 	CreateInstruction,
@@ -7,16 +11,13 @@ import type {
 	PackageMetadata,
 	ProgramMetadata,
 } from "./types";
-import { message } from "./helpers/stdout";
-import { getArguments } from "./helpers/stdin";
-import { createTask } from "./api/task";
-import type { TaskParameters } from "./api/task";
-import { createOption } from "./api/option";
-import type { OptionParameters } from "./api/option";
-import { createInput } from "./api/input";
-import type { InputParameters } from "./api/input";
+
 import { createCommand, getCommandController } from "./api/command";
-import type { CommandParameters } from "./api/command";
+import { createInput } from "./api/input";
+import { createOption } from "./api/option";
+import { createTask } from "./api/task";
+import { getArguments } from "./helpers/stdin";
+import { message } from "./helpers/stdout";
 
 /**
  * The termost fluent interface API.
@@ -24,8 +25,7 @@ import type { CommandParameters } from "./api/command";
 export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	/**
 	 * Allows to attach a new sub-command to the program.
-	 * @param name - The CLI command name.
-	 * @param description - The CLI command description.
+	 * @param parameters - The CLI command name and description.
 	 * @returns The Command API.
 	 */
 	command: <CommandValues extends ObjectLikeConstraint = EmptyObject>(
@@ -43,8 +43,8 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 };
 
 export function termost<Values extends ObjectLikeConstraint = EmptyObject>({
-	name,
 	description,
+	name,
 	onException,
 	onShutdown,
 	version,
@@ -52,10 +52,10 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>({
 	const { command = name, operands, options } = getArguments();
 
 	const metadata: ProgramMetadata = {
-		name,
-		description,
 		argv: { command, operands, options },
+		description,
 		isEmptyCommand: {},
+		name,
 		version,
 	};
 
@@ -67,7 +67,7 @@ export function termost<Values extends ObjectLikeConstraint = EmptyObject>({
 export const createProgram = <Values extends ObjectLikeConstraint>(
 	metadata: ProgramMetadata,
 ): Termost<Values> => {
-	const { name, description, argv } = metadata;
+	const { argv, description, name } = metadata;
 	const rootCommandName: CommandName = name;
 	let currentCommandName: CommandName = rootCommandName;
 
@@ -88,7 +88,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 
 			const output = await instruction(context, argv);
 
-			if (!output || !output.key) return;
+			if (!output?.key) return;
 
 			controller.addValue(
 				output.key,
@@ -140,8 +140,8 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 
 	// @note: the root command is created by default
 	program.command({
-		name,
 		description,
+		name,
 	});
 
 	return program;

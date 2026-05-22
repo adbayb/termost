@@ -1,22 +1,22 @@
 import { helpers, termost } from "termost";
 
-import { name, version } from "../package.json" with { type: "json" };
+import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
 	globalFlag: boolean;
 };
 
 const program = termost<ProgramContext>({
-	name,
 	description: "Example to showcase the `command` API",
-	version,
+	name: package_.name,
+	version: package_.version,
 });
 
 program.option({
+	defaultValue: false,
+	description: "Shared flag between commands",
 	key: "globalFlag",
 	name: "global",
-	description: "Shared flag between commands",
-	defaultValue: false,
 });
 
 type BuildCommandContext = {
@@ -25,14 +25,14 @@ type BuildCommandContext = {
 
 program
 	.command<BuildCommandContext>({
-		name: "build",
 		description: "Transpile and bundle in production mode",
+		name: "build",
 	})
 	.option({
+		defaultValue: "local-value",
+		description: "Local command flag",
 		key: "localFlag",
 		name: "local",
-		description: "Local command flag",
-		defaultValue: "local-value",
 	})
 	.task({
 		handler(context, argv) {
@@ -56,8 +56,8 @@ program
 
 program
 	.command({
-		name: "watch",
 		description: "Rebuild your assets on any code change",
+		name: "watch",
 	})
 	.task({
 		handler(context, argv) {

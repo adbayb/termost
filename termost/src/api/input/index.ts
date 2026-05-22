@@ -14,20 +14,20 @@ const { prompt } = enquirer;
 export const createInput: CreateInstruction<
 	InputParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 > = (parameters) => {
-	const { key, label, defaultValue, type } = parameters;
+	const { defaultValue, key, label, type } = parameters;
 
 	const mappedPromptType =
 		type === "select" || type === "multiselect" ? "autocomplete" : type;
 
 	return async function execute(context, argv) {
-		const promptObject: Parameters<typeof prompt>[0] & {
-			choices?: { title: string; selected?: boolean; value: string }[];
+		const promptObject: {
+			choices?: { selected?: boolean; title: string; value: string }[];
 			limit?: number;
 			multiple?: boolean;
-		} = {
-			name: key,
+		} & Parameters<typeof prompt>[0] = {
 			initial: defaultValue,
 			message: typeof label === "function" ? label(context, argv) : label,
+			name: key,
 			type: mappedPromptType,
 		};
 
@@ -36,8 +36,8 @@ export const createInput: CreateInstruction<
 			const options = parameters.options as string[];
 
 			const choices = options.map((option) => ({
-				title: option,
 				multiple: isMultiSelect,
+				title: option,
 				...(isMultiSelect && {
 					selected: ((defaultValue ?? []) as string[]).includes(
 						option,
@@ -62,40 +62,34 @@ export type InputParameters<
 	Key extends keyof Values,
 > = InstructionParameters<
 	Values,
-	InstructionKey<Key> & {
+	(
+		| {
+				defaultValue?: Values[Key] extends boolean
+					? Values[Key]
+					: never;
+				type: "confirm";
+		  }
+		| {
+				defaultValue?: Values[Key] extends readonly string[] | string[]
+					? Values[Key][number][]
+					: never;
+				options: Values[Key] extends readonly string[] | string[]
+					? Values[Key]
+					: never;
+				type: "multiselect";
+		  }
+		| {
+				defaultValue?: Values[Key] extends string ? Values[Key] : never;
+				options: Values[Key] extends string
+					? readonly Values[Key][] | Values[Key][]
+					: never;
+				type: "select";
+		  }
+		| {
+				defaultValue?: Values[Key] extends string ? Values[Key] : never;
+				type: "text";
+		  }
+	) & {
 		label: Label<Values>;
-	} & (
-			| {
-					defaultValue?: Values[Key] extends
-						| string[]
-						| readonly string[]
-						? Values[Key][number][]
-						: never;
-					options: Values[Key] extends string[] | readonly string[]
-						? Values[Key]
-						: never;
-					type: "multiselect";
-			  }
-			| {
-					defaultValue?: Values[Key] extends boolean
-						? Values[Key]
-						: never;
-					type: "confirm";
-			  }
-			| {
-					defaultValue?: Values[Key] extends string
-						? Values[Key]
-						: never;
-					options: Values[Key] extends string
-						? Values[Key][] | readonly Values[Key][]
-						: never;
-					type: "select";
-			  }
-			| {
-					defaultValue?: Values[Key] extends string
-						? Values[Key]
-						: never;
-					type: "text";
-			  }
-		)
+	} & InstructionKey<Key>
 >;

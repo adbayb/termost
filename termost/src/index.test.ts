@@ -4,11 +4,11 @@ import { exec } from "./helpers/process";
 
 describe("termost", () => {
 	test("should display `version`", async () => {
-		const longFlagOutput = await safeExec(
+		const longFlagOutput = await exec(
 			"pnpm --filter @examples/default start --version",
 		);
 
-		const shortFlagOutput = await safeExec(
+		const shortFlagOutput = await exec(
 			"pnpm --filter @examples/default start -v",
 		);
 
@@ -17,11 +17,11 @@ describe("termost", () => {
 	});
 
 	test("should display `help`", async () => {
-		const longFlagOutput = await safeExec(
+		const longFlagOutput = await exec(
 			"pnpm --filter @examples/default start --help",
 		);
 
-		const shortFlagOutput = await safeExec(
+		const shortFlagOutput = await exec(
 			"pnpm --filter @examples/default start -h",
 		);
 
@@ -30,19 +30,17 @@ describe("termost", () => {
 	});
 
 	test("should display `help` given empty command", async () => {
-		const rootCommand = await safeExec(
-			"pnpm --filter @examples/empty start",
-		);
+		const rootCommand = await exec("pnpm --filter @examples/empty start");
 
-		const buildCommand = await safeExec(
+		const buildCommand = await exec(
 			"pnpm --filter @examples/empty start build",
 		);
 
-		const buildCommandWithOption = await safeExec(
+		const buildCommandWithOption = await exec(
 			"pnpm --filter @examples/empty start build --option test",
 		);
 
-		const watchCommand = await safeExec(
+		const watchCommand = await exec(
 			"pnpm --filter @examples/empty start watch",
 		);
 
@@ -54,39 +52,39 @@ describe("termost", () => {
 
 	test("should handle `validation`", async () => {
 		await expect(async () =>
-			safeExec("pnpm --filter @examples/validation start:test -o error"),
+			exec("pnpm --filter @examples/validation start:test -o error"),
 		).rejects.toThrow(/Invalid option->input/);
 		await expect(async () =>
-			safeExec("pnpm --filter @examples/validation start:test"),
+			exec("pnpm --filter @examples/validation start:test"),
 		).rejects.toThrow(/Invalid task->input/);
 	});
 
 	test("should handle `command` api", async () => {
-		const helpOutput = await safeExec(
+		const helpOutput = await exec(
 			"pnpm --filter @examples/command start --help",
 		);
 
-		const buildOutput = await safeExec(
+		const buildOutput = await exec(
 			"pnpm --filter @examples/command start build",
 		);
 
-		const watchOutput = await safeExec(
+		const watchOutput = await exec(
 			"pnpm --filter @examples/command start watch",
 		);
 
-		const buildSharedFlagOutput = await safeExec(
+		const buildSharedFlagOutput = await exec(
 			"pnpm --filter @examples/command start build --global --local hello",
 		);
 
-		const watchSharedFlagOutput = await safeExec(
+		const watchSharedFlagOutput = await exec(
 			"pnpm --filter @examples/command start watch --global",
 		);
 
-		const buildHelpOutput = await safeExec(
+		const buildHelpOutput = await exec(
 			"pnpm --filter @examples/command start build --help",
 		);
 
-		const watchHelpOutput = await safeExec(
+		const watchHelpOutput = await exec(
 			"pnpm --filter @examples/command start watch --help",
 		);
 
@@ -100,30 +98,14 @@ describe("termost", () => {
 	});
 
 	test("should handle `option` api", async () => {
-		const output = await safeExec("pnpm --filter @examples/option start");
+		const output = await exec("pnpm --filter @examples/option start");
 
 		expect(output).toMatchSnapshot();
 	});
 
 	test("should handle `task` api", async () => {
-		const output = await safeExec("pnpm --filter @examples/task start");
+		const output = await exec("pnpm --filter @examples/task start");
 
 		expect(output).toMatchSnapshot();
 	});
 });
-
-/**
- * A test utility to strip contextual information (including absolute paths) output by `pnpm --filter run` command.
- * It allows to run tests whatever the testing environment (CI, local, ...).
- * @param command - The command to run.
- * @returns The generic command output.
- * @example
- * const shortFlagOutput = await safeExec(
- * 	"pnpm --filter @examples/default start -h",
- * );
- */
-const safeExec = async (command: string) => {
-	const output = await exec(command);
-
-	return output.toString().split("\n").slice(3).join("\n");
-};

@@ -53,8 +53,8 @@ export const message = (
 		lineBreak: optionlineBreak,
 		type: optionType,
 	}: {
-		label?: string | false;
-		lineBreak?: LineBreakByPosition | boolean;
+		label?: false | string;
+		lineBreak?: boolean | LineBreakByPosition;
 		type?: MessageType;
 	} = {},
 ) => {
@@ -99,10 +99,10 @@ export const message = (
 		!hasNoLabel && isTextualContent
 			? format(`   ${content}`, { color })
 			: undefined,
-		!isTextualContent
+		isTextualContent
 			? // Do not format error with colors to preserve the stack trace:
-				content
-			: undefined,
+				undefined
+			: content,
 	].filter(Boolean);
 
 	output.forEach((item) => {
@@ -179,8 +179,6 @@ const modifierMapper = {
 	underline: "underline",
 } as const;
 
-type MessageType = "error" | "information" | "success" | "warning";
-
 type Color =
 	| "black"
 	| "blue"
@@ -191,6 +189,8 @@ type Color =
 	| "red"
 	| "white"
 	| "yellow";
+
+type MessageType = "error" | "information" | "success" | "warning";
 
 type Modifier =
 	| "bold"

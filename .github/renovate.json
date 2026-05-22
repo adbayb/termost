@@ -1,9 +1,6 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": [
-		":automergeAll",
-		":automergePr",
-		":automergeRequireAllStatusChecks",
 		":enableVulnerabilityAlerts",
 		":label(dependencies)",
 		":maintainLockFilesMonthly",

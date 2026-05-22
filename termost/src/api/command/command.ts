@@ -1,23 +1,24 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import type { ObjectLikeConstraint, ProgramMetadata } from "../../types";
+import type { CommandController } from "./controller";
+
 import { format } from "../../helpers/stdout";
 import {
 	createCommandController,
 	getCommandController,
 	getCommandDescriptionCollection,
 } from "./controller";
-import type { CommandController } from "./controller";
 
 export type CommandParameters = {
-	name: string;
 	description: string;
+	name: string;
 };
 
 export const createCommand = <Values extends ObjectLikeConstraint>(
-	{ name, description }: CommandParameters,
+	{ description, name }: CommandParameters,
 	metadata: ProgramMetadata,
 ) => {
-	const { name: rootCommandName, argv, version } = metadata;
+	const { argv, name: rootCommandName, version } = metadata;
 	const isRootCommand = name === rootCommandName;
 	const isActiveCommand = argv.command === name;
 	const controller = createCommandController<Values>(name, description);

@@ -1,6 +1,6 @@
 import { termost } from "termost";
 
-import { name, version } from "../package.json" with { type: "json" };
+import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
 	input: string;
@@ -9,16 +9,16 @@ type ProgramContext = {
 };
 
 const program = termost<ProgramContext>({
-	name,
 	description: "Example to showcase the `option` API",
-	version,
+	name: package_.name,
+	version: package_.version,
 });
 
 program
 	.option({
+		description: "An option",
 		key: "option",
 		name: { long: "option", short: "o" },
-		description: "An option",
 		validate({ option }) {
 			if (option === "error") return new Error("Invalid option->input");
 
@@ -26,10 +26,10 @@ program
 		},
 	})
 	.task({
-		key: "task",
 		handler() {
 			return "error";
 		},
+		key: "task",
 		validate({ task }) {
 			if (task === "error") return new Error("Invalid task->input");
 

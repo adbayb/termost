@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import type { CommandController } from "../command";
 import type {
 	CreateInstruction,
 	InstructionKey,
@@ -7,6 +6,7 @@ import type {
 	ObjectLikeConstraint,
 	ProgramMetadata,
 } from "../../types";
+import type { CommandController } from "../command";
 
 export const createOption =
 	(
@@ -16,7 +16,7 @@ export const createOption =
 		OptionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 	> =>
 	(parameters) => {
-		const { key, name, description, defaultValue } = parameters;
+		const { defaultValue, description, key, name } = parameters;
 
 		const aliases =
 			typeof name === "string" ? [name] : [name.short, name.long];
@@ -51,9 +51,9 @@ export type OptionParameters<
 	Key extends keyof Values,
 > = InstructionParameters<
 	Values,
-	InstructionKey<Key> & {
-		name: string | { long: string; short: string };
-		description: string;
+	{
 		defaultValue?: Values[Key];
-	}
+		description: string;
+		name: { long: string; short: string } | string;
+	} & InstructionKey<Key>
 >;

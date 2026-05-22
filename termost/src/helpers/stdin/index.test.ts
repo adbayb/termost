@@ -20,7 +20,7 @@ process.argv = [
 	"-b",
 ];
 
-describe("getArguments", () => {
+describe(getArguments, () => {
 	test("should parse command name", () => {
 		expect(getArguments().command).toBe(process.argv[2]);
 	});

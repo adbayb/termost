@@ -8,7 +8,7 @@
 		"check": "stack check",
 		"clean": "stack clean",
 		"fix": "stack fix",
-		"prepare": "stack install && pnpm build",
+		"install": "stack install && pnpm --filter termost build",
 		"release:log": "stack release --log",
 		"release:publish": "stack release --publish",
 		"release:version": "stack release --tag",
@@ -18,11 +18,25 @@
 	},
 	"prettier": "@adbayb/stack/prettier",
 	"devDependencies": {
-		"@adbayb/stack": "2.32.0"
+		"@adbayb/stack": "2.36.0",
+		"@types/node": "24.12.4"
 	},
-	"packageManager": "pnpm@10.22.0",
-	"engines": {
-		"node": ">=22.0.0",
-		"pnpm": ">=10.0.0"
+	"packageManager": "pnpm@11.2.2",
+	"devEngines": {
+		"packageManager": [
+			{
+				"name": "pnpm",
+				"version": "11.2.2",
+				"onFail": "download"
+			},
+			{
+				"name": "npm"
+			}
+		],
+		"runtime": {
+			"name": "node",
+			"version": ">=24.0.0",
+			"onFail": "error"
+		}
 	}
 }

@@ -1,6 +1,6 @@
 import { helpers, termost } from "termost";
 
-import { name, version } from "../package.json" with { type: "json" };
+import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
 	input1: "singleOption1" | "singleOption2";
@@ -10,37 +10,37 @@ type ProgramContext = {
 };
 
 const program = termost<ProgramContext>({
-	name,
 	description: "Example to showcase the `input` API",
-	version,
+	name: package_.name,
+	version: package_.version,
 });
 
 program
 	.input({
+		defaultValue: "singleOption2",
 		key: "input1",
 		label: "What is your single choice?",
-		defaultValue: "singleOption2",
 		options: ["singleOption1", "singleOption2"],
 		type: "select",
 	})
 	.input({
+		defaultValue: ["multipleOption2"],
 		key: "input2",
 		label: "What is your multiple choices?",
-		defaultValue: ["multipleOption2"],
 		options: ["multipleOption1", "multipleOption2"],
 		type: "multiselect",
 	})
 	.input({
+		defaultValue: false,
 		key: "input3",
 		label: "Are you sure to skip next input?",
-		defaultValue: false,
 		type: "confirm",
 	})
 	.input({
+		defaultValue: "Empty input",
 		key: "input4",
 		label: (context) =>
 			`Dynamic input label generated from a contextual value: ${context.input1}`,
-		defaultValue: "Empty input",
 		skip(context, argv) {
 			console.log(argv);
 

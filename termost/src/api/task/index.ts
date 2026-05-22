@@ -13,7 +13,7 @@ import type {
 export const createTask: CreateInstruction<
 	TaskParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 > = (parameters) => {
-	const { key, label, handler } = parameters;
+	const { handler, key, label } = parameters;
 
 	const receiver = label
 		? new Listr([], {
@@ -31,9 +31,7 @@ export const createTask: CreateInstruction<
 	return async function execute(context, argv) {
 		let value: unknown;
 
-		if (!receiver) {
-			value = await handler(context, argv);
-		} else {
+		if (receiver) {
 			receiver.add({
 				...(label && {
 					title:
@@ -46,6 +44,8 @@ export const createTask: CreateInstruction<
 			});
 
 			await receiver.run();
+		} else {
+			value = await handler(context, argv);
 		}
 
 		return { key, value };
@@ -57,13 +57,13 @@ export type TaskParameters<
 	Key extends keyof Values | undefined = undefined,
 > = InstructionParameters<
 	Values,
-	Partial<InstructionKey<Key>> & {
-		label?: Label<Values>;
+	{
 		handler: (
 			context: Context<Values>,
 			argv: ArgumentValues,
 		) => Key extends keyof Values
 			? Promise<Values[Key]> | Values[Key]
 			: Promise<void> | void;
-	}
+		label?: Label<Values>;
+	} & Partial<InstructionKey<Key>>
 >;

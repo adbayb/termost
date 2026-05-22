@@ -16,29 +16,23 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
+            id-token: write
             pull-requests: write
         steps:
-            - uses: actions/checkout@v5
-            - uses: pnpm/action-setup@v4
-            - name: Setup node
-              uses: actions/setup-node@v6
+            - uses: actions/checkout@v6
+            - uses: pnpm/action-setup@v6
+            - uses: actions/setup-node@v6
               with:
-                  node-version-file: ".nvmrc"
                   cache: pnpm
-            - name: Setup .npmrc
-              run: |
-                  cat << EOF > "$HOME/.npmrc"
-                    //registry.npmjs.org/:_authToken=$NPM_TOKEN
-                  EOF
-              env:
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  node-version-file: ".nvmrc"
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
             - name: Publish pre-release version(s)
               if: "!contains(github.event.head_commit.message, 'chore: release package(s)')"
               run: |
-                  pnpm --filter=\!@examples/\* --recursive exec pnpm version "$(pnpm show ./ version)-next-${GITHUB_SHA::7}"
-                  pnpm --filter=\!@examples/\* --recursive exec pnpm publish --tag next --no-git-checks
+                  pnpm --filter="!." --filter="!./applications/*" --filter="!./examples/*" --filter="!./tools/*" --recursive exec \
+                    node -e "const fs=require('fs'),pkg=JSON.parse(fs.readFileSync('package.json'));pkg.version=pkg.version+'-next-${GITHUB_SHA::7}';fs.writeFileSync('package.json',JSON.stringify(pkg,null,2)+'\n');"
+                  pnpm --filter="!." --filter="!./applications/*" --filter="!./examples/*" --filter="!./tools/*" --recursive exec pnpm publish --tag next --no-git-checks
             - name: Create release pull request
               if: "!contains(github.event.head_commit.message, 'chore: release package(s)')"
               uses: changesets/action@v1
@@ -55,4 +49,3 @@ jobs:
                   publish: pnpm release:publish
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

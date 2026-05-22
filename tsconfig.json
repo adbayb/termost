@@ -1,4 +1,7 @@
 {
 	"extends": "@adbayb/stack/typescript",
+	"compilerOptions": {
+		"types": ["node"]
+	},
 	"exclude": ["node_modules", "**/node_modules", "**/dist"]
 }

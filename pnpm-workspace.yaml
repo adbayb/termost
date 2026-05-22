@@ -1,4 +1,16 @@
 packages:
     - "examples/*"
-    - "packages/*"
     - "termost"
+allowBuilds:
+    unrs-resolver: false
+minimumReleaseAgeExclude:
+    - "@adbayb/stack"
+    - quickbundle
+publicHoistPattern:
+    - "*changesets*"
+    - "*commitlint*"
+    - "*eslint*"
+    - "*prettier*"
+    - "*turbo*"
+    - "*typescript*"
+    - "*types*"
