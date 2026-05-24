@@ -1,5 +1,11 @@
 # termost
 
+## 1.9.1
+
+### Patch Changes
+
+- [`e8c0d4a`](https://github.com/adbayb/termost/commit/e8c0d4af4867ce1ce805c07e3eb8bee26d459b64) Thanks [@adbayb](https://github.com/adbayb)! - Update `listr2` to v10.
+
 ## 1.9.0
 
 ### Minor Changes
