@@ -21,7 +21,7 @@
 		"@adbayb/stack": "2.36.0",
 		"@types/node": "24.12.4"
 	},
-	"packageManager": "pnpm@11.2.2",
+	"packageManager": "pnpm@11.8.0",
 	"devEngines": {
 		"packageManager": [
 			{
