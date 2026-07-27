@@ -29,21 +29,16 @@ export const getArguments = () => {
 		if (shortFlagMatchResult?.name) {
 			flushOptimisticOption();
 
+			// oxlint-disable-next-line typescript/no-misused-spread
 			const optionFlags = [...shortFlagMatchResult.name];
 			const lastIndex = optionFlags.length - 1;
 
 			optionFlags.forEach((flag, index) => {
-				addOptimisticOption(
-					flag,
-					lastIndex === index ? undefined : true,
-				);
+				addOptimisticOption(flag, lastIndex === index ? undefined : true);
 			});
 		} else if (longFlagMatchResult?.name) {
 			flushOptimisticOption();
-			addOptimisticOption(
-				longFlagMatchResult.name,
-				longFlagMatchResult.value,
-			);
+			addOptimisticOption(longFlagMatchResult.name, longFlagMatchResult.value);
 		} else if (currentOptionName) {
 			options[currentOptionName] = castValue(parameter);
 			currentOptionName = undefined;
@@ -59,8 +54,8 @@ export const getArguments = () => {
 	return { command, operands, options };
 };
 
-const SHORT_FLAG_REGEX = /^-(?<name>(?!-).*)$/;
-const LONG_FLAG_REGEX = /^--(?<name>.*?)(?:=(?<value>.+))?$/;
+const SHORT_FLAG_REGEX = /^-(?<name>(?!-).*)$/u;
+const LONG_FLAG_REGEX = /^--(?<name>.*?)(?:=(?<value>.+))?$/u;
 
 const castValue = (value: string) => {
 	try {

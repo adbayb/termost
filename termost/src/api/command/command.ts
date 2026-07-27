@@ -1,8 +1,6 @@
-/* eslint-disable sonarjs/cognitive-complexity */
+import { format } from "../../helpers/stdout";
 import type { ObjectLikeConstraint, ProgramMetadata } from "../../types";
 import type { CommandController } from "./controller";
-
-import { format } from "../../helpers/stdout";
 import {
 	createCommandController,
 	getCommandController,
@@ -10,18 +8,18 @@ import {
 } from "./controller";
 
 export type CommandParameters = {
-	description: string;
 	name: string;
+	description: string;
 };
 
-export const createCommand = <Values extends ObjectLikeConstraint>(
-	{ description, name }: CommandParameters,
+export const createCommand = (
+	{ name, description }: CommandParameters,
 	metadata: ProgramMetadata,
 ) => {
-	const { argv, name: rootCommandName, version } = metadata;
+	const { name: rootCommandName, argv, version } = metadata;
 	const isRootCommand = name === rootCommandName;
 	const isActiveCommand = argv.command === name;
-	const controller = createCommandController<Values>(name, description);
+	const controller = createCommandController<ObjectLikeConstraint>(name, description);
 	const rootController = getCommandController(rootCommandName);
 
 	/*
@@ -30,8 +28,8 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 	 */
 	setTimeout(() => {
 		/**
-		 * By design, the root command instructions are always executed
-		 * even with subcommands (to share options, messages...).
+		 * By design, the root command instructions are always executed even with subcommands (to
+		 * share options, messages...).
 		 */
 		if (isRootCommand && !isActiveCommand) {
 			void rootController.enable();
@@ -40,9 +38,9 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 		// Enable the current active command instructions:
 		if (isActiveCommand) {
 			/**
-			 * SetTimeout 0 allows to run activation logic in the next event loop iteration.
-			 * It'll allow to make sure that the `metadata` is correctly filled with all commands
-			 * metadata (especially to let the global help option to display all available commands).
+			 * SetTimeout 0 allows to run activation logic in the next event loop iteration. It'll
+			 * allow to make sure that the `metadata` is correctly filled with all commands metadata
+			 * (especially to let the global help option to display all available commands).
 			 */
 			const optionKeys = Object.keys(argv.options);
 
@@ -94,12 +92,11 @@ const showHelp = ({
 	isRootCommand,
 	rootCommandName,
 }: {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	// oxlint-disable-next-line @typescript-eslint/no-explicit-any
 	controller: CommandController<any>;
 	currentCommandName: string;
 	isRootCommand: boolean;
 	rootCommandName: string;
-	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 }) => {
 	const commandMetadata = controller.getMetadata(rootCommandName);
 	const { description, options } = commandMetadata;
@@ -110,15 +107,11 @@ const showHelp = ({
 	const hasCommands = isRootCommand && commandKeys.length > 1;
 
 	printTitle("Usage");
+
 	print(
-		`${format(
-			`${rootCommandName}${
-				isRootCommand ? "" : ` ${currentCommandName}`
-			}`,
-			{
-				color: "green",
-			},
-		)} ${hasCommands ? "<command> " : ""}${hasOptions ? "[…options]" : ""}`,
+		`${format(`${rootCommandName}${isRootCommand ? "" : ` ${currentCommandName}`}`, {
+			color: "green",
+		})} ${hasCommands ? "<command> " : ""}${hasOptions ? "[…options]" : ""}`,
 	);
 
 	if (description) {
@@ -134,12 +127,15 @@ const showHelp = ({
 		printTitle("Commands");
 
 		for (const name of commandKeys) {
-			if (name === rootCommandName) continue;
+			if (name === rootCommandName) {
+				continue;
+			}
 
 			const commandDescription = commands[name];
 
-			if (commandDescription)
+			if (commandDescription) {
 				printLabelValue(name, commandDescription, padding);
+			}
 		}
 	}
 

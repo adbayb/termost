@@ -1,5 +1,4 @@
 import { termost } from "termost";
-
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
@@ -9,29 +8,33 @@ type ProgramContext = {
 };
 
 const program = termost<ProgramContext>({
-	description: "Example to showcase the `option` API",
 	name: package_.name,
+	description: "Example to showcase the `option` API",
 	version: package_.version,
 });
 
 program
 	.option({
-		description: "An option",
 		key: "option",
 		name: { long: "option", short: "o" },
+		description: "An option",
 		validate({ option }) {
-			if (option === "error") return new Error("Invalid option->input");
+			if (option === "error") {
+				return new Error("Invalid option->input");
+			}
 
 			return undefined;
 		},
 	})
 	.task({
+		key: "task",
 		handler() {
 			return "error";
 		},
-		key: "task",
 		validate({ task }) {
-			if (task === "error") return new Error("Invalid task->input");
+			if (task === "error") {
+				return new Error("Invalid task->input");
+			}
 
 			return undefined;
 		},

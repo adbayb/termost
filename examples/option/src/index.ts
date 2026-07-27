@@ -1,5 +1,4 @@
 import { helpers, termost } from "termost";
-
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
@@ -8,32 +7,33 @@ type ProgramContext = {
 };
 
 const program = termost<ProgramContext>({
-	description: "Example to showcase the `option` API",
 	name: package_.name,
+	description: "Example to showcase the `option` API",
 	version: package_.version,
 });
 
 program
 	.option({
-		defaultValue: 0,
-		description: "Useful CLI flag",
 		key: "optionWithAlias",
 		name: { long: "shortOption", short: "s" },
+		description: "Useful CLI flag",
+		defaultValue: 0,
 	})
 	.option({
-		defaultValue: "defaultValue",
-		description: "Useful CLI flag",
 		key: "optionWithoutAlias",
 		name: "longOption",
+		description: "Useful CLI flag",
+		defaultValue: "defaultValue",
 		validate({ optionWithoutAlias }) {
-			if (["error", "invalid"].includes(optionWithoutAlias))
+			if (["error", "invalid"].includes(optionWithoutAlias)) {
 				return new Error("Invalid input");
+			}
 
 			return undefined;
 		},
 	})
 	.task({
 		handler(context) {
-			helpers.message(JSON.stringify(context, null, 2));
+			helpers.message(JSON.stringify(context, undefined, 2));
 		},
 	});

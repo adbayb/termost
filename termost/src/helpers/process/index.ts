@@ -7,11 +7,9 @@ export const exec = async (command: string, options: ExecOptions = {}) => {
 		let stdout = "";
 		let stderr = "";
 
-		// eslint-disable-next-line sonarjs/os-command
 		const childProcess = spawn(command, {
 			cwd,
 			env: {
-				// eslint-disable-next-line n/no-process-env
 				...process.env,
 				// @note: make sure to force color display for spawned processes
 				FORCE_COLOR: "1",

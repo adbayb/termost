@@ -1,8 +1,7 @@
 import { describe, expect, test } from "vitest";
-
 import { getArguments } from ".";
 
-// termost watch operand1 --help --option1 value1 --option2=value2 -al lastValue operand2 -t short -b
+// Termost watch operand1 --help --option1 value1 --option2=value2 -al lastValue operand2 -t short -b
 process.argv = [
 	"/bin/node",
 	"./node_modules/.bin/termost",
@@ -22,14 +21,18 @@ process.argv = [
 
 describe(getArguments, () => {
 	test("should parse command name", () => {
+		expect.hasAssertions();
 		expect(getArguments().command).toBe(process.argv[2]);
 	});
 
 	test("should parse operands", () => {
+		expect.hasAssertions();
 		expect(getArguments().operands).toStrictEqual(["operand1", "operand2"]);
 	});
 
 	test("should parse options", () => {
+		expect.hasAssertions();
+
 		expect(getArguments().options).toStrictEqual({
 			a: true,
 			b: true,
@@ -42,6 +45,8 @@ describe(getArguments, () => {
 	});
 
 	test("should parse correctly given unordered argument", () => {
+		expect.hasAssertions();
+
 		process.argv = [
 			"/bin/node",
 			"./node_modules/.bin/termost",
@@ -76,6 +81,8 @@ describe(getArguments, () => {
 	});
 
 	test("should parse correctly given a last option value", () => {
+		expect.hasAssertions();
+
 		process.argv = [
 			"/bin/node",
 			"./node_modules/.bin/termost",

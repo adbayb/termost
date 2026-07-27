@@ -3,27 +3,30 @@
 	"version": "1.9.1",
 	"description": "Get the most of your terminal",
 	"keywords": [
-		"cli",
-		"terminal",
 		"args",
 		"argument",
-		"option",
+		"cli",
 		"command",
-		"task",
+		"message",
+		"option",
 		"question",
-		"message"
+		"task",
+		"terminal"
 	],
 	"homepage": "https://github.com/adbayb/termost/tree/main/termost#readme",
 	"bugs": "https://github.com/adbayb/termost/issues",
+	"license": "MIT",
+	"author": "Ayoub Adib <adbayb@gmail.com> (https://twitter.com/adbayb)",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:adbayb/termost.git",
 		"directory": "termost"
 	},
-	"license": "MIT",
-	"author": "Ayoub Adib <adbayb@gmail.com> (https://twitter.com/adbayb)",
-	"sideEffects": false,
+	"files": [
+		"dist"
+	],
 	"type": "module",
+	"sideEffects": false,
 	"exports": {
 		"source": "./src/index.ts",
 		"types": "./dist/index.d.ts",
@@ -31,9 +34,9 @@
 		"import": "./dist/index.mjs",
 		"default": "./dist/index.mjs"
 	},
-	"files": [
-		"dist"
-	],
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"build": "quickbundle build",
 		"prepublishOnly": "pnpm build",
@@ -49,8 +52,5 @@
 	"devDependencies": {
 		"quickbundle": "3.1.0",
 		"vitest": "4.1.10"
-	},
-	"publishConfig": {
-		"access": "public"
 	}
 }
