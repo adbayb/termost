@@ -68,8 +68,7 @@ program.option({
 	name: { long: "global", short: "g" },
 	description:
 		"A global flag/option example accessible by all commands (key is used to persist the value into the context object)",
-	defaultValue:
-		"A default value can be set if no flag is provided by the user",
+	defaultValue: "A default value can be set if no flag is provided by the user",
 	validate({ globalFlag }) {
 		if (globalFlag === "invalid") return new Error("Invalid input");
 
@@ -287,8 +286,7 @@ program
 		description: "Useful CLI flag",
 		defaultValue: "defaultValue",
 		validate(context) {
-			if (context.optionWithoutAlias === "invalid")
-				return new Error("Invalid input");
+			if (context.optionWithoutAlias === "invalid") return new Error("Invalid input");
 
 			return undefined;
 		},
@@ -357,8 +355,7 @@ program
 			return Promise.resolve("small");
 		},
 		validate(context) {
-			if (context.computedFromOtherTaskValues === "big")
-				return new Error("Invalid input");
+			if (context.computedFromOtherTaskValues === "big") return new Error("Invalid input");
 
 			return undefined;
 		},

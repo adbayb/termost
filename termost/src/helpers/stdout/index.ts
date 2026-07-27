@@ -2,13 +2,15 @@ import pico from "picocolors";
 
 /**
  * A helper to format an arbitrary text as a message input.
+ *
+ * @example
+ * 	const formattedMessage = format("my message");
+ *
  * @param message - The text to display.
  * @param options - The configuration object to control the formatting properties.
  * @param options.color - The color to apply.
  * @param options.modifiers - The modifiers to apply (can be italic, bold, ...).
  * @returns The formatted text.
- * @example
- * const formattedMessage = format("my message");
  */
 export const format = (
 	message: string,
@@ -18,10 +20,7 @@ export const format = (
 	} = {},
 ) => {
 	const { color = "white", modifiers = [] } = options;
-
-	const transformers: ((input: string) => string)[] = [
-		pico[colorMapper[color]],
-	];
+	const transformers: ((input: string) => string)[] = [pico[colorMapper[color]]];
 
 	modifiers.forEach((modifier: Modifier) => {
 		if (modifier === "uppercase") {
@@ -38,13 +37,16 @@ export const format = (
 
 /**
  * An opinionated helper to display arbitrary text on the console.
+ *
+ * @example
+ * 	message("message to log");
+ *
  * @param content - The content to display. A content can be either a string or an error.
- * @param options - The configuration object to define the display type and/or override the default label.
+ * @param options - The configuration object to define the display type and/or override the default
+ *   label.
  * @param options.label - The label to display.
  * @param options.type - The message type.
  * @param options.lineBreak - Configure line break addition.
- * @example
- * message("message to log");
  */
 export const message = (
 	content: Error | string,
@@ -96,9 +98,7 @@ export const message = (
 			color,
 			modifiers: ["bold"],
 		}),
-		!hasNoLabel && isTextualContent
-			? format(`   ${content}`, { color })
-			: undefined,
+		!hasNoLabel && isTextualContent ? format(`   ${content}`, { color }) : undefined,
 		isTextualContent
 			? // Do not format error with colors to preserve the stack trace:
 				undefined
@@ -121,16 +121,17 @@ const isRecord = (value: unknown): value is Record<string, unknown> => {
 };
 
 const compose = <T>(...functions: ((a: T) => T)[]) => {
-	if (!functions[0])
+	if (!functions[0]) {
 		throw new Error(
 			"No function is provided, defeating the purpose of composing functions. Make sure to provide at least one function as an argument.",
 		);
+	}
 
-	return functions.reduce<(a: T) => T>(
-		(previousFunction, nextFunction) => (value) =>
-			previousFunction(nextFunction(value)),
-		functions[0],
-	);
+	return functions.reduce<(a: T) => T>((previousFunction, nextFunction) => {
+		return (value) => {
+			return previousFunction(nextFunction(value));
+		};
+	}, functions[0]);
 };
 
 const formatPropertiesByType = {
@@ -179,23 +180,8 @@ const modifierMapper = {
 	underline: "underline",
 } as const;
 
-type Color =
-	| "black"
-	| "blue"
-	| "cyan"
-	| "green"
-	| "grey"
-	| "magenta"
-	| "red"
-	| "white"
-	| "yellow";
+type Color = "black" | "blue" | "cyan" | "green" | "grey" | "magenta" | "red" | "white" | "yellow";
 
 type MessageType = "error" | "information" | "success" | "warning";
 
-type Modifier =
-	| "bold"
-	| "italic"
-	| "lowercase"
-	| "strikethrough"
-	| "underline"
-	| "uppercase";
+type Modifier = "bold" | "italic" | "lowercase" | "strikethrough" | "underline" | "uppercase";

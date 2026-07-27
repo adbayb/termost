@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type {
 	CreateInstruction,
 	InstructionKey,
@@ -8,28 +7,24 @@ import type {
 } from "../../types";
 import type { CommandController } from "../command";
 
-export const createOption =
-	(
-		commandController: CommandController,
-		{ argv }: ProgramMetadata,
-	): CreateInstruction<
-		OptionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
-	> =>
-	(parameters) => {
-		const { defaultValue, description, key, name } = parameters;
-
-		const aliases =
-			typeof name === "string" ? [name] : [name.short, name.long];
+export const createOption = (
+	commandController: CommandController,
+	{ argv }: ProgramMetadata,
+): CreateInstruction<OptionParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>> => {
+	return (parameters) => {
+		// oxlint-disable-next-line typescript/no-unsafe-assignment
+		const { key, name, description, defaultValue } = parameters;
+		const aliases = typeof name === "string" ? [name] : [name.short, name.long];
 
 		const metadataKey = aliases
-			.map(
-				(alias, index) =>
-					"-".repeat(aliases.length > 1 ? index + 1 : 2) + alias,
-			)
+			.map((alias, index) => {
+				return "-".repeat(aliases.length > 1 ? index + 1 : 2) + alias;
+			})
 			.join(", ");
 
 		commandController.addOptionDescription(metadataKey, description);
 
+		// oxlint-disable-next-line typescript/require-await
 		return async function execute() {
 			let value: unknown;
 
@@ -43,19 +38,19 @@ export const createOption =
 				break;
 			}
 
-			// eslint-disable-next-line unicorn/no-useless-promise-resolve-reject
-			return Promise.resolve({ key, value: value ?? defaultValue });
+			return { key, value: value ?? defaultValue };
 		};
 	};
+};
 
 export type OptionParameters<
 	Values extends ObjectLikeConstraint,
 	Key extends keyof Values,
 > = InstructionParameters<
 	Values,
-	{
-		defaultValue?: Values[Key];
+	InstructionKey<Key> & {
+		name: string | { long: string; short: string };
 		description: string;
-		name: { long: string; short: string } | string;
-	} & InstructionKey<Key>
+		defaultValue?: Values[Key];
+	}
 >;

@@ -1,19 +1,13 @@
 {
-	"eslint.validate": [
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact",
-		"markdown",
-		"mdx",
-		"astro"
-	],
+	"editor.defaultFormatter": "oxc.oxc-vscode",
+	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": "explicit",
-		"source.fixAll.ts": "explicit",
-		"source.addMissingImports.ts": "explicit",
+		"source.format.oxc": "always",
+		"source.fixAll.oxc": "always",
+		"source.fixAll.ts": "always",
+		"source.addMissingImports.ts": "always",
 		"source.organizeImports": "never",
-		"source.organizeLinkDefinitions": "explicit",
+		"source.organizeLinkDefinitions": "always",
 		"source.removeUnused.ts": "never",
 		"source.removeUnusedImports": "never",
 		"source.sortImports": "never"

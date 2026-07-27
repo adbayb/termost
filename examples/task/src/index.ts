@@ -1,5 +1,4 @@
 import { helpers, termost } from "termost";
-
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
@@ -9,27 +8,29 @@ type ProgramContext = {
 };
 
 const program = termost<ProgramContext>({
-	description: "Example to showcase the `task` API",
 	name: package_.name,
+	description: "Example to showcase the `task` API",
 	version: package_.version,
 });
 
 program
 	.task({
+		key: "size",
+		label: "Task with returned value (persisted)",
 		handler() {
 			return 45;
 		},
-		key: "size",
-		label: "Task with returned value (persisted)",
 	})
 	.task({
+		label: "Task with side-effect only (no persisted value)",
 		async handler() {
 			// @note: side-effect only handler
 			await wait(500);
 		},
-		label: "Task with side-effect only (no persisted value)",
 	})
 	.task({
+		key: "computedFromOtherTaskValues",
+		label: "Task can also access other persisted task values",
 		handler(context) {
 			if (context.size > 2000) {
 				return "big" as const;
@@ -37,27 +38,26 @@ program
 
 			return "small" as const;
 		},
-		key: "computedFromOtherTaskValues",
-		label: "Task can also access other persisted task values",
 		validate({ computedFromOtherTaskValues }) {
-			if (computedFromOtherTaskValues === "big")
+			if (computedFromOtherTaskValues === "big") {
 				return new Error("Invalid input");
+			}
 
 			return undefined;
 		},
 	})
 	.task({
+		key: "execOutput",
+		label: "Or even execute external commands thanks to its provided helpers",
 		async handler() {
 			return helpers.exec("echo 'Hello from shell'");
 		},
-		key: "execOutput",
-		label: "Or even execute external commands thanks to its provided helpers",
 	})
 	.task({
+		label: "A task can be skipped as well",
 		async handler() {
 			await wait(2000);
 		},
-		label: "A task can be skipped as well",
 		skip(context) {
 			const isNeedOptimization = context.size > 2000;
 
@@ -65,11 +65,12 @@ program
 		},
 	})
 	.task({
-		handler() {
-			return;
+		label: (context) => {
+			return `A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`;
 		},
-		label: (context) =>
-			`A task can have a dynamic label generated from contextual values: ${context.computedFromOtherTaskValues}`,
+		handler() {
+			// No op
+		},
 	})
 	.task({
 		handler(context) {
@@ -92,13 +93,16 @@ program
 			helpers.message(content, {
 				label: "Output formatting",
 			});
+
 			helpers.message(content, { type: "warning" });
 			helpers.message(content, { type: "error" });
 			helpers.message(content, { type: "success" });
+
 			helpers.message(content, {
 				label: "👋 You can also customize the label",
 				type: "information",
 			});
+
 			console.log(
 				helpers.format(
 					"\nYou can also have a total control on the formatting through the `format` helper.",
@@ -109,10 +113,12 @@ program
 				),
 			);
 
-			console.info(JSON.stringify(context, null, 2));
+			console.info(JSON.stringify(context, undefined, 2));
 		},
 	});
 
 const wait = async (delay: number) => {
-	return new Promise((resolve) => setTimeout(resolve, delay));
+	return new Promise((resolve) => {
+		setTimeout(resolve, delay);
+	});
 };

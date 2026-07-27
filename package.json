@@ -16,17 +16,15 @@
 		"test": "stack test",
 		"watch": "stack watch"
 	},
-	"prettier": "@adbayb/stack/prettier",
 	"devDependencies": {
-		"@adbayb/stack": "2.40.0",
+		"@adbayb/stack": "3.0.0",
 		"@types/node": "24.13.3"
 	},
-	"packageManager": "pnpm@11.17.0",
 	"devEngines": {
 		"packageManager": [
 			{
 				"name": "pnpm",
-				"version": "11.17.0",
+				"version": "11.19.0",
 				"onFail": "download"
 			},
 			{
@@ -35,8 +33,9 @@
 		],
 		"runtime": {
 			"name": "node",
-			"version": ">=24.0.0",
+			"version": "^24.0.0",
 			"onFail": "error"
 		}
-	}
+	},
+	"packageManager": "pnpm@11.19.0"
 }

@@ -1,7 +1,13 @@
 import type { CommandParameters } from "./api/command";
+import { createCommand, getCommandController } from "./api/command";
 import type { InputParameters } from "./api/input";
+import { createInput } from "./api/input";
 import type { OptionParameters } from "./api/option";
+import { createOption } from "./api/option";
 import type { TaskParameters } from "./api/task";
+import { createTask } from "./api/task";
+import { getArguments } from "./helpers/stdin";
+import { message } from "./helpers/stdout";
 import type {
 	CommandName,
 	CreateInstruction,
@@ -12,28 +18,18 @@ import type {
 	ProgramMetadata,
 } from "./types";
 
-import { createCommand, getCommandController } from "./api/command";
-import { createInput } from "./api/input";
-import { createOption } from "./api/option";
-import { createTask } from "./api/task";
-import { getArguments } from "./helpers/stdin";
-import { message } from "./helpers/stdout";
-
-/**
- * The termost fluent interface API.
- */
+/** The termost fluent interface API. */
 export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	/**
 	 * Allows to attach a new sub-command to the program.
+	 *
 	 * @param parameters - The CLI command name and description.
 	 * @returns The Command API.
 	 */
 	command: <CommandValues extends ObjectLikeConstraint = EmptyObject>(
 		parameters: CommandParameters,
 	) => Termost<CommandValues & Values>;
-	input: <Key extends keyof Values>(
-		parameters: InputParameters<Values, Key>,
-	) => Termost<Values>;
+	input: <Key extends keyof Values>(parameters: InputParameters<Values, Key>) => Termost<Values>;
 	option: <Key extends keyof Values>(
 		parameters: OptionParameters<Values, Key>,
 	) => Termost<Values>;
@@ -42,38 +38,36 @@ export type Termost<Values extends ObjectLikeConstraint = EmptyObject> = {
 	) => Termost<Values>;
 };
 
-export function termost<Values extends ObjectLikeConstraint = EmptyObject>({
-	description,
+export const termost = <Values extends ObjectLikeConstraint = EmptyObject>({
 	name,
+	description,
 	onException,
 	onShutdown,
 	version,
-}: PackageMetadata & TerminationCallbacks) {
+}: PackageMetadata & TerminationCallbacks) => {
 	const { command = name, operands, options } = getArguments();
 
 	const metadata: ProgramMetadata = {
-		argv: { command, operands, options },
-		description,
-		isEmptyCommand: {},
 		name,
+		description,
+		argv: { command, operands, options },
+		isEmptyCommand: {},
 		version,
 	};
 
 	setGracefulListeners({ onException, onShutdown });
 
 	return createProgram<Values>(metadata);
-}
+};
 
 export const createProgram = <Values extends ObjectLikeConstraint>(
 	metadata: ProgramMetadata,
 ): Termost<Values> => {
-	const { argv, description, name } = metadata;
+	const { name, description, argv } = metadata;
 	const rootCommandName: CommandName = name;
 	let currentCommandName: CommandName = rootCommandName;
 
-	const createInstruction = <
-		Parameters extends InstructionParameters<ObjectLikeConstraint>,
-	>(
+	const createInstruction = <Parameters extends InstructionParameters<ObjectLikeConstraint>>(
 		factory: CreateInstruction<Parameters>,
 		parameters: InstructionParameters<Values>,
 	) => {
@@ -84,23 +78,23 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 			const { skip, validate } = parameters;
 			const context = controller.getContext(rootCommandName);
 
-			if (skip?.(context, argv)) return;
+			if (skip?.(context, argv)) {
+				return;
+			}
 
 			const output = await instruction(context, argv);
 
-			if (!output?.key) return;
+			if (!output?.key) {
+				return;
+			}
 
-			controller.addValue(
-				output.key,
-				output.value as Values[keyof Values],
-			);
+			controller.addValue(output.key, output.value as Values[keyof Values]);
 
-			const error = validate?.(
-				controller.getContext(rootCommandName),
-				argv,
-			);
+			const error = validate?.(controller.getContext(rootCommandName), argv);
 
-			if (!error) return;
+			if (!error) {
+				return;
+			}
 
 			throw error;
 		});
@@ -121,10 +115,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		},
 		option(parameters) {
 			createInstruction(
-				createOption(
-					getCommandController(currentCommandName),
-					metadata,
-				),
+				createOption(getCommandController(currentCommandName), metadata),
 				parameters,
 			);
 
@@ -140,8 +131,8 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 
 	// @note: the root command is created by default
 	program.command({
-		description,
 		name,
+		description,
 	});
 
 	return program;
@@ -154,10 +145,10 @@ type TerminationCallbacks = Partial<{
 
 const setGracefulListeners = ({
 	onException = () => {
-		return;
+		// No op
 	},
 	onShutdown = () => {
-		return;
+		// No op
 	},
 }: TerminationCallbacks) => {
 	process.on("SIGTERM", () => {

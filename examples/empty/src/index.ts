@@ -1,5 +1,4 @@
 import { termost } from "termost";
-
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
@@ -7,24 +6,24 @@ type ProgramContext = {
 };
 
 const program = termost<ProgramContext>({
-	description: "Example to showcase empty `command` fallback",
 	name: package_.name,
+	description: "Example to showcase empty `command` fallback",
 	version: package_.version,
 });
 
 program
 	.command({
-		description: "Transpile and bundle in production mode",
 		name: "build",
+		description: "Transpile and bundle in production mode",
 	})
 	.option({
-		defaultValue: "defaultValue",
-		description: "Useful CLI flag",
 		key: "option",
 		name: "longOption",
+		description: "Useful CLI flag",
+		defaultValue: "defaultValue",
 	});
 
 program.command({
-	description: "Rebuild your assets on any code change",
 	name: "watch",
+	description: "Rebuild your assets on any code change",
 });

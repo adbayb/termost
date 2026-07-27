@@ -1,5 +1,4 @@
 import { helpers, termost } from "termost";
-
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
@@ -10,37 +9,38 @@ type ProgramContext = {
 };
 
 const program = termost<ProgramContext>({
-	description: "Example to showcase the `input` API",
 	name: package_.name,
+	description: "Example to showcase the `input` API",
 	version: package_.version,
 });
 
 program
 	.input({
-		defaultValue: "singleOption2",
 		key: "input1",
 		label: "What is your single choice?",
+		defaultValue: "singleOption2",
 		options: ["singleOption1", "singleOption2"],
 		type: "select",
 	})
 	.input({
-		defaultValue: ["multipleOption2"],
 		key: "input2",
 		label: "What is your multiple choices?",
+		defaultValue: ["multipleOption2"],
 		options: ["multipleOption1", "multipleOption2"],
 		type: "multiselect",
 	})
 	.input({
-		defaultValue: false,
 		key: "input3",
 		label: "Are you sure to skip next input?",
+		defaultValue: false,
 		type: "confirm",
 	})
 	.input({
-		defaultValue: "Empty input",
 		key: "input4",
-		label: (context) =>
-			`Dynamic input label generated from a contextual value: ${context.input1}`,
+		label: (context) => {
+			return `Dynamic input label generated from a contextual value: ${context.input1}`;
+		},
+		defaultValue: "Empty input",
 		skip(context, argv) {
 			console.log(argv);
 
@@ -50,6 +50,6 @@ program
 	})
 	.task({
 		handler(context) {
-			helpers.message(JSON.stringify(context, null, 4));
+			helpers.message(JSON.stringify(context, undefined, 4));
 		},
 	});
