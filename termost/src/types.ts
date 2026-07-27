@@ -41,8 +41,7 @@ export type InstructionParameters<
 } & ExtraParameters;
 
 export type Label<Values extends ObjectLikeConstraint> =
-	| ((context: Context<Values>, argv: ArgumentValues) => string)
-	| string;
+	((context: Context<Values>, argv: ArgumentValues) => string) | string;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ObjectLikeConstraint = Record<string, any>;

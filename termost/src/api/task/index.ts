@@ -17,7 +17,7 @@ export const createTask: CreateInstruction<
 
 	const receiver = label
 		? new Listr([], {
-				collectErrors: "minimal",
+				collectErrors: true,
 				exitOnError: true,
 				rendererOptions: {
 					collapseErrors: false,

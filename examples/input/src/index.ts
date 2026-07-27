@@ -44,7 +44,7 @@ program
 		skip(context, argv) {
 			console.log(argv);
 
-			return Boolean(context.input3);
+			return context.input3;
 		},
 		type: "text",
 	})

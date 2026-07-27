@@ -59,9 +59,9 @@ program
 		},
 		label: "A task can be skipped as well",
 		skip(context) {
-			const needOptimization = context.size > 2000;
+			const isNeedOptimization = context.size > 2000;
 
-			return !needOptimization;
+			return !isNeedOptimization;
 		},
 	})
 	.task({

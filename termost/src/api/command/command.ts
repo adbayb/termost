@@ -46,15 +46,6 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 			 */
 			const optionKeys = Object.keys(argv.options);
 
-			const help = () => {
-				showHelp({
-					controller,
-					currentCommandName: name,
-					isRootCommand,
-					rootCommandName,
-				});
-			};
-
 			if (
 				optionKeys.includes(OPTION_VERSION_NAMES[0]) ||
 				optionKeys.includes(OPTION_VERSION_NAMES[1])
@@ -63,6 +54,15 @@ export const createCommand = <Values extends ObjectLikeConstraint>(
 
 				return;
 			}
+
+			const help = () => {
+				showHelp({
+					controller,
+					currentCommandName: name,
+					isRootCommand,
+					rootCommandName,
+				});
+			};
 
 			if (
 				optionKeys.includes(OPTION_HELP_NAMES[0]) ||
@@ -113,7 +113,7 @@ const showHelp = ({
 	print(
 		`${format(
 			`${rootCommandName}${
-				isRootCommand ? "" : ` ${String(currentCommandName)}`
+				isRootCommand ? "" : ` ${currentCommandName}`
 			}`,
 			{
 				color: "green",

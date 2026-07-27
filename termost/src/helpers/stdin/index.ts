@@ -14,10 +14,12 @@ export const getArguments = () => {
 	};
 
 	const flushOptimisticOption = () => {
-		if (currentOptionName) {
-			options[currentOptionName] = true;
-			currentOptionName = undefined;
+		if (!currentOptionName) {
+			return;
 		}
+
+		options[currentOptionName] = true;
+		currentOptionName = undefined;
 	};
 
 	for (const parameter of parameters) {

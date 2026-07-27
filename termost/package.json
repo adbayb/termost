@@ -43,12 +43,12 @@
 	},
 	"dependencies": {
 		"enquirer": "^2.4.1",
-		"listr2": "^10.2.1",
+		"listr2": "^11.0.0",
 		"picocolors": "^1.1.1"
 	},
 	"devDependencies": {
-		"quickbundle": "3.0.0",
-		"vitest": "4.1.7"
+		"quickbundle": "3.1.0",
+		"vitest": "4.1.10"
 	},
 	"publishConfig": {
 		"access": "public"

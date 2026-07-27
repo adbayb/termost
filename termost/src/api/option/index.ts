@@ -34,11 +34,13 @@ export const createOption =
 			let value: unknown;
 
 			for (const alias of aliases) {
-				if (alias in argv.options) {
-					value = argv.options[alias];
-
-					break;
+				if (!(alias in argv.options)) {
+					continue;
 				}
+
+				value = argv.options[alias];
+
+				break;
 			}
 
 			// eslint-disable-next-line unicorn/no-useless-promise-resolve-reject
