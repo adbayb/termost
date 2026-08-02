@@ -1,5 +1,13 @@
 # termost
 
+## 1.9.2
+
+### Patch Changes
+
+- [`b456d4e`](https://github.com/adbayb/termost/commit/b456d4ef65f2aa3bcd9c6daed1e70b5a9265f4ed) Thanks [@adbayb](https://github.com/adbayb)! - Update `listr2` dependency to `v11.0.0`.
+
+- [`78f246b`](https://github.com/adbayb/termost/commit/78f246b0342fca6831b6acfdc84a3c64d22e657b) Thanks [@adbayb](https://github.com/adbayb)! - Update codebase to comply with stack v3.
+
 ## 1.9.1
 
 ### Patch Changes
