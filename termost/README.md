@@ -447,11 +447,10 @@ const wait = (delay: number) => {
 
 This project is built upon solid open-source foundations. We'd like to thank:
 
-- [`enquirer`](https://www.npmjs.com/package/enquirer) for managing `input` internals
-- [`listr2`](https://www.npmjs.com/package/listr2) for managing `task` internals
+- [`@clack/prompts`](https://www.npmjs.com/package/@clack/prompts) for managing `input` and `task` internals.
 
 <br>
 
 ## 📖 License
 
-[MIT](https://github.com/adbayb/termost/blob/main/LICENSE "License MIT")
+[MIT](https://github.com/adbayb/termost/blob/main/LICENSE "License MIT").

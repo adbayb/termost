@@ -1,4 +1,4 @@
-import enquirer from "enquirer";
+import { autocomplete, autocompleteMultiselect, confirm, isCancel, text } from "@clack/prompts";
 import type {
 	CreateInstruction,
 	InstructionKey,
@@ -7,56 +7,80 @@ import type {
 	ObjectLikeConstraint,
 } from "../../types";
 
-const { prompt } = enquirer;
-
 export const createInput: CreateInstruction<
 	InputParameters<ObjectLikeConstraint, keyof ObjectLikeConstraint>
 > = (parameters) => {
 	// oxlint-disable-next-line typescript/no-unsafe-assignment
 	const { key, label, defaultValue, type } = parameters;
-	const mappedPromptType = type === "select" || type === "multiselect" ? "autocomplete" : type;
 
 	return async function execute(context, argv) {
-		type Choice = { title: string; multiple: boolean; selected?: boolean; value: string };
+		const message = typeof label === "function" ? label(context, argv) : label;
+		let value: unknown;
 
-		const promptObject: Parameters<typeof prompt>[0] & {
-			choices?: Choice[];
-			limit?: number;
-			multiple?: boolean;
-		} = {
-			name: key,
-			// oxlint-disable-next-line typescript/no-unsafe-assignment
-			initial: defaultValue,
-			message: typeof label === "function" ? label(context, argv) : label,
-			type: mappedPromptType,
-		};
+		switch (type) {
+			case "confirm": {
+				value = await confirm({
+					message,
+					...(defaultValue === undefined
+						? {}
+						: { initialValue: defaultValue as boolean }),
+				});
 
-		if (parameters.type === "select" || parameters.type === "multiselect") {
-			const isMultiSelect = parameters.type === "multiselect";
-			const options = parameters.options as string[];
+				break;
+			}
+			case "multiselect": {
+				const options = (parameters.options as string[]).map((option) => {
+					return {
+						label: option,
+						value: option,
+					};
+				});
 
-			const choices = options.map((option) => {
-				const output: Choice = {
-					title: option,
-					multiple: isMultiSelect,
-					value: option,
-				};
+				value = await autocompleteMultiselect({
+					initialValues: (defaultValue ?? []) as string[],
+					maxItems: 10,
+					message,
+					options,
+					required: false,
+				});
 
-				if (isMultiSelect) {
-					output.selected = ((defaultValue ?? []) as string[]).includes(option);
-				}
+				break;
+			}
+			case "select": {
+				const options = (parameters.options as string[]).map((option) => {
+					return {
+						label: option,
+						value: option,
+					};
+				});
 
-				return output;
-			});
+				value = await autocomplete({
+					maxItems: 10,
+					message,
+					options,
+					...(defaultValue === undefined ? {} : { initialValue: defaultValue as string }),
+				});
 
-			promptObject.limit = 10;
-			promptObject.multiple = isMultiSelect;
-			promptObject.choices = choices;
+				break;
+			}
+			case "text": {
+				value = await text({
+					message,
+					...(defaultValue === undefined ? {} : { initialValue: defaultValue as string }),
+				});
+
+				break;
+			}
+			default: {
+				throw new Error(`Unsupported input type: ${type as string}`);
+			}
 		}
 
-		const data = await prompt<ObjectLikeConstraint>(promptObject);
+		if (isCancel(value)) {
+			throw new Error("The prompt has been cancelled.");
+		}
 
-		return { key, value: data[key] };
+		return { key, value };
 	};
 };
 

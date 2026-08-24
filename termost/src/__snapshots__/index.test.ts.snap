@@ -202,17 +202,18 @@ exports[`termost > should handle \`option\` api 1`] = `
 `;
 
 exports[`termost > should handle \`task\` api 1`] = `
-"[33m❯[39m Task with returned value (persisted)
-[32m✔[39m Task with returned value (persisted)
-[33m❯[39m Task with side-effect only (no persisted value)
-[32m✔[39m Task with side-effect only (no persisted value)
-[33m❯[39m Task can also access other persisted task values
-[32m✔[39m Task can also access other persisted task values
-[33m❯[39m Or even execute external commands thanks to its provided helpers
-[32m✔[39m Or even execute external commands thanks to its provided helpers
-[33m❯[39m A task can have a dynamic label generated from contextual values: small
-[32m✔[39m A task can have a dynamic label generated from contextual values: small
-[34m[34m[1mℹ Label & console output[22m[34m[39m
+"[?25l[90m│[39m
+[32m◇[39m  Task with returned value (persisted)
+[?25h[?25l[90m│[39m
+[35m◒[39m  Task with side-effect only (no persisted value)...
+[1G[J[32m◇[39m  Task with side-effect only (no persisted value)
+[?25h[?25l[90m│[39m
+[32m◇[39m  Task can also access other persisted task values
+[?25h[?25l[90m│[39m
+[32m◇[39m  Or even execute external commands thanks to its provided helpers
+[?25h[?25l[90m│[39m
+[32m◇[39m  A task can have a dynamic label generated from contextual values: small
+[?25h[34m[34m[1mℹ Label & console output[22m[34m[39m
 [34m[34m   If you don't specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).[34m[39m
 [34m[34m[1mℹ Context management[22m[34m[39m
 [34m[34m   A task with a specified "key" can be retrieved here. Size = 45. If no "key" was specified the task returned value cannot be persisted across program instructions.[34m[39m

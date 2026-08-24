@@ -1,6 +1,9 @@
 import { describe, expect, test } from "vitest";
 import { exec } from "./helpers/process";
 
+// @note: force CI mode so that @clack/prompts spinners produce deterministic output.
+process.env.CI = "true";
+
 describe("termost", () => {
 	test("should display `version`", async () => {
 		expect.hasAssertions();
