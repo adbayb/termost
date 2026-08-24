@@ -208,8 +208,8 @@ importers:
   .:
     devDependencies:
       '@adbayb/stack':
-        specifier: 3.2.0
-        version: 3.2.0(@types/node@24.13.3)(conventional-commits-parser@7.1.2)(eslint@10.8.0(jiti@2.6.1)(supports-color@9.4.0))(supports-color@9.4.0)
+        specifier: 3.2.1
+        version: 3.2.1(@types/node@24.13.3)(conventional-commits-parser@7.1.2)(eslint@10.8.0(jiti@2.6.1)(supports-color@9.4.0))(supports-color@9.4.0)
       '@types/node':
         specifier: 24.13.3
         version: 24.13.3
@@ -221,12 +221,6 @@ importers:
         version: link:../../termost
 
   examples/default:
-    dependencies:
-      termost:
-        specifier: workspace:^
-        version: link:../../termost
-
-  examples/empty:
     dependencies:
       termost:
         specifier: workspace:^
@@ -261,9 +255,6 @@ importers:
       '@clack/prompts':
         specifier: ^1.7.0
         version: 1.7.0
-      picocolors:
-        specifier: ^1.1.1
-        version: 1.1.1
     devDependencies:
       quickbundle:
         specifier: 3.1.1
@@ -274,8 +265,8 @@ importers:
 
 packages:
 
-  '@adbayb/stack@3.2.0':
-    resolution: {integrity: sha512-dzcWKEKojKry11Sos6gb+qEZsWKr0usa4NEzyq59ex4riheDI/n/Tmf9UBn037XSmQQA6ZcSrKIonTvPwpQ+PA==}
+  '@adbayb/stack@3.2.1':
+    resolution: {integrity: sha512-K1XCDo3FXu+6R1Jb5W0AeJTpuPdK5oT9ndY9PIj87C91J4WMIKO7u595DnVg4l87lcLyJ2cTWAUCvSzIEQYz8w==}
     hasBin: true
 
   '@babel/code-frame@7.29.7':
@@ -2245,7 +2236,7 @@ packages:
 
 snapshots:
 
-  '@adbayb/stack@3.2.0(@types/node@24.13.3)(conventional-commits-parser@7.1.2)(eslint@10.8.0(jiti@2.6.1)(supports-color@9.4.0))(supports-color@9.4.0)':
+  '@adbayb/stack@3.2.1(@types/node@24.13.3)(conventional-commits-parser@7.1.2)(eslint@10.8.0(jiti@2.6.1)(supports-color@9.4.0))(supports-color@9.4.0)':
     dependencies:
       '@changesets/changelog-github': 1.0.0
       '@changesets/cli': 3.0.1

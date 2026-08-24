@@ -1,9 +1,12 @@
-import { helpers, termost } from "termost";
+import { createLogger, termost } from "termost";
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
 	globalFlag: boolean;
 };
+
+const buildLogger = createLogger({ name: "command:build" });
+const watchLogger = createLogger({ name: "command:watch" });
 
 const program = termost<ProgramContext>({
 	name: package_.name,
@@ -37,23 +40,11 @@ program
 		handler(context, argv) {
 			const { globalFlag, localFlag } = context;
 
-			helpers.message(`👋 Hello, I'm the ${argv.command} command`, {
-				lineBreak: { end: true, start: false },
-			});
-
-			helpers.message(`👉 Shared global flag = ${globalFlag}`, {
-				label: false,
-			});
-
-			helpers.message(`👉 Local command flag = ${localFlag}`, {
-				lineBreak: true,
-			});
-
-			helpers.message(`👉 Context value = ${JSON.stringify(context)}`, {
-				lineBreak: { end: true, start: true },
-			});
-
-			helpers.message(`👉 Argv value = ${JSON.stringify(argv)}`);
+			buildLogger.info(`👋 Hello, I'm the ${argv.command} command`);
+			buildLogger.info(`👉 Shared global flag = ${globalFlag}`, { globalFlag });
+			buildLogger.info(`👉 Local command flag = ${localFlag}`, { localFlag });
+			buildLogger.info(`👉 Context value = ${JSON.stringify(context)}`, context);
+			buildLogger.info(`👉 Argv value = ${JSON.stringify(argv)}`, argv);
 		},
 	});
 
@@ -66,9 +57,9 @@ program
 		handler(context, argv) {
 			const { globalFlag } = context;
 
-			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
-			helpers.message(`👉 Shared global flag = ${globalFlag}`);
-			helpers.message(`👉 Context value = ${JSON.stringify(context)}`);
-			helpers.message(`👉 Argv value = ${JSON.stringify(argv)}`);
+			watchLogger.info(`👋 Hello, I'm the ${argv.command} command`);
+			watchLogger.info(`👉 Shared global flag = ${globalFlag}`, { globalFlag });
+			watchLogger.info(`👉 Context value = ${JSON.stringify(context)}`, context);
+			watchLogger.info(`👉 Argv value = ${JSON.stringify(argv)}`, argv);
 		},
 	});

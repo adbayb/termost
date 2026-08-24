@@ -1,3 +1,4 @@
+import { log } from "@clack/prompts";
 import type { CommandParameters } from "./api/command";
 import { createCommand, getCommandController } from "./api/command";
 import type { InputParameters } from "./api/input";
@@ -7,7 +8,6 @@ import { createOption } from "./api/option";
 import type { TaskParameters } from "./api/task";
 import { createTask } from "./api/task";
 import { getArguments } from "./helpers/stdin";
-import { message } from "./helpers/stdout";
 import type {
 	CommandName,
 	CreateInstruction,
@@ -51,6 +51,7 @@ export const termost = <Values extends ObjectLikeConstraint = EmptyObject>({
 		name,
 		description,
 		argv: { command, operands, options },
+		hasInteractiveInstruction: false,
 		isEmptyCommand: {},
 		version,
 	};
@@ -110,6 +111,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		input(parameters) {
 			createInstruction(createInput, parameters);
 			metadata.isEmptyCommand[currentCommandName] = false;
+			metadata.hasInteractiveInstruction = true;
 
 			return this;
 		},
@@ -124,6 +126,7 @@ export const createProgram = <Values extends ObjectLikeConstraint>(
 		task(parameters) {
 			createInstruction(createTask, parameters);
 			metadata.isEmptyCommand[currentCommandName] = false;
+			metadata.hasInteractiveInstruction = true;
 
 			return this;
 		},
@@ -162,14 +165,14 @@ const setGracefulListeners = ({
 	});
 
 	process.on("uncaughtException", (error) => {
-		message(error, { lineBreak: true });
+		log.error(error.stack ?? error.message);
 		onException(error);
 		process.exit(1);
 	});
 
 	process.on("unhandledRejection", (reason) => {
 		if (reason instanceof Error) {
-			message(reason, { lineBreak: true });
+			log.error(reason.stack ?? reason.message);
 			onException(reason);
 		}
 

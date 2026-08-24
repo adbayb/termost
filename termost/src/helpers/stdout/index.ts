@@ -1,187 +1,85 @@
-import pico from "picocolors";
+import { styleText } from "node:util";
+import { log } from "@clack/prompts";
+
+type Logger = Record<LogLevel, (message: string, metadata?: Record<string, unknown>) => void>;
+
+type LogLevel = "debug" | "error" | "info" | "success" | "warn";
 
 /**
- * A helper to format an arbitrary text as a message input.
+ * Creates a logger.
  *
  * @example
- * 	const formattedMessage = format("my message");
+ * 	const log = createLogger({ name: "my-cli", level: "info" });
  *
- * @param message - The text to display.
- * @param options - The configuration object to control the formatting properties.
- * @param options.color - The color to apply.
- * @param options.modifiers - The modifiers to apply (can be italic, bold, ...).
- * @returns The formatted text.
+ * 	logger.info("Starting build");
+ * 	logger.debug("Debug trace", { cwd: process.cwd() });
+ *
+ * @param options - Logger configuration.
+ * @returns A logger exposing debug, info, success, warn, and error methods.
  */
-export const format = (
-	message: string,
+export const createLogger = (
 	options: {
-		color?: Color;
-		modifiers?: Modifier[];
+		/** The logger namespace displayed as a prefix for each message. */
+		name?: string;
+		/**
+		 * The minimum log level to display.
+		 *
+		 * @default "info" - debug output is verbose and reserved for troubleshooting. Users can opt into it by passing `level: "debug"`.
+		 */
+		level?: LogLevel;
 	} = {},
-) => {
-	const { color = "white", modifiers = [] } = options;
-	const transformers: ((input: string) => string)[] = [pico[colorMapper[color]]];
+): Logger => {
+	const { name, level = "info" } = options;
+	const minimumRank = LEVEL_RANK[level];
 
-	modifiers.forEach((modifier: Modifier) => {
-		if (modifier === "uppercase") {
-			message = message.toUpperCase();
-		} else if (modifier === "lowercase") {
-			message = message.toLowerCase();
-		} else {
-			transformers.push(pico[modifierMapper[modifier]]);
-		}
-	});
-
-	return compose(...transformers)(message);
-};
-
-/**
- * An opinionated helper to display arbitrary text on the console.
- *
- * @example
- * 	message("message to log");
- *
- * @param content - The content to display. A content can be either a string or an error.
- * @param options - The configuration object to define the display type and/or override the default
- *   label.
- * @param options.label - The label to display.
- * @param options.type - The message type.
- * @param options.lineBreak - Configure line break addition.
- */
-export const message = (
-	content: Error | string,
-	{
-		label: optionLabel,
-		lineBreak: optionlineBreak,
-		type: optionType,
-	}: {
-		label?: false | string;
-		lineBreak?: boolean | LineBreakByPosition;
-		type?: MessageType;
-	} = {},
-) => {
-	const isTextualContent = typeof content === "string";
-	const type = optionType ?? (isTextualContent ? "information" : "error");
-	const { color, defaultLabel, icon, method } = formatPropertiesByType[type];
-	const hasNoLabel = optionLabel === false;
-
-	const getLineBreak = (): LineBreakByPosition => {
-		if (optionlineBreak === undefined) {
-			return {
-				end: false,
-				start: false,
-			};
+	const print = (methodLevel: LogLevel, message: string, metadata?: Record<string, unknown>) => {
+		if (LEVEL_RANK[methodLevel] < minimumRank) {
+			return;
 		}
 
-		if (isRecord(optionlineBreak)) {
-			return optionlineBreak;
-		}
+		const prefix = name ? `${styleText("dim", `[${name}]`)} ` : "";
+		const output = `${prefix}${message}`;
 
-		return {
-			end: optionlineBreak,
-			start: optionlineBreak,
-		};
+		LEVEL_LOGGERS[methodLevel](output);
+
+		if (metadata) {
+			log.message(JSON.stringify(metadata, undefined, 2));
+		}
 	};
 
-	const getLabel = () => {
-		if (hasNoLabel) {
-			return isTextualContent ? content : content.message;
-		}
-
-		return optionLabel ?? defaultLabel;
+	return {
+		debug(message, metadata) {
+			print("debug", message, metadata);
+		},
+		error(message, metadata) {
+			print("error", message, metadata);
+		},
+		info(message, metadata) {
+			print("info", message, metadata);
+		},
+		success(message, metadata) {
+			print("success", message, metadata);
+		},
+		warn(message, metadata) {
+			print("warn", message, metadata);
+		},
 	};
-
-	const lineBreak = getLineBreak();
-
-	const output = [
-		format(`${lineBreak.start ? "\n" : ""}${icon} ${getLabel()}`, {
-			color,
-			modifiers: ["bold"],
-		}),
-		!hasNoLabel && isTextualContent ? format(`   ${content}`, { color }) : undefined,
-		isTextualContent
-			? // Do not format error with colors to preserve the stack trace:
-				undefined
-			: content,
-	].filter(Boolean);
-
-	output.forEach((item) => {
-		method(item);
-	});
-
-	if (lineBreak.end) {
-		method();
-	}
 };
 
-type LineBreakByPosition = { end: boolean; start: boolean };
-
-const isRecord = (value: unknown): value is Record<string, unknown> => {
-	return typeof value === "object" && value !== null && !Array.isArray(value);
+const LEVEL_RANK: Record<LogLevel, number> = {
+	debug: 0,
+	error: 4,
+	info: 1,
+	success: 2,
+	warn: 3,
 };
 
-const compose = <T>(...functions: ((a: T) => T)[]) => {
-	if (!functions[0]) {
-		throw new Error(
-			"No function is provided, defeating the purpose of composing functions. Make sure to provide at least one function as an argument.",
-		);
-	}
-
-	return functions.reduce<(a: T) => T>((previousFunction, nextFunction) => {
-		return (value) => {
-			return previousFunction(nextFunction(value));
-		};
-	}, functions[0]);
+const LEVEL_LOGGERS: Record<LogLevel, (message: string) => void> = {
+	debug: (message) => {
+		log.message(message, { symbol: styleText("dim", "◆") });
+	},
+	error: log.error,
+	info: log.info,
+	success: log.success,
+	warn: log.warn,
 };
-
-const formatPropertiesByType = {
-	error: {
-		color: "red",
-		defaultLabel: "Error",
-		icon: "✖",
-		method: console.error,
-	},
-	information: {
-		color: "blue",
-		defaultLabel: "Information",
-		icon: "ℹ",
-		method: console.info,
-	},
-	success: {
-		color: "green",
-		defaultLabel: "Success",
-		icon: "✔",
-		method: console.log,
-	},
-	warning: {
-		color: "yellow",
-		defaultLabel: "Warning",
-		icon: "⚠",
-		method: console.warn,
-	},
-} as const;
-
-const colorMapper = {
-	black: "black",
-	blue: "blue",
-	cyan: "cyan",
-	green: "green",
-	grey: "gray",
-	magenta: "magenta",
-	red: "red",
-	white: "white",
-	yellow: "yellow",
-} as const;
-
-const modifierMapper = {
-	bold: "bold",
-	italic: "italic",
-	strikethrough: "strikethrough",
-	underline: "underline",
-} as const;
-
-type Color = "black" | "blue" | "cyan" | "green" | "grey" | "magenta" | "red" | "white" | "yellow";
-
-type MessageType = "error" | "information" | "success" | "warning";
-
-type Modifier = "bold" | "italic" | "lowercase" | "strikethrough" | "underline" | "uppercase";

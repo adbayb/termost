@@ -4,6 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"start": "pnpm start:test || echo 0",
 		"start:test": "node ./src/index.ts"
 	},
 	"dependencies": {

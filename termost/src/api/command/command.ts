@@ -1,4 +1,5 @@
-import { format } from "../../helpers/stdout";
+import { styleText } from "node:util";
+import { intro, outro } from "@clack/prompts";
 import type { ObjectLikeConstraint, ProgramMetadata } from "../../types";
 import type { CommandController } from "./controller";
 import {
@@ -75,7 +76,27 @@ export const createCommand = (
 				// Show help by default if no processing is done for the current command
 				help();
 			} else {
-				void controller.enable();
+				const runCommand = async () => {
+					const showIntroOutro = metadata.hasInteractiveInstruction;
+					const startCommandTime = performance.now();
+
+					if (showIntroOutro) {
+						intro(`${rootCommandName} ${styleText("dim", `v${version}`)}`);
+					}
+
+					await controller.enable();
+
+					if (showIntroOutro) {
+						const elapsed = Math.round(performance.now() - startCommandTime);
+
+						const duration =
+							elapsed < 1000 ? `${elapsed}ms` : `${(elapsed / 1000).toFixed(2)}s`;
+
+						outro(styleText("dim", `Done in ${duration}`));
+					}
+				};
+
+				void runCommand();
 			}
 		}
 	}, 0);
@@ -109,9 +130,7 @@ const showHelp = ({
 	printTitle("Usage");
 
 	print(
-		`${format(`${rootCommandName}${isRootCommand ? "" : ` ${currentCommandName}`}`, {
-			color: "green",
-		})} ${hasCommands ? "<command> " : ""}${hasOptions ? "[…options]" : ""}`,
+		`${styleText("green", `${rootCommandName}${isRootCommand ? "" : ` ${currentCommandName}`}`)} ${hasCommands ? "<command> " : ""}${hasOptions ? "[…options]" : ""}`,
 	);
 
 	if (description) {
@@ -148,21 +167,14 @@ const showHelp = ({
 	}
 };
 
-const print = (...parameters: Parameters<typeof format>) => {
-	console.log(format(...parameters));
+const print = (message: string) => {
+	console.log(message);
 };
 
 const printTitle = (message: string) => {
-	print(`\n${message}:`, {
-		color: "yellow",
-		modifiers: ["bold", "underline", "uppercase"],
-	});
+	print(styleText(["bold", "underline", "yellow"], `\n${message.toUpperCase()}:`));
 };
 
 const printLabelValue = (label: string, value: string, padding: number) => {
-	print(
-		`  ${format(label.padEnd(padding + 1, " "), {
-			color: "green",
-		})} ${value}`,
-	);
+	print(`  ${styleText("green", label.padEnd(padding + 1, " "))} ${value}`);
 };

@@ -1,4 +1,4 @@
-import { helpers, termost } from "termost";
+import { createLogger, termost } from "termost";
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
@@ -7,6 +7,8 @@ type ProgramContext = {
 	input3: boolean;
 	input4: string;
 };
+
+const logger = createLogger({ name: "input" });
 
 const program = termost<ProgramContext>({
 	name: package_.name,
@@ -50,6 +52,6 @@ program
 	})
 	.task({
 		handler(context) {
-			helpers.message(JSON.stringify(context, undefined, 4));
+			logger.info(JSON.stringify(context, undefined, 4));
 		},
 	});

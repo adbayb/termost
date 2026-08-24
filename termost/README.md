@@ -18,7 +18,7 @@ Termost allows building command line tools in a minute thanks to its:
 - Shareable output between instructions
 - Auto-generated help and version metadata
 - TypeScript support to foster a type-safe API
-- Built-in helpers to make stdin/stdout management a breeze (including exec, and message helpers...)
+- Built-in helpers to make stdin/stdout management a breeze (including `exec`, and `createLogger`...)
 
 <br>
 
@@ -40,7 +40,7 @@ Once you're done, you can play with the API:
 ```ts
 #!/usr/bin/env node
 
-import { helpers, termost } from "termost";
+import { createLogger, termost } from "termost";
 import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
 type ProgramContext = {
@@ -50,6 +50,8 @@ type ProgramContext = {
 type DebugCommandContext = {
 	localFlag: string;
 };
+
+const logger = createLogger({ name: "my-cli" });
 
 const program = termost<ProgramContext>({
 	name,
@@ -102,9 +104,9 @@ program
 	})
 	.task({
 		handler(context, argv) {
-			helpers.message(`Hello, I'm the ${argv.command} command`);
-			helpers.message(`Context value = ${JSON.stringify(context)}`);
-			helpers.message(`Argv value = ${JSON.stringify(argv)}`);
+			logger.info(`Hello, I'm the ${argv.command} command`);
+			logger.info(`Context value = ${JSON.stringify(context)}`);
+			logger.info(`Argv value = ${JSON.stringify(argv)}`);
 		},
 	});
 
@@ -117,12 +119,10 @@ const fakeBuild = async () => {
 
 Depending on the command, the output will look like this (`bin-name` is the program name automatically retrieved from the `package.json>name`):
 
-| Command                 |                                                                       Preview                                                                       |
-| :---------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------: |
-| `bin-name --help`       |                <img alt="Global help" src="https://github.com/adbayb/termost/assets/10498826/ccb55954-5cd1-4528-a98a-0b1fb480447f">                 |
-| `bin-name debug --help` |                 <img alt="Local help" src="https://github.com/adbayb/termost/assets/10498826/4127d5d6-4592-496a-b03d-484de4f8a2f7">                 |
-| `bin-name build`        |        <img alt="Subcommand with task example" src="https://github.com/adbayb/termost/assets/10498826/89374e76-b993-4cfd-b7e6-3d8de5d80ac1">        |
-| `bin-name debug`        | <img alt="Subcommand with option and context example" src="https://github.com/adbayb/termost/assets/10498826/3c8c5d97-aa30-49ff-834c-584111b76afa"> |
+| Command                 |                                                       Preview                                                        |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------: |
+| `bin-name --help`       | <img alt="Global help" src="https://github.com/adbayb/termost/assets/10498826/ccb55954-5cd1-4528-a98a-0b1fb480447f"> |
+| `bin-name debug --help` | <img alt="Local help" src="https://github.com/adbayb/termost/assets/10498826/4127d5d6-4592-496a-b03d-484de4f8a2f7">  |
 
 <br>
 
@@ -140,8 +140,10 @@ Please note that the root command context is shared across subcommands but subco
 ```ts
 #!/usr/bin/env node
 
-import { termost, helpers } from "termost";
+import { createLogger, termost } from "termost";
 import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
+
+const logger = createLogger({ name: "my-cli" });
 
 const program = termost({
 	name,
@@ -156,7 +158,7 @@ program
 	})
 	.task({
 		handler(context, argv) {
-			helpers.message(`👋 Hello, I'm the ${argv.command} command`);
+			logger.info(`👋 Hello, I'm the ${argv.command} command`);
 		},
 	});
 
@@ -167,9 +169,7 @@ program
 	})
 	.task({
 		handler(context, argv) {
-			helpers.message(`👋 Hello, I'm the ${argv.command} command`, {
-				type: "warning",
-			});
+			logger.warn(`👋 Hello, I'm the ${argv.command} command`);
 		},
 	});
 ```
@@ -187,7 +187,7 @@ It supports several types:
 ```ts
 #!/usr/bin/env node
 
-import { termost, helpers } from "termost";
+import { createLogger, termost } from "termost";
 import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
 type ProgramContext = {
@@ -196,6 +196,8 @@ type ProgramContext = {
 	input3: boolean;
 	input4: string;
 };
+
+const logger = createLogger({ name: "my-cli" });
 
 const program = termost<ProgramContext>({
 	name,
@@ -241,7 +243,7 @@ program
 	})
 	.task({
 		handler(context) {
-			helpers.message(JSON.stringify(context, null, 4));
+			logger.info(JSON.stringify(context, null, 4));
 		},
 	});
 ```
@@ -259,13 +261,15 @@ The option value can be accessed through its `key` property from the current con
 ```ts
 #!/usr/bin/env node
 
-import { termost, helpers } from "termost";
+import { createLogger, termost } from "termost";
 import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
 type ProgramContext = {
 	optionWithAlias: number;
 	optionWithoutAlias: string;
 };
+
+const logger = createLogger({ name: "my-cli" });
 
 const program = termost<ProgramContext>({
 	name,
@@ -293,7 +297,7 @@ program
 	})
 	.task({
 		handler(context) {
-			helpers.message(JSON.stringify(context, null, 2));
+			logger.info(JSON.stringify(context, null, 2));
 		},
 	});
 ```
@@ -314,7 +318,7 @@ The output can be either:
 ```ts
 #!/usr/bin/env node
 
-import { helpers, termost } from "../src";
+import { createLogger, exec, termost } from "../src";
 import { name, version } from "../package.json" with { type: "json" }; // Depending on your `package.json` location.
 
 type ProgramContext = {
@@ -322,6 +326,8 @@ type ProgramContext = {
 	execOutput: string;
 	size: number;
 };
+
+const logger = createLogger({ name: "task" });
 
 const program = termost<ProgramContext>({
 	name,
@@ -364,7 +370,7 @@ program
 		key: "execOutput",
 		label: "Or even execute external commands thanks to its provided helpers",
 		handler() {
-			return helpers.exec("echo 'Hello from shell'");
+			return exec("echo 'Hello from shell'");
 		},
 	})
 	.task({
@@ -387,40 +393,25 @@ program
 	})
 	.task({
 		handler(context) {
-			helpers.message(
+			logger.info(
+				"output",
 				`If you don't specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).`,
-				{ label: "Label & console output" },
 			);
-
-			helpers.message(
+			logger.info(
+				"context",
 				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`,
-				{ label: "Context management" },
 			);
 		},
 	})
 	.task({
 		handler(context) {
-			const content =
-				"The `message` helpers can be used to display task content in a nice way";
+			const content = "The logger helper can be used to display task content in a nice way";
 
-			helpers.message(content, {
-				label: "Output formatting",
-			});
-			helpers.message(content, { type: "warning" });
-			helpers.message(content, { type: "error" });
-			helpers.message(content, { type: "success" });
-			helpers.message(content, {
-				type: "information",
-				label: "👋 You can also customize the label",
-			});
-			console.log(
-				helpers.format(
-					"\nYou can also have a total control on the formatting through the `format` helper.",
-					{
-						color: "white",
-						modifiers: ["italic", "strikethrough", "bold"],
-					},
-				),
+				logger.info(content);
+				logger.warn(content);
+				logger.error(content);
+				logger.success(content);
+				logger.info("👋 You can also namespace the logger name");
 			);
 
 			console.info(JSON.stringify(context, null, 2));

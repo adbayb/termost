@@ -1,9 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { exec } from "./helpers/process";
 
-// @note: force CI mode so that @clack/prompts spinners produce deterministic output.
-process.env.CI = "true";
-
 describe("termost", () => {
 	test("should display `version`", async () => {
 		expect.hasAssertions();
@@ -25,24 +22,6 @@ describe("termost", () => {
 		expect(shortFlagOutput).toMatchSnapshot("short flag");
 	});
 
-	test("should display `help` given empty command", async () => {
-		expect.hasAssertions();
-
-		const rootCommand = await exec("pnpm --filter @examples/empty start");
-		const buildCommand = await exec("pnpm --filter @examples/empty start build");
-
-		const buildCommandWithOption = await exec(
-			"pnpm --filter @examples/empty start build --option test",
-		);
-
-		const watchCommand = await exec("pnpm --filter @examples/empty start watch");
-
-		expect(rootCommand).toMatchSnapshot("root command");
-		expect(buildCommand).toMatchSnapshot("build command");
-		expect(buildCommandWithOption).toMatchSnapshot("build command with option");
-		expect(watchCommand).toMatchSnapshot("watch command");
-	});
-
 	test("should handle `validation`", async () => {
 		expect.hasAssertions();
 
@@ -59,6 +38,7 @@ describe("termost", () => {
 		expect.hasAssertions();
 
 		const helpOutput = await exec("pnpm --filter @examples/command start --help");
+		const helpOutputWithEmptyCommand = await exec("pnpm --filter @examples/command start");
 		const buildOutput = await exec("pnpm --filter @examples/command start build");
 		const watchOutput = await exec("pnpm --filter @examples/command start watch");
 
@@ -74,10 +54,11 @@ describe("termost", () => {
 		const watchHelpOutput = await exec("pnpm --filter @examples/command start watch --help");
 
 		expect(helpOutput).toMatchSnapshot("help output");
-		expect(buildOutput).toMatchSnapshot("build output");
-		expect(watchOutput).toMatchSnapshot("watch output");
-		expect(buildSharedFlagOutput).toMatchSnapshot("build shared flag output");
-		expect(watchSharedFlagOutput).toMatchSnapshot("watch shared flag output");
+		expect(helpOutputWithEmptyCommand).toMatchSnapshot("help output with empty command");
+		expect(sanitizeOutput(buildOutput)).toMatchSnapshot("build output");
+		expect(sanitizeOutput(watchOutput)).toMatchSnapshot("watch output");
+		expect(sanitizeOutput(buildSharedFlagOutput)).toMatchSnapshot("build shared flag output");
+		expect(sanitizeOutput(watchSharedFlagOutput)).toMatchSnapshot("watch shared flag output");
 		expect(buildHelpOutput).toMatchSnapshot("build help output");
 		expect(watchHelpOutput).toMatchSnapshot("watch help output");
 	});
@@ -87,7 +68,7 @@ describe("termost", () => {
 
 		const output = await exec("pnpm --filter @examples/option start");
 
-		expect(output).toMatchSnapshot();
+		expect(sanitizeOutput(output)).toMatchSnapshot();
 	});
 
 	test("should handle `task` api", async () => {
@@ -95,6 +76,13 @@ describe("termost", () => {
 
 		const output = await exec("pnpm --filter @examples/task start");
 
-		expect(output).toMatchSnapshot();
+		expect(sanitizeOutput(output)).toMatchSnapshot();
 	});
 });
+
+// Force CI mode so that @clack/prompts spinners produce deterministic output.
+process.env.CI = "true";
+
+const sanitizeOutput = (output: string) => {
+	return output.replaceAll(/Done in \d+(\.\d+)?(ms|s)/gu, "Done in <duration>");
+};

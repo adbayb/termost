@@ -47,6 +47,7 @@ export type PackageMetadata = {
 
 export type ProgramMetadata = PackageMetadata & {
 	argv: ArgumentValues;
+	hasInteractiveInstruction: boolean;
 	isEmptyCommand: Record<CommandName, boolean>;
 };
 

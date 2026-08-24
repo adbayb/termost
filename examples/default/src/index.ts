@@ -1,10 +1,12 @@
-import { helpers, termost } from "termost";
+import { createLogger, exec, termost } from "termost";
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
 	option: string;
 	sharedOutput: string;
 };
+
+const logger = createLogger();
 
 const program = termost<ProgramContext>({
 	name: package_.name,
@@ -32,17 +34,14 @@ program
 		key: "sharedOutput",
 		label: "Retrieves files",
 		async handler() {
-			return helpers.exec('echo "Hello from task"', {
+			return exec('echo "Hello from task"', {
 				cwd: process.cwd(),
 			});
 		},
 	})
 	.task({
 		handler(context) {
-			helpers.message(`Task value: ${context.sharedOutput}`);
-
-			helpers.message(`Option value: ${context.option}`, {
-				type: "warning",
-			});
+			logger.info(`Task value: ${context.sharedOutput}`);
+			logger.warn(`Option value: ${context.option}`);
 		},
 	});

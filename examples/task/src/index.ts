@@ -1,4 +1,5 @@
-import { helpers, termost } from "termost";
+import { styleText } from "node:util";
+import { createLogger, exec, termost } from "termost";
 import package_ from "../package.json" with { type: "json" };
 
 type ProgramContext = {
@@ -6,6 +7,11 @@ type ProgramContext = {
 	execOutput: string;
 	size: number;
 };
+
+const logger = createLogger({
+	name: "task",
+	level: "debug",
+});
 
 const program = termost<ProgramContext>({
 	name: package_.name,
@@ -50,7 +56,7 @@ program
 		key: "execOutput",
 		label: "Or even execute external commands thanks to its provided helpers",
 		async handler() {
-			return helpers.exec("echo 'Hello from shell'");
+			return exec("echo 'Hello from shell'");
 		},
 	})
 	.task({
@@ -74,46 +80,32 @@ program
 	})
 	.task({
 		handler(context) {
-			helpers.message(
+			logger.info(
 				'If you don\'t specify a label, the handler is executed in "live mode" (the output is not hidden by the label and is displayed gradually).',
-				{ label: "Label & console output" },
 			);
 
-			helpers.message(
+			logger.info(
 				`A task with a specified "key" can be retrieved here. Size = ${context.size}. If no "key" was specified the task returned value cannot be persisted across program instructions.`,
-				{ label: "Context management" },
 			);
 		},
 	})
 	.task({
 		handler(context) {
-			const content =
-				"The `message` helpers can be used to display task content in a nice way";
+			const content = "The logger helper can be used to display task content in a nice way";
 
-			helpers.message(content, {
-				label: "Output formatting",
-			});
-
-			helpers.message(content, { type: "warning" });
-			helpers.message(content, { type: "error" });
-			helpers.message(content, { type: "success" });
-
-			helpers.message(content, {
-				label: "👋 You can also customize the label",
-				type: "information",
-			});
+			logger.debug(content);
+			logger.info(content);
+			logger.warn(content);
+			logger.error(content);
+			logger.success(content);
+			logger.info("👋 You can also namespace the logger name");
 
 			console.log(
-				helpers.format(
-					"\nYou can also have a total control on the formatting through the `format` helper.",
-					{
-						color: "white",
-						modifiers: ["italic", "strikethrough", "bold"],
-					},
+				styleText(
+					"cyan",
+					`\nYou can also have a total control on the formatting through \`styleText\` from \`node:util\`.\n${JSON.stringify(context, undefined, 2)}`,
 				),
 			);
-
-			console.info(JSON.stringify(context, undefined, 2));
 		},
 	});
 
