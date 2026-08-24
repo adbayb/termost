@@ -3,8 +3,12 @@
 	"access": "public",
 	"baseBranch": "main",
 	"changelog": ["@changesets/changelog-github", { "repo": "adbayb/termost" }],
-	"commit": false,
 	"ignore": ["@examples/*"],
+	"privatePackages": true,
+	"snapshot": {
+		"prereleaseTemplate": "{tag}.{timestamp}.{commit-short}",
+		"useCalculatedVersion": true
+	},
 	"updateInternalDependencies": "patch",
 	"___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
 		"onlyUpdatePeerDependentsWhenOutOfRange": true,

@@ -9,33 +9,28 @@
 		"clean": "stack clean",
 		"fix": "stack fix",
 		"install": "stack install && pnpm --filter termost build",
-		"release:log": "stack release --log",
+		"release:changelog": "stack release --changelog",
 		"release:publish": "stack release --publish",
-		"release:version": "stack release --tag",
+		"release:snapshot": "stack release --snapshot",
+		"release:version": "stack release --bump",
 		"start": "stack start",
 		"test": "stack test",
 		"watch": "stack watch"
 	},
 	"devDependencies": {
-		"@adbayb/stack": "3.0.0",
+		"@adbayb/stack": "3.2.0",
 		"@types/node": "24.13.3"
 	},
 	"devEngines": {
-		"packageManager": [
-			{
-				"name": "pnpm",
-				"version": "11.19.0",
-				"onFail": "download"
-			},
-			{
-				"name": "npm"
-			}
-		],
+		"packageManager": {
+			"name": "pnpm",
+			"version": "^11.0.0",
+			"onFail": "download"
+		},
 		"runtime": {
 			"name": "node",
 			"version": "^24.0.0",
 			"onFail": "error"
 		}
-	},
-	"packageManager": "pnpm@11.19.0"
+	}
 }
