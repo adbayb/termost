@@ -1,5 +1,17 @@
 # termost
 
+## 2.0.0
+
+### Major Changes
+
+- [`3c1fc6f`](https://github.com/adbayb/termost/commit/3c1fc6f0c80c353005acb7d485064d068e1d5ca1) Thanks [@adbayb](https://github.com/adbayb)! - Replace `helpers.message` and `helpers.format` with a unified `createLogger` API backed by `@clack/prompts`, and remove the `helpers` namespace.
+
+    Breaking changes and migration path documented in the [MIGRATION.md](https://github.com/adbayb/termost/blob/main/MIGRATION.md).
+
+### Minor Changes
+
+- [`fb37efd`](https://github.com/adbayb/termost/commit/fb37efd26593d1a08bb4d8b10a69f387234ad669) Thanks [@adbayb](https://github.com/adbayb)! - Refresh the UI/UX by migrating from `enquirer` and `listr2` to `@clack/prompts`.
+
 ## 1.9.2
 
 ### Patch Changes
