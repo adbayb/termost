@@ -45,10 +45,10 @@
 		"watch": "quickbundle watch"
 	},
 	"dependencies": {
-		"@clack/prompts": "^1.7.0"
+		"@clack/prompts": "^1.8.1"
 	},
 	"devDependencies": {
-		"quickbundle": "3.1.1",
+		"quickbundle": "3.2.0",
 		"vitest": "4.1.11"
 	}
 }
