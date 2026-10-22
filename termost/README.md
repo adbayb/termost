@@ -407,12 +407,11 @@ program
 		handler(context) {
 			const content = "The logger helper can be used to display task content in a nice way";
 
-				logger.info(content);
-				logger.warn(content);
-				logger.error(content);
-				logger.success(content);
-				logger.info("👋 You can also namespace the logger name");
-			);
+			logger.info(content);
+			logger.warn(content);
+			logger.error(content);
+			logger.success(content);
+			logger.info("👋 You can also namespace the logger name");
 
 			console.info(JSON.stringify(context, null, 2));
 		},
